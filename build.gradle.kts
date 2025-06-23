@@ -6,7 +6,37 @@ plugins {
 }
 
 repositories {
+    // These are not the only repositories in use,
+    // there are also repositories automatically added by the NeoForged plugin
     mavenLocal()
+    exclusiveContent {
+        forRepository { mavenCentral() }
+        filter { includeGroup("org.appliedenergistics") }
+    }
+    exclusiveContent {
+        forRepository { maven { url = uri("https://cursemaven.com/") } }
+        filter { includeGroup("curse.maven") }
+    }
+    exclusiveContent {
+        forRepository { maven { url = uri("https://api.modrinth.com/maven/") } }
+        filter { includeGroup("maven.modrinth") }
+    }
+    exclusiveContent {
+        forRepository { maven { url = uri("https://maven.terraformersmc.com/") } }
+        filter { includeGroup("dev.emi") }
+    }
+    exclusiveContent {
+        forRepository { maven { url = uri("https://maven.blamejared.com/") } }
+        filter { includeGroup("mezz.jei"); includeGroup("vazkii.patchouli") }
+    }
+    exclusiveContent {
+        forRepository { maven { url = uri("https://maven.tamaized.com/releases/") } }
+        filter { includeGroup("team-twilight") }
+    }
+    exclusiveContent {
+        forRepository { maven { url = uri("https://maven.theillusivec4.top/") } }
+        filter { includeGroup("top.theillusivec4.curios") }
+    }
 }
 
 version = project.property("mod_version") as String
@@ -65,6 +95,41 @@ sourceSets {
 
 dependencies {
     implementation("net.neoforged:neoforge:${project.property("neo_version")}")
+
+    // https://www.curseforge.com/minecraft/mc-mods/jei
+    compileOnly("mezz.jei:jei-${project.property("minecraft_version")}-neoforge-api:${project.property("jei_version")}")
+    runtimeOnly("mezz.jei:jei-${project.property("minecraft_version")}-neoforge:${project.property("jei_version")}")
+
+    // https://www.curseforge.com/minecraft/mc-mods/emi
+    compileOnly("dev.emi:emi-neoforge:${project.property("emi_version")}:api")
+    runtimeOnly("dev.emi:emi-neoforge:${project.property("emi_version")}")
+
+    // https://www.curseforge.com/minecraft/mc-mods/the-twilight-forest
+    implementation("team-twilight:twilightforest:${project.property("twilightforest_version")}:universal")
+
+    // https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2
+    compileOnly("org.appliedenergistics:appliedenergistics2:${project.property("ae2_version")}:api")
+    runtimeOnly("org.appliedenergistics:appliedenergistics2:${project.property("ae2_version")}")
+
+    // https://www.curseforge.com/minecraft/mc-mods/railcraft-reborn
+    compileOnly("curse.maven:railcraft-reborn-901491:${project.property("railcraft_api_curse_version")}")
+    runtimeOnly("curse.maven:railcraft-reborn-901491:${project.property("railcraft_curse_version")}")
+
+    // https://www.curseforge.com/minecraft/mc-mods/curios
+    compileOnly("top.theillusivec4.curios:curios-neoforge:${project.property("curios_version")}:api")
+    runtimeOnly("top.theillusivec4.curios:curios-neoforge:${project.property("curios_version")}")
+
+    // https://www.curseforge.com/minecraft/mc-mods/jade
+    implementation("maven.modrinth:jade:${project.property("jade_version")}")
+
+    // https://www.curseforge.com/minecraft/mc-mods/journeymap
+    runtimeOnly("curse.maven:journeymap-32274:${project.property("journeymap_curse_version")}")
+
+    // https://www.curseforge.com/minecraft/mc-mods/patchouli
+    runtimeOnly("vazkii.patchouli:Patchouli:${project.property("patchouli_version")}")
+
+    // https://www.curseforge.com/minecraft/mc-mods/building-gadgets
+    runtimeOnly("curse.maven:building-gadgets-298187:${project.property("building_gadgets_curse_version")}")
 }
 
 tasks.withType<ProcessResources>().configureEach {

@@ -25,3 +25,5 @@ type="required"
 versionRange="${minecraft_version_range}"
 ordering="NONE"
 side="BOTH"
+
+# TODO: include optional dependencies here
