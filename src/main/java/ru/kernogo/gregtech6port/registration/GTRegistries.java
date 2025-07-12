@@ -7,12 +7,16 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import ru.kernogo.gregtech6port.GregTech6Port;
 import ru.kernogo.gregtech6port.registration.registered.GTBlockEntityTypes;
 import ru.kernogo.gregtech6port.registration.registered.GTBlocks;
+import ru.kernogo.gregtech6port.registration.registered.GTDataComponentTypes;
 import ru.kernogo.gregtech6port.registration.registered.GTItems;
 
 public final class GTRegistries {
-    public static DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(GregTech6Port.MODID);
-    public static DeferredRegister.Items ITEMS = DeferredRegister.createItems(GregTech6Port.MODID);
-    public static DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, GregTech6Port.MODID);
+    private GTRegistries() {}
+
+    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(GregTech6Port.MODID);
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(GregTech6Port.MODID);
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, GregTech6Port.MODID);
+    public static final DeferredRegister.DataComponents DATA_COMPONENTS_TYPES = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, GregTech6Port.MODID);
 
     public static void registerEverythingWithModEventBus(IEventBus modEventBus) {
         // Call an arbitrary method for each class that registers stuff
@@ -20,10 +24,12 @@ public final class GTRegistries {
         GTBlocks.init();
         GTItems.init();
         GTBlockEntityTypes.init();
+        GTDataComponentTypes.init();
 
         // Then register DeferredRegisters with the mod event bus
         BLOCKS.register(modEventBus);
         ITEMS.register(modEventBus);
         BLOCK_ENTITY_TYPES.register(modEventBus);
+        DATA_COMPONENTS_TYPES.register(modEventBus);
     }
 }

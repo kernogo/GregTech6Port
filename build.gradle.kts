@@ -57,15 +57,23 @@ runs {
         systemProperty("forge.logging.markers", "REGISTRIES")
         systemProperty("forge.logging.console.level", "debug")
         modSource(project.sourceSets.main.get())
+        jvmArguments.addAll("-Xmx3g")
     }
 
     create("client") {
         systemProperty("neoforge.enabledGameTestNamespaces", project.property("mod_id") as String)
+        arguments.addAll("--username", "Dev")
+    }
+
+    create("client2") {
+        runType("client")
+        systemProperty("neoforge.enabledGameTestNamespaces", project.property("mod_id") as String)
+        arguments.addAll("--username", "Dev2")
     }
 
     create("server") {
         systemProperty("neoforge.enabledGameTestNamespaces", project.property("mod_id") as String)
-        argument("--nogui")
+        //argument("--nogui")
     }
 
     create("gameTestServer") {
@@ -95,6 +103,12 @@ sourceSets {
 
 dependencies {
     implementation("net.neoforged:neoforge:${project.property("neo_version")}")
+
+    // lombok
+    compileOnly("org.projectlombok:lombok:${project.property("lombok_version")}")
+    annotationProcessor("org.projectlombok:lombok:${project.property("lombok_version")}")
+    testCompileOnly("org.projectlombok:lombok:${project.property("lombok_version")}")
+    testAnnotationProcessor("org.projectlombok:lombok:${project.property("lombok_version")}")
 
     // https://www.curseforge.com/minecraft/mc-mods/jei
     compileOnly("mezz.jei:jei-${project.property("minecraft_version")}-neoforge-api:${project.property("jei_version")}")

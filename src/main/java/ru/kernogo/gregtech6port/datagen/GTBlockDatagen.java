@@ -9,7 +9,7 @@ import ru.kernogo.gregtech6port.features.blockentities.ender_garbage_bin.GTEnder
 import ru.kernogo.gregtech6port.registration.registered.GTBlocks;
 
 /** Datagen for block models and BlockStates */
-public class GTBlockDatagen extends BlockStateProvider {
+public final class GTBlockDatagen extends BlockStateProvider {
     public GTBlockDatagen(PackOutput output, ExistingFileHelper exFileHelper) {
         super(output, GregTech6Port.MODID, exFileHelper);
     }

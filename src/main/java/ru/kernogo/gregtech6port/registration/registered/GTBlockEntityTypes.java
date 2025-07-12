@@ -9,7 +9,9 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import ru.kernogo.gregtech6port.features.blockentities.ender_garbage_bin.GTEnderGarbageBinBlockEntity;
 import ru.kernogo.gregtech6port.registration.GTRegistries;
 
-public class GTBlockEntityTypes {
+public final class GTBlockEntityTypes {
+    private GTBlockEntityTypes() {}
+
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GTEnderGarbageBinBlockEntity>> ENDER_GARBAGE_BIN = register(GTEnderGarbageBinBlockEntity::new, GTBlocks.ENDER_GARBAGE_BIN);
 
     /** Shorthand method for registering BlockEntities corresponding to a Block */
@@ -19,7 +21,7 @@ public class GTBlockEntityTypes {
         DeferredBlock<BLOCK> deferredBlock
     ) {
         return GTRegistries.BLOCK_ENTITY_TYPES.register(
-            deferredBlock.unwrapKey().orElseThrow().location().getPath(),
+            deferredBlock.getKey().location().getPath(),
             () -> BlockEntityType.Builder.of(
                     blockEntitySupplier,
                     deferredBlock.get()

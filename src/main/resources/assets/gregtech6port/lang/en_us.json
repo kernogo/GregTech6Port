@@ -1,1 +1,16 @@
-{}
+{
+  "gregtech6port.client_message.unstack_to_use": "%s does not work when stacked! Unstack to use!",
+  "tooltip.gregtech6port.single_use": "Single Use",
+  "tooltip.gregtech6port.remaining_uses": "Remaining Uses: %s",
+  "tooltip.gregtech6port.proc_chance": "Chance: %s%%",
+  "tooltip.gregtech6port.can_light_things_on_fire": "Can light things on fire",
+  "item.gregtech6port.match": "Match",
+  "item.gregtech6port.fire_starter_dry_grass": "Fire Starter",
+  "item.gregtech6port.fire_starter_dry_tree_bark": "Fire Starter",
+  "item.gregtech6port.match_box": "Match Box",
+  "item.gregtech6port.lighter": "Lighter",
+  "item.gregtech6port.shiny_lighter": "Shiny Lighter",
+  "item.gregtech6port.plastic_lighter_broken": "Plastic Lighter (Broken)",
+  "item.gregtech6port.plastic_lighter": "Plastic Lighter",
+  "block.gregtech6port.ender_garbage_bin": "Ender Garbage Bin"
+}
