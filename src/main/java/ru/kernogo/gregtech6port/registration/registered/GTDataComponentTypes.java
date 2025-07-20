@@ -47,7 +47,13 @@ public final class GTDataComponentTypes {
             "gt_single_use",
             builder -> builder.persistent(Unit.CODEC).networkSynchronized(StreamCodec.unit(Unit.INSTANCE))
         );
-    /** What Item does this item break into (what remains after the item breaks). Does not work automatically. */
+    /**
+     * What Item does this item break into (what remains after the item breaks). <br>
+     * If it is applicable to a particular item, then: <br>
+     * - if not specified, then the item cannot break at all; <br>
+     * - other values allow item to break into something (like AIR to break into nothing). <br>
+     * Does not work automatically.
+     */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Holder<Item>>> BREAKS_INTO =
         GTRegistries.DATA_COMPONENTS_TYPES.registerComponentType(
             "gt_breaks_into",

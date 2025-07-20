@@ -28,12 +28,12 @@ import java.util.function.Supplier;
  * - {@link GTDataComponentTypes#REMAINING_USES} - required, remaining number of uses <br>
  * - {@link GTDataComponentTypes#MAX_REMAINING_USES} - required, remaining number of uses <br>
  * - {@link GTDataComponentTypes#PROC_CHANCE} - required, chance of a successful lighting on fire <br>
- * - {@link GTDataComponentTypes#BREAKS_INTO} - optional, what item remains after lighter reaches zero remaining uses;
- * if null, then lighter remains with zero uses left <br><br>
+ * - {@link GTDataComponentTypes#BREAKS_INTO} - optional, what item remains after lighter reaches zero remaining uses (can be AIR);
+ * if null then lighter remains with zero uses left instead of breaking <br><br>
  * For a single-use lighter type (that is, if {@link GTDataComponentTypes#SINGLE_USE} data component is set): <br>
  * - {@link GTDataComponentTypes#PROC_CHANCE} - required, chance of a successful lighting on fire <br>
- * - {@link GTDataComponentTypes#BREAKS_INTO} - optional, what item remains after lighter is used;
- * if null, then nothing remains after the lighter's use <br><br>
+ * - {@link GTDataComponentTypes#BREAKS_INTO} - optional, what item remains after lighter is used (can be AIR);
+ * can't be null for single-use lighters <br><br>
  * Notes: <br>
  * - Lighter may be stackable, but if it's multi-use, it must be unstacked before using. <br>
  * - The actual lighting of different things on fire is implemented in
@@ -127,32 +127,24 @@ public class GTLighterLikeItem extends Item {
     }
 
     private void decreaseRemainingUsesOrDestroyTheLighter(InteractionHand interactionHand, ItemStack itemInHand, Player player) {
-        Holder<Item> breaksInto = itemInHand.get(GTDataComponentTypes.BREAKS_INTO);
-
         if (itemInHand.has(GTDataComponentTypes.SINGLE_USE)) {
+            // We don't allow null breaksInto in single-use lighters
+            Holder<Item> breaksInto = GTUtils.assureNotNull(itemInHand.get(GTDataComponentTypes.BREAKS_INTO));
             if (itemInHand.getCount() > 1) {
-                if (breaksInto != null) {
-                    player.addItem(breaksInto.value().getDefaultInstance());
-                }
+                player.addItem(breaksInto.value().getDefaultInstance());
                 itemInHand.shrink(1);
             } else {
-                if (breaksInto != null) {
-                    player.setItemInHand(interactionHand, breaksInto.value().getDefaultInstance());
-                } else {
-                    player.setItemInHand(interactionHand, ItemStack.EMPTY);
-                }
+                player.setItemInHand(interactionHand, breaksInto.value().getDefaultInstance());
             }
         } else { // Multi-use
             int remainingUses = GTUtils.assureNotNull(itemInHand.get(GTDataComponentTypes.REMAINING_USES));
+            Holder<Item> breaksInto = itemInHand.get(GTDataComponentTypes.BREAKS_INTO);
 
-            if (breaksInto != null && remainingUses == 1) {
-                if (itemInHand.getCount() > 1) {
-                    player.addItem(breaksInto.value().getDefaultInstance());
-                } else {
-                    player.setItemInHand(interactionHand, breaksInto.value().getDefaultInstance());
-                }
-            } else {
-                itemInHand.set(GTDataComponentTypes.REMAINING_USES, remainingUses - 1);
+            itemInHand.set(GTDataComponentTypes.REMAINING_USES, remainingUses - 1);
+
+            if (remainingUses == 1 && breaksInto != null) {
+                // We don't allow stacked use of multi-use lighters, so we just replace the lighter's ItemStack with breaksInto
+                player.setItemInHand(interactionHand, breaksInto.value().getDefaultInstance());
             }
         }
     }
@@ -163,7 +155,7 @@ public class GTLighterLikeItem extends Item {
             return true; // No validations for single-use lighters
         } else { // Multi-use
             int remainingUses = GTUtils.assureNotNull(itemInHand.get(GTDataComponentTypes.REMAINING_USES));
-            if (remainingUses == 0) {
+            if (remainingUses <= 0) {
                 return false;
             }
 
@@ -221,6 +213,7 @@ public class GTLighterLikeItem extends Item {
         Integer remainingUses = itemStack.get(GTDataComponentTypes.REMAINING_USES);
         Integer maxRemainingUses = itemStack.get(GTDataComponentTypes.MAX_REMAINING_USES);
         Double procChance = itemStack.get(GTDataComponentTypes.PROC_CHANCE);
+        Holder<Item> breaksInto = itemStack.get(GTDataComponentTypes.BREAKS_INTO);
 
         boolean isSingleUse = itemStack.has(GTDataComponentTypes.SINGLE_USE);
 
@@ -229,14 +222,18 @@ public class GTLighterLikeItem extends Item {
                 log.error("procChance is null");
                 return false;
             }
+            if (breaksInto == null) {
+                log.error("breaksInto is null in a single-use lighter");
+                return false;
+            }
         } else { // Multi-use
             if (remainingUses == null) {
-                log.error("remainingUses is null when the lighter is not single use");
+                log.error("remainingUses is null when the lighter is not single-use");
                 return false;
             }
 
             if (maxRemainingUses == null) {
-                log.error("maxRemainingUses is null when the lighter is not single use");
+                log.error("maxRemainingUses is null when the lighter is not single-use");
                 return false;
             }
 

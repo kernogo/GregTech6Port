@@ -18,6 +18,7 @@ public final class GTItems {
                 new Item.Properties()
                     .component(GTDataComponentTypes.SINGLE_USE, Unit.INSTANCE)
                     .component(GTDataComponentTypes.PROC_CHANCE, 0.9)
+                    .component(GTDataComponentTypes.BREAKS_INTO, BuiltInRegistries.ITEM.wrapAsHolder(Items.AIR))
             ));
     public static final DeferredItem<Item> FIRE_STARTER_DRY_GRASS =
         GTRegistries.ITEMS.register("fire_starter_dry_grass",
@@ -26,6 +27,7 @@ public final class GTItems {
                     .stacksTo(1)
                     .component(GTDataComponentTypes.SINGLE_USE, Unit.INSTANCE)
                     .component(GTDataComponentTypes.PROC_CHANCE, 0.5)
+                    .component(GTDataComponentTypes.BREAKS_INTO, BuiltInRegistries.ITEM.wrapAsHolder(Items.AIR))
             ));
     public static final DeferredItem<Item> FIRE_STARTER_DRY_TREE_BARK =
         GTRegistries.ITEMS.register("fire_starter_dry_tree_bark",
@@ -34,6 +36,7 @@ public final class GTItems {
                     .stacksTo(1)
                     .component(GTDataComponentTypes.SINGLE_USE, Unit.INSTANCE)
                     .component(GTDataComponentTypes.PROC_CHANCE, 0.55)
+                    .component(GTDataComponentTypes.BREAKS_INTO, BuiltInRegistries.ITEM.wrapAsHolder(Items.AIR))
             ));
     public static final DeferredItem<Item> MATCH_BOX =
         GTRegistries.ITEMS.register("match_box",
