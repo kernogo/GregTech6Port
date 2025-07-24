@@ -22,11 +22,14 @@ public final class GTBlockEntityTypes {
     ) {
         return GTRegistries.BLOCK_ENTITY_TYPES.register(
             deferredBlock.getKey().location().getPath(),
-            () -> BlockEntityType.Builder.of(
+            () -> {
+                BlockEntityType.Builder<BE_TYPE> builder = BlockEntityType.Builder.of(
                     blockEntitySupplier,
                     deferredBlock.get()
-                )
-                .build(null)
+                );
+                //noinspection DataFlowIssue
+                return builder.build(null); // null is fine here for MC 1.21.1
+            }
         );
     }
 

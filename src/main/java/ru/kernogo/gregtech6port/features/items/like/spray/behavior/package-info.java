@@ -1,7 +1,7 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 @FieldsAreNonnullByDefault
-package ru.kernogo.gregtech6port.features.items.like.lighter;
+package ru.kernogo.gregtech6port.features.items.like.spray.behavior;
 
 import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;

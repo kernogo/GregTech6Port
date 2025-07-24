@@ -1,7 +1,6 @@
 package ru.kernogo.gregtech6port.features.items.like.lighter;
 
 import lombok.extern.slf4j.Slf4j;
-import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -15,36 +14,31 @@ import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 import org.jetbrains.annotations.Nullable;
+import ru.kernogo.gregtech6port.features.behaviors.item_with_uses.GTItemWithUsesBehavior;
 import ru.kernogo.gregtech6port.registration.registered.GTDataComponentTypes;
 import ru.kernogo.gregtech6port.utils.GTUtils;
-import ru.kernogo.gregtech6port.utils.exception.GTUnexpectedNullException;
+import ru.kernogo.gregtech6port.utils.exception.GTUnexpectedValidationFailException;
 
 import java.util.List;
 import java.util.function.Supplier;
 
 /**
- * Accepts the following non-automatic data components: <br><br>
- * For a multi-use lighter type (that is, if {@link GTDataComponentTypes#SINGLE_USE} data component is not set): <br>
- * - {@link GTDataComponentTypes#REMAINING_USES} - required, remaining number of uses <br>
- * - {@link GTDataComponentTypes#MAX_REMAINING_USES} - required, remaining number of uses <br>
- * - {@link GTDataComponentTypes#PROC_CHANCE} - required, chance of a successful lighting on fire <br>
- * - {@link GTDataComponentTypes#BREAKS_INTO} - optional, what item remains after lighter reaches zero remaining uses (can be AIR);
- * if null then lighter remains with zero uses left instead of breaking <br><br>
- * For a single-use lighter type (that is, if {@link GTDataComponentTypes#SINGLE_USE} data component is set): <br>
- * - {@link GTDataComponentTypes#PROC_CHANCE} - required, chance of a successful lighting on fire <br>
- * - {@link GTDataComponentTypes#BREAKS_INTO} - optional, what item remains after lighter is used (can be AIR);
- * can't be null for single-use lighters <br><br>
- * Notes: <br>
- * - Lighter may be stackable, but if it's multi-use, it must be unstacked before using. <br>
- * - The actual lighting of different things on fire is implemented in
- * {@link LighterBehaviorForBlocks} and {@link LighterBehaviorForEntities} delegates, which this class calls
+ * Item class for all lighter-like items. <br>
+ * Uses the following required data components: <br>
+ * <ul>
+ *   <li>{@link GTDataComponentTypes#ITEM_WITH_USES} - data for items with uses, look there for the details about it</li>
+ *   <li>{@link GTDataComponentTypes#PROC_CHANCE} - chance of a successful lighting on fire</li>
+ * </ul>
+ * The actual lighting of different things on fire is implemented in
+ * {@link LighterBehaviorForBlocks} and {@link LighterBehaviorForEntities} delegates, which this class calls.
  */
 @Slf4j
 public class GTLighterLikeItem extends Item {
+    private final GTItemWithUsesBehavior itemWithUsesBehavior = new GTItemWithUsesBehavior();
+
     private final LighterBehaviorForBlocks lighterBehaviorForBlocks = new LighterBehaviorForBlocks();
     private final LighterBehaviorForEntities lighterBehaviorForEntities = new LighterBehaviorForEntities();
 
-    /** @see GTLighterLikeItem GTLighterLikeItem for available non-automatic data components */
     public GTLighterLikeItem(Properties properties) {
         super(properties);
     }
@@ -64,8 +58,8 @@ public class GTLighterLikeItem extends Item {
                 context.getHand(),
                 () -> lighterBehaviorForBlocks.findWhatToDo(context)
             );
-        } catch (GTUnexpectedNullException e) {
-            log.error("An unexpected null value was encountered that should've been validated", e);
+        } catch (GTUnexpectedValidationFailException e) {
+            log.error("An unexpected validation fail occurred", e);
             return InteractionResult.FAIL;
         }
     }
@@ -80,8 +74,8 @@ public class GTLighterLikeItem extends Item {
                 usedHand,
                 () -> lighterBehaviorForEntities.findWhatToDo(interactionTarget, player)
             );
-        } catch (GTUnexpectedNullException e) {
-            log.error("An unexpected null value was encountered that should've been validated", e);
+        } catch (GTUnexpectedValidationFailException e) {
+            log.error("An unexpected validation fail occurred", e);
             return InteractionResult.FAIL;
         }
     }
@@ -91,11 +85,11 @@ public class GTLighterLikeItem extends Item {
                                              Player player,
                                              InteractionHand interactionHand,
                                              Supplier<@Nullable IThingToDo> thingToDoSupplier) {
-        if (!validateData(stack)) {
-            return InteractionResult.FAIL;
-        }
+        validateDataComponents(stack);
 
-        if (!checkUsePreconditions(stack, level, player)) {
+        itemWithUsesBehavior.displayErrorIfStackedAndIsMultiUse(stack, player, level.isClientSide());
+
+        if (!itemWithUsesBehavior.canUse(stack)) {
             return InteractionResult.FAIL;
         }
 
@@ -105,9 +99,7 @@ public class GTLighterLikeItem extends Item {
             return InteractionResult.FAIL;
         }
 
-        // After this we know for sure that the lighter's durability must be used
-
-        decreaseRemainingUsesOrDestroyTheLighter(interactionHand, stack, player);
+        itemWithUsesBehavior.decreaseUsesOrBreak(stack, player, interactionHand);
 
         whatToDo.playLighterSound();
 
@@ -126,75 +118,16 @@ public class GTLighterLikeItem extends Item {
         return InteractionResult.CONSUME;
     }
 
-    private void decreaseRemainingUsesOrDestroyTheLighter(InteractionHand interactionHand, ItemStack itemInHand, Player player) {
-        if (itemInHand.has(GTDataComponentTypes.SINGLE_USE)) {
-            // We don't allow null breaksInto in single-use lighters
-            Holder<Item> breaksInto = GTUtils.assureNotNull(itemInHand.get(GTDataComponentTypes.BREAKS_INTO));
-            if (itemInHand.getCount() > 1) {
-                player.addItem(breaksInto.value().getDefaultInstance());
-                itemInHand.shrink(1);
-            } else {
-                player.setItemInHand(interactionHand, breaksInto.value().getDefaultInstance());
-            }
-        } else { // Multi-use
-            int remainingUses = GTUtils.assureNotNull(itemInHand.get(GTDataComponentTypes.REMAINING_USES));
-            Holder<Item> breaksInto = itemInHand.get(GTDataComponentTypes.BREAKS_INTO);
-
-            itemInHand.set(GTDataComponentTypes.REMAINING_USES, remainingUses - 1);
-
-            if (remainingUses == 1 && breaksInto != null) {
-                // We don't allow stacked use of multi-use lighters, so we just replace the lighter's ItemStack with breaksInto
-                player.setItemInHand(interactionHand, breaksInto.value().getDefaultInstance());
-            }
-        }
-    }
-
-    /** Check use preconditions for the use of the lighter. Returns false if check is unsuccessful */
-    private boolean checkUsePreconditions(ItemStack itemInHand, Level level, Player player) {
-        if (itemInHand.has(GTDataComponentTypes.SINGLE_USE)) {
-            return true; // No validations for single-use lighters
-        } else { // Multi-use
-            int remainingUses = GTUtils.assureNotNull(itemInHand.get(GTDataComponentTypes.REMAINING_USES));
-            if (remainingUses <= 0) {
-                return false;
-            }
-
-            if (itemInHand.getCount() != 1) {
-                if (level.isClientSide()) {
-                    player.displayClientMessage(
-                        Component.translatable("gregtech6port.client_message.unstack_to_use", itemInHand.getDisplayName().getString()),
-                        true
-                    );
-                }
-                return false;
-            }
-        }
-
-        return true;
-    }
-
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
 
         try {
-            if (!validateData(stack)) {
-                return;
-            }
+            validateDataComponents(stack);
 
-            if (stack.has(GTDataComponentTypes.SINGLE_USE)) {
-                tooltipComponents.add(Component.translatable("tooltip.gregtech6port.single_use"));
-            } else { // Multi-use
-                int remainingUses = GTUtils.assureNotNull(stack.get(GTDataComponentTypes.REMAINING_USES));
-                tooltipComponents.add(Component.translatable("tooltip.gregtech6port.remaining_uses", remainingUses));
-            }
-
-            double procChance = GTUtils.assureNotNull(stack.get(GTDataComponentTypes.PROC_CHANCE));
-            if (procChance != 1.0) {
-                tooltipComponents.add(Component.translatable("tooltip.gregtech6port.proc_chance", String.format("%.2f", procChance * 100)));
-            }
-        } catch (GTUnexpectedNullException e) {
-            log.error("An unexpected null value was encountered that should've been validated", e);
+            tooltipComponents.addAll(itemWithUsesBehavior.makeTooltip(stack));
+        } catch (GTUnexpectedValidationFailException e) {
+            log.error("An unexpected validation fail occurred", e);
         }
     }
 
@@ -203,56 +136,14 @@ public class GTLighterLikeItem extends Item {
         return ItemAbilities.DEFAULT_FLINT_ACTIONS.contains(itemAbility);
     }
 
-    /** Validate ItemStack's data. Returns false if the data is invalid */
-    private boolean validateData(ItemStack itemStack) {
-        if (!(itemStack.getItem() instanceof GTLighterLikeItem)) {
-            log.error("Item={} of the passed ItemStack={} is not an instance of GTLighterLikeItem", itemStack.getItem(), itemStack);
-            return false;
-        }
+    /** Validate data components and throw an exception if any of the components are invalid */
+    private void validateDataComponents(ItemStack itemStack) {
+        itemWithUsesBehavior.validateAndGetItemWithUsesData(itemStack);
 
-        Integer remainingUses = itemStack.get(GTDataComponentTypes.REMAINING_USES);
-        Integer maxRemainingUses = itemStack.get(GTDataComponentTypes.MAX_REMAINING_USES);
         Double procChance = itemStack.get(GTDataComponentTypes.PROC_CHANCE);
-        Holder<Item> breaksInto = itemStack.get(GTDataComponentTypes.BREAKS_INTO);
 
-        boolean isSingleUse = itemStack.has(GTDataComponentTypes.SINGLE_USE);
-
-        if (isSingleUse) {
-            if (procChance == null) {
-                log.error("procChance is null");
-                return false;
-            }
-            if (breaksInto == null) {
-                log.error("breaksInto is null in a single-use lighter");
-                return false;
-            }
-        } else { // Multi-use
-            if (remainingUses == null) {
-                log.error("remainingUses is null when the lighter is not single-use");
-                return false;
-            }
-
-            if (maxRemainingUses == null) {
-                log.error("maxRemainingUses is null when the lighter is not single-use");
-                return false;
-            }
-
-            if (procChance == null) {
-                log.error("procChance is null");
-                return false;
-            }
-
-            if (remainingUses < 0) {
-                log.error("remainingUses={} < 0", remainingUses);
-                return false;
-            }
-
-            if (remainingUses > maxRemainingUses) {
-                log.error("remainingUses={} > maxRemainingUses={}", remainingUses, maxRemainingUses);
-                return false;
-            }
+        if (procChance == null) {
+            throw new GTUnexpectedValidationFailException("procChance is null");
         }
-
-        return true;
     }
 }

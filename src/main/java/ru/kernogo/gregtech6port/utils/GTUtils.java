@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 import ru.kernogo.gregtech6port.GregTech6Port;
-import ru.kernogo.gregtech6port.utils.exception.GTUnexpectedNullException;
+import ru.kernogo.gregtech6port.utils.exception.GTUnexpectedValidationFailException;
 
 import java.util.Random;
 
@@ -26,10 +26,10 @@ public final class GTUtils {
     }
 
     /**
-     * Use this to assure the IDE that the {@code object} is not null (because you've validated it before). <br>
-     * If the {@code object} is in fact null, then this logs an error and throws a {@link GTUnexpectedNullException}. <br>
-     * You should wrap the code that calls this method
-     * in a try-catch block to catch the {@link GTUnexpectedNullException} if it is thrown.
+     * This can be used to assure the IDE that the {@code object} is not null (because it's been validated before). <br>
+     * If the {@code object} is in fact null, then this logs an error and throws a {@link GTUnexpectedValidationFailException}. <br>
+     * The code that calls this method should be wrapped
+     * in a try-catch block to catch the {@link GTUnexpectedValidationFailException} if it is thrown. <br>
      * TODO: static analysis to ensure that the exception is caught. This could've been a checked exception, but putting "throws" everywhere is annoying
      */
     @Contract("null -> fail; _ -> param1")
@@ -37,7 +37,7 @@ public final class GTUtils {
         if (object == null) {
             String errorMessage = "Object is null even though it was claimed that it's not";
             log.error(errorMessage);
-            throw new GTUnexpectedNullException(errorMessage);
+            throw new GTUnexpectedValidationFailException(errorMessage);
         }
         return object;
     }

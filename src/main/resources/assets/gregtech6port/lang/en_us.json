@@ -1,9 +1,11 @@
 {
   "gregtech6port.client_message.unstack_to_use": "%s does not work when stacked! Unstack to use!",
+
   "tooltip.gregtech6port.single_use": "Single Use",
   "tooltip.gregtech6port.remaining_uses": "Remaining Uses: %s",
   "tooltip.gregtech6port.proc_chance": "Chance: %s%%",
   "tooltip.gregtech6port.can_light_things_on_fire": "Can light things on fire",
+
   "item.gregtech6port.match": "Match",
   "item.gregtech6port.fire_starter_dry_grass": "Fire Starter",
   "item.gregtech6port.fire_starter_dry_tree_bark": "Fire Starter",
@@ -12,5 +14,24 @@
   "item.gregtech6port.shiny_lighter": "Shiny Lighter",
   "item.gregtech6port.plastic_lighter_broken": "Plastic Lighter (Broken)",
   "item.gregtech6port.plastic_lighter": "Plastic Lighter",
+
+  "item.gregtech6port.empty_spray_can": "Empty Spray Can",
+  "item.gregtech6port.white_paint_spray_can": "Spray Paint (White)",
+  "item.gregtech6port.orange_paint_spray_can": "Spray Paint (Orange)",
+  "item.gregtech6port.magenta_paint_spray_can": "Spray Paint (Magenta)",
+  "item.gregtech6port.light_blue_paint_spray_can": "Spray Paint (Light Blue)",
+  "item.gregtech6port.yellow_paint_spray_can": "Spray Paint (Yellow)",
+  "item.gregtech6port.lime_paint_spray_can": "Spray Paint (Lime)",
+  "item.gregtech6port.pink_paint_spray_can": "Spray Paint (Pink)",
+  "item.gregtech6port.gray_paint_spray_can": "Spray Paint (Gray)",
+  "item.gregtech6port.light_gray_paint_spray_can": "Spray Paint (Light Gray)",
+  "item.gregtech6port.cyan_paint_spray_can": "Spray Paint (Cyan)",
+  "item.gregtech6port.purple_paint_spray_can": "Spray Paint (Purple)",
+  "item.gregtech6port.blue_paint_spray_can": "Spray Paint (Blue)",
+  "item.gregtech6port.brown_paint_spray_can": "Spray Paint (Brown)",
+  "item.gregtech6port.green_paint_spray_can": "Spray Paint (Green)",
+  "item.gregtech6port.red_paint_spray_can": "Spray Paint (Red)",
+  "item.gregtech6port.black_paint_spray_can": "Spray Paint (Black)",
+
   "block.gregtech6port.ender_garbage_bin": "Ender Garbage Bin"
 }

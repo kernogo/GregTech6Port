@@ -20,6 +20,8 @@ import net.minecraft.world.level.block.CandleCakeBlock;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import ru.kernogo.gregtech6port.GregTech6Port;
+import ru.kernogo.gregtech6port.features.behaviors.item_with_uses.GTItemWithUsesBehavior;
+import ru.kernogo.gregtech6port.features.behaviors.item_with_uses.GTItemWithUsesData;
 import ru.kernogo.gregtech6port.gametests.GTGameTestUtils;
 import ru.kernogo.gregtech6port.registration.registered.GTDataComponentTypes;
 import ru.kernogo.gregtech6port.registration.registered.GTItems;
@@ -27,7 +29,6 @@ import ru.kernogo.gregtech6port.registration.registered.GTItems;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Predicate;
 
 /**
@@ -37,6 +38,8 @@ import java.util.function.Predicate;
  */
 @GameTestHolder(GregTech6Port.MODID)
 public class LighterLikeItemClickOnThingsTests {
+    private static final GTItemWithUsesBehavior itemWithUsesBehavior = new GTItemWithUsesBehavior();
+
     @GameTestGenerator
     public static Collection<TestFunction> tests_ClickOnThings_MultiUse() {
         ArrayList<TestFunction> tests = new ArrayList<>();
@@ -78,8 +81,9 @@ public class LighterLikeItemClickOnThingsTests {
         placeThings(gameTestHelper, startPos);
 
         ItemStack initialLighterStack = giveANewLighter(deferredLighterItem, player);
-        int initialMaxRemainingUses = Objects.requireNonNull(initialLighterStack.get(GTDataComponentTypes.MAX_REMAINING_USES));
-        int initialRemainingUses = Objects.requireNonNull(initialLighterStack.get(GTDataComponentTypes.REMAINING_USES));
+        GTItemWithUsesData initialItemWithUsesData = itemWithUsesBehavior.validateAndGetItemWithUsesData(initialLighterStack);
+        int initialRemainingUses = initialItemWithUsesData.remainingUses();
+        int initialMaxRemainingUses = initialItemWithUsesData.maxRemainingUses();
 
         GTGameTestUtils.useBlockOutsideUp(gameTestHelper, player, startPos); // 1
 
@@ -112,8 +116,9 @@ public class LighterLikeItemClickOnThingsTests {
         assertThingsWereLitOnFire(gameTestHelper, startPos, creeper);
 
         ItemStack currentItemStack = player.getMainHandItem();
-        int currentMaxRemainingUses = Objects.requireNonNull(currentItemStack.get(GTDataComponentTypes.MAX_REMAINING_USES));
-        int currentRemainingUses = Objects.requireNonNull(currentItemStack.get(GTDataComponentTypes.REMAINING_USES));
+        GTItemWithUsesData currentItemWithUsesData = itemWithUsesBehavior.validateAndGetItemWithUsesData(initialLighterStack);
+        int currentRemainingUses = currentItemWithUsesData.remainingUses();
+        int currentMaxRemainingUses = currentItemWithUsesData.maxRemainingUses();
 
         gameTestHelper.assertTrue(currentItemStack.is(deferredLighterItem), "Item in hand changed");
         GTGameTestUtils.assertEquals(gameTestHelper, currentMaxRemainingUses, initialMaxRemainingUses,
@@ -129,7 +134,7 @@ public class LighterLikeItemClickOnThingsTests {
 
     private static void doTest_ClickOnThings_SingleUse(GameTestHelper gameTestHelper,
                                                        DeferredItem<Item> deferredLighterItem) {
-        Holder<Item> breaksInto = deferredLighterItem.toStack().get(GTDataComponentTypes.BREAKS_INTO);
+        Holder<Item> breaksInto = itemWithUsesBehavior.validateAndGetItemWithUsesData(deferredLighterItem.toStack()).breaksInto();
         gameTestHelper.assertTrue(breaksInto != null && breaksInto.value() == Items.AIR,
             "This test was made for the lighters that break into the AIR item only");
 

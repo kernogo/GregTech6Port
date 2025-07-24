@@ -21,18 +21,37 @@ public final class GTItemDatagen extends ItemModelProvider {
         basicItem(GTItems.FIRE_STARTER_DRY_GRASS.get());
         basicItem(GTItems.FIRE_STARTER_DRY_TREE_BARK.get());
 
-        lighter2StageModel(GTItems.MATCH_BOX);
-        lighter3StageModel(GTItems.LIGHTER);
-        lighter3StageModel(GTItems.SHINY_LIGHTER);
+        makeItemWithUses2StageModel(GTItems.MATCH_BOX);
+        makeItemWithUses3StageModel(GTItems.LIGHTER);
+        makeItemWithUses3StageModel(GTItems.SHINY_LIGHTER);
         basicItem(GTItems.PLASTIC_LIGHTER_BROKEN.get());
-        lighter3StageModel(GTItems.PLASTIC_LIGHTER);
+        makeItemWithUses3StageModel(GTItems.PLASTIC_LIGHTER);
+
+        basicItem(GTItems.EMPTY_SPRAY_CAN.get());
+
+        makeItemWithUses2StageModel(GTItems.WHITE_PAINT_SPRAY_CAN);
+        makeItemWithUses2StageModel(GTItems.ORANGE_PAINT_SPRAY_CAN);
+        makeItemWithUses2StageModel(GTItems.MAGENTA_PAINT_SPRAY_CAN);
+        makeItemWithUses2StageModel(GTItems.LIGHT_BLUE_PAINT_SPRAY_CAN);
+        makeItemWithUses2StageModel(GTItems.YELLOW_PAINT_SPRAY_CAN);
+        makeItemWithUses2StageModel(GTItems.LIME_PAINT_SPRAY_CAN);
+        makeItemWithUses2StageModel(GTItems.PINK_PAINT_SPRAY_CAN);
+        makeItemWithUses2StageModel(GTItems.GRAY_PAINT_SPRAY_CAN);
+        makeItemWithUses2StageModel(GTItems.LIGHT_GRAY_PAINT_SPRAY_CAN);
+        makeItemWithUses2StageModel(GTItems.CYAN_PAINT_SPRAY_CAN);
+        makeItemWithUses2StageModel(GTItems.PURPLE_PAINT_SPRAY_CAN);
+        makeItemWithUses2StageModel(GTItems.BLUE_PAINT_SPRAY_CAN);
+        makeItemWithUses2StageModel(GTItems.BROWN_PAINT_SPRAY_CAN);
+        makeItemWithUses2StageModel(GTItems.GREEN_PAINT_SPRAY_CAN);
+        makeItemWithUses2StageModel(GTItems.RED_PAINT_SPRAY_CAN);
+        makeItemWithUses2StageModel(GTItems.BLACK_PAINT_SPRAY_CAN);
     }
 
     /**
-     * Model for lighter-like items with 3 textures - full, partially used, and empty. <br>
-     * Corresponding item Property Function is {@link ru.kernogo.gregtech6port.registration.registration_event_subscribers.RegisterItemProperties#lighter2StagePropFunc}
+     * Model for items with uses items with 2 textures - full and partially used. <br>
+     * Corresponding item Property Function is {@link ru.kernogo.gregtech6port.registration.registration_event_subscribers.RegisterItemProperties#makeItemWithUses2StageFunc}
      */
-    private void lighter2StageModel(DeferredItem<Item> deferredItem) {
+    private void makeItemWithUses2StageModel(DeferredItem<Item> deferredItem) {
         String key = deferredItem.getKey().location().getPath();
 
         basicItem(modLoc(key + "_full"));
@@ -43,21 +62,21 @@ public final class GTItemDatagen extends ItemModelProvider {
             .texture("layer0", modLoc("item/" + key + "_full"))
 
             .override()
-            .predicate(modLoc("gt_use_stage"), 0.0f)
+            .predicate(modLoc("use_stage"), 0.0f)
             .model(getExistingFile(modLoc("item/" + key + "_full")))
             .end()
 
             .override()
-            .predicate(modLoc("gt_use_stage"), 0.5f)
+            .predicate(modLoc("use_stage"), 0.5f)
             .model(getExistingFile(modLoc("item/" + key + "_partially_used")))
             .end();
     }
 
     /**
-     * Model for lighter-like items with 3 textures - full, partially used, and empty. <br>
-     * Corresponding item Property Function is {@link ru.kernogo.gregtech6port.registration.registration_event_subscribers.RegisterItemProperties#lighter3StagePropFunc}
+     * Model for items with uses with 3 textures - full, partially used, and empty. <br>
+     * Corresponding item Property Function is {@link ru.kernogo.gregtech6port.registration.registration_event_subscribers.RegisterItemProperties#makeItemWithUses3StageFunc}
      */
-    private void lighter3StageModel(DeferredItem<Item> deferredItem) {
+    private void makeItemWithUses3StageModel(DeferredItem<Item> deferredItem) {
         String key = deferredItem.getKey().location().getPath();
 
         basicItem(modLoc(key + "_full"));
@@ -69,17 +88,17 @@ public final class GTItemDatagen extends ItemModelProvider {
             .texture("layer0", modLoc("item/" + key + "_full"))
 
             .override()
-            .predicate(modLoc("gt_use_stage"), 0.0f)
+            .predicate(modLoc("use_stage"), 0.0f)
             .model(getExistingFile(modLoc("item/" + key + "_full")))
             .end()
 
             .override()
-            .predicate(modLoc("gt_use_stage"), 0.5f)
+            .predicate(modLoc("use_stage"), 0.5f)
             .model(getExistingFile(modLoc("item/" + key + "_partially_used")))
             .end()
 
             .override()
-            .predicate(modLoc("gt_use_stage"), 1.0f)
+            .predicate(modLoc("use_stage"), 1.0f)
             .model(getExistingFile(modLoc("item/" + key + "_empty")))
             .end();
     }

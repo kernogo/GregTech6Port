@@ -13,6 +13,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import ru.kernogo.gregtech6port.GregTech6Port;
+import ru.kernogo.gregtech6port.features.behaviors.item_with_uses.GTItemWithUsesBehavior;
+import ru.kernogo.gregtech6port.features.behaviors.item_with_uses.GTItemWithUsesData;
 import ru.kernogo.gregtech6port.gametests.GTGameTestUtils;
 import ru.kernogo.gregtech6port.registration.registered.GTDataComponentTypes;
 import ru.kernogo.gregtech6port.registration.registered.GTItems;
@@ -24,6 +26,8 @@ import java.util.List;
 /** Miscellaneous tests for the lighter-like items */
 @GameTestHolder(GregTech6Port.MODID)
 public class LighterLikeItemMiscTests {
+    private static final GTItemWithUsesBehavior itemWithUsesBehavior = new GTItemWithUsesBehavior();
+
     @GameTestGenerator
     public static Collection<TestFunction> tests_ClickingMultiUseLightersWithZeroRemainingUsesDoesNothing() {
         ArrayList<TestFunction> tests = new ArrayList<>();
@@ -44,11 +48,12 @@ public class LighterLikeItemMiscTests {
                                                                                         DeferredItem<Item> deferredLighterItem) {
         Player player = gameTestHelper.makeMockPlayer(GameType.SURVIVAL);
         ItemStack initialLighterStack = deferredLighterItem.get().getDefaultInstance();
+        GTItemWithUsesData initialItemWithUsesData = itemWithUsesBehavior.validateAndGetItemWithUsesData(initialLighterStack);
         gameTestHelper.assertTrue(
-            !initialLighterStack.has(GTDataComponentTypes.BREAKS_INTO) && !initialLighterStack.has(GTDataComponentTypes.SINGLE_USE),
+            initialItemWithUsesData.breaksInto() == null && !itemWithUsesBehavior.isSingleUse(initialLighterStack),
             "This test was made only for multi-use lighters that don't break into anything"
         );
-        initialLighterStack.set(GTDataComponentTypes.REMAINING_USES, 0);
+        initialLighterStack.set(GTDataComponentTypes.ITEM_WITH_USES, initialItemWithUsesData.withRemainingUses(0));
         player.setItemInHand(InteractionHand.MAIN_HAND, initialLighterStack.copy());
 
         BlockPos posToClick = new BlockPos(0, 1, 0);

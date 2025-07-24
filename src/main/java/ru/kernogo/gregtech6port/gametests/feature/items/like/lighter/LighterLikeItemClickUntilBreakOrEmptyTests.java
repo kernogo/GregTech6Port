@@ -14,14 +14,13 @@ import net.minecraft.world.level.GameType;
 import net.neoforged.neoforge.gametest.GameTestHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import ru.kernogo.gregtech6port.GregTech6Port;
+import ru.kernogo.gregtech6port.features.behaviors.item_with_uses.GTItemWithUsesBehavior;
 import ru.kernogo.gregtech6port.gametests.GTGameTestUtils;
-import ru.kernogo.gregtech6port.registration.registered.GTDataComponentTypes;
 import ru.kernogo.gregtech6port.registration.registered.GTItems;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Set of tests to check that clicking the lighter will break it, or it will reach zero remaining uses. <br>
@@ -29,6 +28,8 @@ import java.util.Objects;
  */
 @GameTestHolder(GregTech6Port.MODID)
 public class LighterLikeItemClickUntilBreakOrEmptyTests {
+    private static final GTItemWithUsesBehavior itemWithUsesBehavior = new GTItemWithUsesBehavior();
+
     @GameTestGenerator
     public static Collection<TestFunction> tests_ClickUntilBreakOrEmpty_MultiUse() {
         ArrayList<TestFunction> tests = new ArrayList<>();
@@ -65,28 +66,27 @@ public class LighterLikeItemClickUntilBreakOrEmptyTests {
 
     private static void doTest_ClickUntilBreakOrEmpty_MultiUse(GameTestHelper gameTestHelper,
                                                                DeferredItem<Item> deferredLighterItem) {
-        Holder<Item> breaksInto = deferredLighterItem.toStack().get(GTDataComponentTypes.BREAKS_INTO);
-
         Player player = gameTestHelper.makeMockPlayer(GameType.SURVIVAL);
         player.setItemInHand(InteractionHand.MAIN_HAND, deferredLighterItem.toStack());
         BlockPos posToClick = new BlockPos(0, 1, 0);
+        Holder<Item> breaksInto = itemWithUsesBehavior.validateAndGetItemWithUsesData(player.getMainHandItem()).breaksInto();
 
-        int howManyTimesToClick = Objects.requireNonNull(player.getMainHandItem().get(GTDataComponentTypes.REMAINING_USES));
+        int howManyTimesToClick = itemWithUsesBehavior.validateAndGetItemWithUsesData(player.getMainHandItem()).remainingUses();
         for (int i = 0; i < howManyTimesToClick - 1; i++) { // Click until 1 remaining use is left
             GTGameTestUtils.useBlockOutsideUp(gameTestHelper, player, posToClick);
             gameTestHelper.destroyBlock(posToClick.above()); // Destroy the fire if it appeared
 
-            ItemStack currentLighterStack = player.getItemInHand(InteractionHand.MAIN_HAND);
+            ItemStack currentLighterStack = player.getMainHandItem();
 
             gameTestHelper.assertValueEqual(currentLighterStack.getItem(), deferredLighterItem.get(), "lighter item type");
-            int currentRemainingUses = Objects.requireNonNull(currentLighterStack.get(GTDataComponentTypes.REMAINING_USES));
+            int currentRemainingUses = itemWithUsesBehavior.validateAndGetItemWithUsesData(currentLighterStack).remainingUses();
             gameTestHelper.assertValueEqual(currentRemainingUses, howManyTimesToClick - i - 1, "remaining uses");
             gameTestHelper.assertTrue(GTGameTestUtils.getInventoryItemCount(player) == 1,
                 "There are extra items in player's inventory");
         }
 
         GTGameTestUtils.useBlockOutsideUp(gameTestHelper, player, posToClick);
-        ItemStack currentLighterStack = player.getItemInHand(InteractionHand.MAIN_HAND);
+        ItemStack currentLighterStack = player.getMainHandItem();
         if (breaksInto != null) {
             GTGameTestUtils.assertEquals(gameTestHelper, currentLighterStack.getItem(), breaksInto.value(),
                 "Expected the lighter to break into a correct item");
@@ -100,7 +100,7 @@ public class LighterLikeItemClickUntilBreakOrEmptyTests {
             }
         } else {
             gameTestHelper.assertValueEqual(currentLighterStack.getItem(), deferredLighterItem.get(), "lighter item type");
-            int currentRemainingUses = Objects.requireNonNull(currentLighterStack.get(GTDataComponentTypes.REMAINING_USES));
+            int currentRemainingUses = itemWithUsesBehavior.validateAndGetItemWithUsesData(currentLighterStack).remainingUses();
             gameTestHelper.assertValueEqual(currentRemainingUses, 0, "remaining uses");
 
             gameTestHelper.assertValueEqual(GTGameTestUtils.getInventoryItemCount(player), 1,
@@ -112,7 +112,7 @@ public class LighterLikeItemClickUntilBreakOrEmptyTests {
 
     private static void doTest_ClickUntilBreak_SingleUse(GameTestHelper gameTestHelper,
                                                          DeferredItem<Item> deferredLighterItem) {
-        Holder<Item> breaksInto = deferredLighterItem.toStack().get(GTDataComponentTypes.BREAKS_INTO);
+        Holder<Item> breaksInto = itemWithUsesBehavior.validateAndGetItemWithUsesData(deferredLighterItem.toStack()).breaksInto();
         gameTestHelper.assertTrue(breaksInto != null && breaksInto.value() == Items.AIR,
             "This test was made for the lighters that break into the AIR item only");
 
