@@ -52,6 +52,8 @@ public final class RegisterItemProperties {
         registerItemWithUses2StageFunc(GTItems.GREEN_PAINT_SPRAY_CAN);
         registerItemWithUses2StageFunc(GTItems.RED_PAINT_SPRAY_CAN);
         registerItemWithUses2StageFunc(GTItems.BLACK_PAINT_SPRAY_CAN);
+
+        registerItemWithUses2StageFunc(GTItems.PAINT_REMOVAL_SPRAY_CAN);
     }
 
     /** @see RegisterItemProperties#makeItemWithUses2StageFunc */

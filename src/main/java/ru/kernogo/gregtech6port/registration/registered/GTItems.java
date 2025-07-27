@@ -9,7 +9,8 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import ru.kernogo.gregtech6port.features.behaviors.item_with_uses.GTItemWithUsesData;
 import ru.kernogo.gregtech6port.features.items.like.lighter.GTLighterLikeItem;
 import ru.kernogo.gregtech6port.features.items.like.spray.GTSprayLikeItem;
-import ru.kernogo.gregtech6port.features.items.like.spray.behavior.PaintSprayBehaviorDelegate;
+import ru.kernogo.gregtech6port.features.items.like.spray.behaviors.paint_and_paint_removal.PaintRemovalSprayBehavior;
+import ru.kernogo.gregtech6port.features.items.like.spray.behaviors.paint_and_paint_removal.PaintSprayBehavior;
 import ru.kernogo.gregtech6port.registration.GTRegistries;
 
 public final class GTItems {
@@ -95,12 +96,21 @@ public final class GTItems {
     public static final DeferredItem<Item> RED_PAINT_SPRAY_CAN = registerPaintSprayCanItem(DyeColor.RED);
     public static final DeferredItem<Item> BLACK_PAINT_SPRAY_CAN = registerPaintSprayCanItem(DyeColor.BLACK);
 
+    public static final DeferredItem<Item> PAINT_REMOVAL_SPRAY_CAN =
+        GTRegistries.ITEMS.register("paint_removal_spray_can",
+            () -> new GTSprayLikeItem(
+                new PaintRemovalSprayBehavior(),
+                new Item.Properties()
+                    .component(GTDataComponentTypes.ITEM_WITH_USES,
+                        new GTItemWithUsesData(256, 256, EMPTY_SPRAY_CAN))
+            ));
+
     public static final DeferredItem<BlockItem> ENDER_GARBAGE_BIN = GTRegistries.ITEMS.registerSimpleBlockItem(GTBlocks.ENDER_GARBAGE_BIN);
 
     private static DeferredItem<Item> registerPaintSprayCanItem(DyeColor dyeColor) {
         return GTRegistries.ITEMS.register(dyeColor.getName() + "_paint_spray_can",
             () -> new GTSprayLikeItem(
-                new PaintSprayBehaviorDelegate(),
+                new PaintSprayBehavior(dyeColor),
                 new Item.Properties()
                     .component(GTDataComponentTypes.ITEM_WITH_USES,
                         new GTItemWithUsesData(512, 512, EMPTY_SPRAY_CAN))

@@ -2,7 +2,6 @@ package ru.kernogo.gregtech6port.features.items.like.lighter;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -18,9 +17,9 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.common.ItemAbilities;
 import org.jetbrains.annotations.Nullable;
+import ru.kernogo.gregtech6port.utils.exception.GTUnexpectedValidationFailException;
 
 /** Behavior for lighter's use on blocks */
-@Slf4j
 final class LighterBehaviorForBlocks {
     LighterBehaviorForBlocks() {}
 
@@ -41,8 +40,7 @@ final class LighterBehaviorForBlocks {
         }
 
         if (context.getPlayer() == null) {
-            log.error("Player is null, which is unexpected");
-            return null;
+            throw new GTUnexpectedValidationFailException("Player is null, which is unexpected");
         }
         // Vanilla TNT lighting behavior doesn't run if the player is sneaking (because it's implemented on a Block).
         // But execution does get here even if the player is sneaking, so we must check for that.

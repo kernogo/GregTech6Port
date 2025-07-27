@@ -11,6 +11,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.Nullable;
 import ru.kernogo.gregtech6port.GregTech6Port;
 
 import java.util.function.Consumer;
@@ -24,7 +25,7 @@ public final class GTGameTestUtils {
      * {@link net.minecraft.gametest.framework.GameTestGenerator}-annotated methods. <br>
      * Caller-sensitive, prepends the calling class and method names to the {@code baseTestName}.
      */
-    public static TestFunction makeTestFunction(String baseTestName,
+    public static TestFunction makeTestFunction(@Nullable String baseTestName,
                                                 String baseStructureName,
                                                 Consumer<GameTestHelper> consumer) {
         String callingClassName = Thread.currentThread().getStackTrace()[2].getClassName();
@@ -32,7 +33,9 @@ public final class GTGameTestUtils {
         String callingMethodName = Thread.currentThread().getStackTrace()[2].getMethodName();
         return new TestFunction(
             "defaultBatch",
-            callingClassName + "." + callingMethodName + "." + baseTestName,
+            baseTestName != null ?
+                callingClassName + "." + callingMethodName + "." + baseTestName :
+                callingClassName + "." + callingMethodName,
             GregTech6Port.MODID + ":" + baseStructureName,
             Rotation.NONE,
             100,
@@ -66,7 +69,7 @@ public final class GTGameTestUtils {
     /** Works like {@link GameTestHelper#assertValueEqual}, but with a different error message structure */
     public static <T> void assertEquals(GameTestHelper gameTestHelper, T actual, T expected, String errorMessage) {
         gameTestHelper.assertTrue(expected.equals(actual),
-            errorMessage + String.format(". Expected=%s, actual=%s", expected, actual));
+            errorMessage + ". Expected=%s, actual=%s".formatted(expected, actual));
     }
 
     /** Get the number of items in player's inventory */

@@ -78,10 +78,8 @@ public class LighterLikeItemClickUntilFireTests {
 
         int maxTimesToClick = 50;
         gameTestHelper.assertTrue(initialMaxRemainingUses > maxTimesToClick,
-            String.format(
-                "This test was made only for lighters with max remaining uses above %s (so the lighter does not break)",
-                maxTimesToClick
-            )
+            "This test was made only for lighters with max remaining uses above %s (so the lighter does not break)"
+                .formatted(maxTimesToClick)
         );
         int numberOfClicks = clickUntilFireAppearsOrFail(gameTestHelper,
             player,
@@ -102,8 +100,8 @@ public class LighterLikeItemClickUntilFireTests {
             "Max remaining uses changed");
 
         gameTestHelper.assertTrue(currentRemainingUses == initialRemainingUses - numberOfClicks,
-            String.format("currentRemainingUses=%s != initialRemainingUses=%s - numberOfClicks=%s",
-                initialRemainingUses, currentRemainingUses, numberOfClicks));
+            "currentRemainingUses=%s != initialRemainingUses=%s - numberOfClicks=%s"
+                .formatted(initialRemainingUses, currentRemainingUses, numberOfClicks));
 
         gameTestHelper.succeed();
     }

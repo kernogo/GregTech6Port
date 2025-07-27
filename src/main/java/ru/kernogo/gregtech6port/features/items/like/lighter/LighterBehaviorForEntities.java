@@ -13,7 +13,7 @@ final class LighterBehaviorForEntities {
     LighterBehaviorForEntities() {}
 
     @Nullable IThingToDo findWhatToDo(LivingEntity interactionTarget, Player player) {
-        if ((interactionTarget instanceof Creeper creeper)) {
+        if (interactionTarget instanceof Creeper creeper) {
             return new IgniteCreeperThingToDo(creeper, player);
         }
 

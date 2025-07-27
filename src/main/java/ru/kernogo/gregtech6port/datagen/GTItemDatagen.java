@@ -45,6 +45,8 @@ public final class GTItemDatagen extends ItemModelProvider {
         makeItemWithUses2StageModel(GTItems.GREEN_PAINT_SPRAY_CAN);
         makeItemWithUses2StageModel(GTItems.RED_PAINT_SPRAY_CAN);
         makeItemWithUses2StageModel(GTItems.BLACK_PAINT_SPRAY_CAN);
+
+        makeItemWithUses2StageModel(GTItems.PAINT_REMOVAL_SPRAY_CAN);
     }
 
     /**

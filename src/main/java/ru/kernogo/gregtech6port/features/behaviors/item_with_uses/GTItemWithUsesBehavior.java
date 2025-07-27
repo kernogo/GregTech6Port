@@ -1,6 +1,5 @@
 package ru.kernogo.gregtech6port.features.behaviors.item_with_uses;
 
-import lombok.extern.slf4j.Slf4j;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -15,47 +14,56 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** This class implements the functionality associated with the {@link GTDataComponentTypes#ITEM_WITH_USES} data component */
-@Slf4j
 public class GTItemWithUsesBehavior {
     /**
-     * Displays error to the Player if the item is multi-use and stacked. <br>
-     * Remember to call this before checking {@link #canUse} and calling {@link #decreaseUsesOrBreak}
+     * Returns true if item with uses is stacked and multi-use, else false. <br>
+     * Displays error to the Player if the item is stacked and multi-use. <br>
+     * Remember to call this before checking {@link #getRemainingUses} and calling {@link #decreaseUsesOrBreak}
      */
-    public void displayErrorIfStackedAndIsMultiUse(ItemStack itemStack, Player player, boolean isClientSide) {
+    public boolean getIsStackedAndMultiUseAndDisplayErrorToPlayer(ItemStack itemStack, Player player, boolean isClientSide) {
         validateAndGetItemWithUsesData(itemStack);
 
-        if (!isSingleUse(itemStack) && itemStack.getCount() != 1) {
+        if (itemStack.getCount() != 1 && !isSingleUse(itemStack)) {
             if (isClientSide) {
                 player.displayClientMessage(
                     Component.translatable("gregtech6port.client_message.unstack_to_use", itemStack.getDisplayName().getString()),
                     true
                 );
             }
+            return true;
         }
+        return false;
     }
 
-    /** Returns true if the item is allowed to be used, else false */
-    public boolean canUse(ItemStack itemStack) {
+    /** Get the number of uses remaining for an item with uses. (For single-use items it will be 1) */
+    public int getRemainingUses(ItemStack itemStack) {
         GTItemWithUsesData itemWithUsesData = validateAndGetItemWithUsesData(itemStack);
 
-        if (isSingleUse(itemStack)) {
-            return itemWithUsesData.remainingUses() > 0;
-        } else {
-            return itemStack.getCount() == 1 && itemWithUsesData.remainingUses() > 0;
-        }
+        return itemWithUsesData.remainingUses();
     }
 
     /**
-     * Decreases remaining uses for multi-use items or destroys one item from the stack for single-use items. <br>
+     * Decreases the remaining uses for multi-use items or destroys one item from the stack for single-use items
+     * (note that {@code numberOfUsesToDecrease} must be 1 for single-use items). <br>
+     * If {@code numberOfUsesToDecrease} is less than the remaining uses, an exception is thrown. <br>
      * Puts the {@code breaksInto} item into player's inventory if needed. <br>
-     * Do not use without checking {@link #canUse} first.
+     * Do not use without checking the number of remaining uses with {@link #getRemainingUses} first.
      */
-    public void decreaseUsesOrBreak(ItemStack itemStack, Player player, InteractionHand hand) {
+    public void decreaseUsesOrBreak(int numberOfUsesToDecrease, ItemStack itemStack, Player player, InteractionHand hand) {
         GTItemWithUsesData itemWithUsesData = validateAndGetItemWithUsesData(itemStack);
 
-        if (!canUse(itemStack)) {
-            log.error("You should always check canUse() before calling decreaseUsesOrBreak()!");
-            return;
+        if (numberOfUsesToDecrease > itemWithUsesData.remainingUses()) {
+            throw new GTUnexpectedValidationFailException(
+                "numberOfUsesToDecrease=%s is above the remaining number of uses on an item with uses: %s"
+                    .formatted(numberOfUsesToDecrease, itemStack),
+                new RuntimeException("Exception thrown for stack trace purposes")
+            );
+        }
+        if (numberOfUsesToDecrease < 1) {
+            throw new GTUnexpectedValidationFailException(
+                "numberOfUsesToDecrease=%s is below 1".formatted(numberOfUsesToDecrease),
+                new RuntimeException("Exception thrown for stack trace purposes")
+            );
         }
 
         int remainingUses = itemWithUsesData.remainingUses();
@@ -68,6 +76,7 @@ public class GTItemWithUsesBehavior {
                 .value()
                 .getDefaultInstance();
 
+            // numberOfUsesToDecrease is 1 for single-use items
             if (itemStack.getCount() == 1) {
                 player.setItemInHand(hand, breaksIntoItemStack);
             } else {
@@ -75,12 +84,12 @@ public class GTItemWithUsesBehavior {
                 itemStack.shrink(1);
             }
         } else { // Multi-use
-            if (remainingUses == 1 && breaksInto != null) {
+            if (remainingUses - numberOfUsesToDecrease == 0 && breaksInto != null) {
                 player.setItemInHand(hand, breaksInto.value().getDefaultInstance());
             } else {
                 itemStack.set(GTDataComponentTypes.ITEM_WITH_USES,
                     new GTItemWithUsesData(
-                        remainingUses - 1,
+                        remainingUses - numberOfUsesToDecrease,
                         maxRemainingUses,
                         breaksInto
                     ));
@@ -115,13 +124,19 @@ public class GTItemWithUsesBehavior {
         int maxRemainingUses = itemWithUsesData.maxRemainingUses();
 
         if (remainingUses < 0) {
-            throw new GTUnexpectedValidationFailException(String.format("remainingUses=%s is less than 0", remainingUses));
+            throw new GTUnexpectedValidationFailException("remainingUses=%s is less than 0".formatted(remainingUses));
         }
 
         if (remainingUses > maxRemainingUses) {
             throw new GTUnexpectedValidationFailException(
-                String.format("remainingUses=%s is greater than maxRemainingUses=%s", remainingUses, maxRemainingUses)
+                "remainingUses=%s is greater than maxRemainingUses=%s".formatted(remainingUses, maxRemainingUses)
             );
+        }
+
+        if (itemWithUsesData.breaksInto() != null && itemWithUsesData.maxRemainingUses() == 1) { // If item is single-use
+            if (remainingUses != 1) {
+                throw new GTUnexpectedValidationFailException("remainingUses=%s must be equal to 1 on a singe-use item".formatted(remainingUses));
+            }
         }
 
         return itemWithUsesData;

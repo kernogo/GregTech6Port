@@ -1,5 +1,6 @@
 {
   "gregtech6port.client_message.unstack_to_use": "%s does not work when stacked! Unstack to use!",
+  "gregtech6port.client_message.insufficient_uses": "Insufficient uses remaining! Required at least: %s",
 
   "tooltip.gregtech6port.single_use": "Single Use",
   "tooltip.gregtech6port.remaining_uses": "Remaining Uses: %s",
@@ -32,6 +33,8 @@
   "item.gregtech6port.green_paint_spray_can": "Spray Paint (Green)",
   "item.gregtech6port.red_paint_spray_can": "Spray Paint (Red)",
   "item.gregtech6port.black_paint_spray_can": "Spray Paint (Black)",
+
+  "item.gregtech6port.paint_removal_spray_can": "Paint Removal Spray",
 
   "block.gregtech6port.ender_garbage_bin": "Ender Garbage Bin"
 }

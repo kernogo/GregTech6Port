@@ -167,6 +167,12 @@ tasks.withType<ProcessResources>().configureEach {
     }
 }
 
+minecraft {
+    accessTransformers {
+        file("src/main/resources/META-INF/accesstransformer.cfg")
+    }
+}
+
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {

@@ -47,8 +47,7 @@ public class GTLighterLikeItem extends Item {
     public InteractionResult useOn(UseOnContext context) {
         try {
             if (context.getPlayer() == null) {
-                log.error("Player is null, which is unexpected");
-                return InteractionResult.FAIL;
+                throw new GTUnexpectedValidationFailException("Player is null, which is unexpected");
             }
 
             return doLighterLogic(
@@ -80,44 +79,6 @@ public class GTLighterLikeItem extends Item {
         }
     }
 
-    private InteractionResult doLighterLogic(Level level,
-                                             ItemStack stack,
-                                             Player player,
-                                             InteractionHand interactionHand,
-                                             Supplier<@Nullable IThingToDo> thingToDoSupplier) {
-        validateDataComponents(stack);
-
-        itemWithUsesBehavior.displayErrorIfStackedAndIsMultiUse(stack, player, level.isClientSide());
-
-        if (!itemWithUsesBehavior.canUse(stack)) {
-            return InteractionResult.FAIL;
-        }
-
-        IThingToDo whatToDo = thingToDoSupplier.get();
-
-        if (whatToDo == null) { // If we must do nothing
-            return InteractionResult.FAIL;
-        }
-
-        itemWithUsesBehavior.decreaseUsesOrBreak(stack, player, interactionHand);
-
-        whatToDo.playLighterSound();
-
-        if (level.isClientSide) {
-            return InteractionResult.SUCCESS;
-        }
-
-        // We roll random on the server side to not cause desyncs
-        double procChance = GTUtils.assureNotNull(stack.get(GTDataComponentTypes.PROC_CHANCE));
-        if (!GTUtils.rollRandomChance(procChance)) {
-            return InteractionResult.CONSUME;
-        }
-
-        whatToDo.lightAThingOnFire();
-
-        return InteractionResult.CONSUME;
-    }
-
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
@@ -134,6 +95,46 @@ public class GTLighterLikeItem extends Item {
     @Override
     public boolean canPerformAction(ItemStack stack, ItemAbility itemAbility) {
         return ItemAbilities.DEFAULT_FLINT_ACTIONS.contains(itemAbility);
+    }
+
+    private InteractionResult doLighterLogic(Level level,
+                                             ItemStack stack,
+                                             Player player,
+                                             InteractionHand interactionHand,
+                                             Supplier<@Nullable IThingToDo> thingToDoSupplier) {
+        validateDataComponents(stack);
+
+        if (itemWithUsesBehavior.getIsStackedAndMultiUseAndDisplayErrorToPlayer(stack, player, level.isClientSide())) {
+            return InteractionResult.FAIL;
+        }
+
+        if (itemWithUsesBehavior.getRemainingUses(stack) < 1) {
+            return InteractionResult.FAIL;
+        }
+
+        IThingToDo whatToDo = thingToDoSupplier.get();
+
+        if (whatToDo == null) { // If we must do nothing
+            return InteractionResult.FAIL;
+        }
+
+        itemWithUsesBehavior.decreaseUsesOrBreak(1, stack, player, interactionHand);
+
+        whatToDo.playLighterSound();
+
+        if (level.isClientSide) {
+            return InteractionResult.SUCCESS;
+        }
+
+        // We roll random on the server side to not cause desyncs
+        double procChance = GTUtils.assureNotNull(stack.get(GTDataComponentTypes.PROC_CHANCE));
+        if (!GTUtils.rollRandomChance(procChance)) {
+            return InteractionResult.CONSUME;
+        }
+
+        whatToDo.lightAThingOnFire();
+
+        return InteractionResult.CONSUME;
     }
 
     /** Validate data components and throw an exception if any of the components are invalid */
