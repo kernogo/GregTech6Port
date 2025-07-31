@@ -7,6 +7,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import ru.kernogo.gregtech6port.datagen.item_model.GTItemDatagen;
 
 import java.util.concurrent.CompletableFuture;
 

@@ -73,8 +73,8 @@ public final class RegisterItemProperties {
     }
 
     /**
-     * Item Property Function for items with uses with 2 textures - full and partially used. <br>
-     * Corresponding model is {@link ru.kernogo.gregtech6port.datagen.GTItemDatagen#makeItemWithUses2StageModel}
+     * Item Property Function for items with uses with 2 variant textures - full and partially used. <br>
+     * Corresponding model is {@link ru.kernogo.gregtech6port.datagen.item_model.GTItemWithUsesVariantItemModelMaker#makeItemWithUses2StageModel}
      */
     private static float makeItemWithUses2StageFunc(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
         try {
@@ -93,8 +93,8 @@ public final class RegisterItemProperties {
     }
 
     /**
-     * Item Property Function for items with uses items with 3 textures - full, partially used, and empty. <br>
-     * Corresponding model is {@link ru.kernogo.gregtech6port.datagen.GTItemDatagen#makeItemWithUses3StageModel}
+     * Item Property Function for items with uses items with 3 variant textures - full, partially used, and empty. <br>
+     * Corresponding model is {@link ru.kernogo.gregtech6port.datagen.item_model.GTItemWithUsesVariantItemModelMaker#makeItemWithUses3StageModel}
      */
     private static float makeItemWithUses3StageFunc(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity entity, int seed) {
         try {
