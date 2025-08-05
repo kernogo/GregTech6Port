@@ -69,7 +69,19 @@ public final class GTGameTestUtils {
     /** Works like {@link GameTestHelper#assertValueEqual}, but with a different error message structure */
     public static <T> void assertEquals(GameTestHelper gameTestHelper, T actual, T expected, String errorMessage) {
         gameTestHelper.assertTrue(expected.equals(actual),
-            errorMessage + ". Expected=%s, actual=%s".formatted(expected, actual));
+            "%s. Expected=%s, actual=%s".formatted(errorMessage, expected, actual));
+    }
+
+    /** Asserts that {@code actual} is null */
+    public static <T> void assertNull(GameTestHelper gameTestHelper, @Nullable T actual, String errorMessage) {
+        gameTestHelper.assertTrue(actual == null,
+            "%s. Expected=null, actual=%s".formatted(errorMessage, actual));
+    }
+
+    /** Asserts that {@code actual} is not null */
+    public static <T> void assertNotNull(GameTestHelper gameTestHelper, @Nullable T actual, String errorMessage) {
+        gameTestHelper.assertTrue(actual != null,
+            "%s. Expected!=null, actual=null".formatted(errorMessage));
     }
 
     /** Get the number of items in player's inventory */

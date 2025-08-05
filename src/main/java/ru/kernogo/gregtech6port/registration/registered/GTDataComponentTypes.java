@@ -5,6 +5,8 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import ru.kernogo.gregtech6port.features.behaviors.item_with_uses.GTItemWithUsesData;
+import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringData;
+import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringSystem;
 import ru.kernogo.gregtech6port.registration.GTRegistries;
 
 /**
@@ -32,6 +34,18 @@ public final class GTDataComponentTypes {
         GTRegistries.DATA_COMPONENTS_TYPES.registerComponentType(
             "proc_chance",
             builder -> builder.persistent(Codec.DOUBLE).networkSynchronized(ByteBufCodecs.DOUBLE)
+        );
+
+    /**
+     * Data component for the tint coloring of items. <br>
+     * Works automatically after registration with the system. See {@link GTTintColoringSystem} for the details.
+     */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<GTTintColoringData>> TINT_COLORING =
+        GTRegistries.DATA_COMPONENTS_TYPES.registerComponentType(
+            "tint_coloring",
+            builder -> builder
+                .persistent(GTTintColoringData.CODEC)
+                .networkSynchronized(GTTintColoringData.STREAM_CODEC)
         );
 
     /** This gets called to classload this class (to initialize all static fields in this class) */

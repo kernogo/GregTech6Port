@@ -1,11 +1,11 @@
 package ru.kernogo.gregtech6port.datagen;
 
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import ru.kernogo.gregtech6port.GregTech6Port;
-import ru.kernogo.gregtech6port.features.blockentities.ender_garbage_bin.GTEnderGarbageBinBlock;
 import ru.kernogo.gregtech6port.registration.registered.GTBlocks;
 
 /** Datagen for block models and BlockStates */
@@ -20,7 +20,7 @@ public final class GTBlockDatagen extends BlockStateProvider {
     }
 
     /** Shorthand method for the datagen of simple BlockItems with an existing model */
-    private void register(String modelName, DeferredBlock<GTEnderGarbageBinBlock> deferredBlock) {
+    private void register(String modelName, DeferredBlock<Block> deferredBlock) {
         simpleBlockWithItem(
             deferredBlock.get(),
             models().getExistingFile(modLoc(modelName))

@@ -13,6 +13,8 @@ import java.util.List;
 
 /** Used in {@link PaintSprayBehavior} as an accessor to classes that paint entities into colors */
 final class EntityColorers {
+    EntityColorers() {}
+
     private static final SheepEntityColorer SHEEP_ENTITY_COLORER = new SheepEntityColorer();
     private static final WolfEntityColorer WOLF_ENTITY_COLORER = new WolfEntityColorer();
     private static final CatEntityColorer CAT_ENTITY_COLORER = new CatEntityColorer();
@@ -21,8 +23,6 @@ final class EntityColorers {
     private static final List<IEntityColorer> ALL_ENTITY_COLORERS = List.of(
         SHEEP_ENTITY_COLORER, WOLF_ENTITY_COLORER, CAT_ENTITY_COLORER
     );
-
-    EntityColorers() {}
 
     /** Access all available entity colorers */
     List<IEntityColorer> getAllEntityColorers() {
@@ -34,17 +34,19 @@ final class EntityColorers {
         boolean isApplicableEntityClass(Entity entity);
 
         /** Paints an entity into a color and return true if entity was painted, false otherwise */
-        boolean colorAnEntity(Entity entity, Player player, DyeColor dyeColor);
+        boolean tryColoringAnEntity(Entity entity, Player player, DyeColor dyeColor);
     }
 
     static final class SheepEntityColorer implements IEntityColorer {
+        SheepEntityColorer() {}
+
         @Override
         public boolean isApplicableEntityClass(Entity entity) {
             return entity instanceof Sheep;
         }
 
         @Override
-        public boolean colorAnEntity(Entity entity, Player player, DyeColor dyeColor) {
+        public boolean tryColoringAnEntity(Entity entity, Player player, DyeColor dyeColor) {
             if (!(entity instanceof Sheep sheep)) {
                 throw new GTUnexpectedValidationFailException("isApplicableEntityClass should've been called first");
             }
@@ -58,6 +60,8 @@ final class EntityColorers {
     }
 
     static final class WolfEntityColorer implements IEntityColorer {
+        WolfEntityColorer() {}
+
         @Override
         public boolean isApplicableEntityClass(Entity entity) {
             return entity instanceof Wolf;
@@ -65,7 +69,7 @@ final class EntityColorers {
 
         /** Based on Wolf#mobInteract */
         @Override
-        public boolean colorAnEntity(Entity entity, Player player, DyeColor dyeColor) {
+        public boolean tryColoringAnEntity(Entity entity, Player player, DyeColor dyeColor) {
             if (!(entity instanceof Wolf wolf)) {
                 throw new GTUnexpectedValidationFailException("isApplicableEntityClass should've been called first");
             }
@@ -79,6 +83,8 @@ final class EntityColorers {
     }
 
     static final class CatEntityColorer implements IEntityColorer {
+        CatEntityColorer() {}
+
         @Override
         public boolean isApplicableEntityClass(Entity entity) {
             return entity instanceof Cat;
@@ -86,7 +92,7 @@ final class EntityColorers {
 
         /** Based on Wolf#mobInteract */
         @Override
-        public boolean colorAnEntity(Entity entity, Player player, DyeColor dyeColor) {
+        public boolean tryColoringAnEntity(Entity entity, Player player, DyeColor dyeColor) {
             if (!(entity instanceof Cat cat)) {
                 throw new GTUnexpectedValidationFailException("isApplicableEntityClass should've been called first");
             }
