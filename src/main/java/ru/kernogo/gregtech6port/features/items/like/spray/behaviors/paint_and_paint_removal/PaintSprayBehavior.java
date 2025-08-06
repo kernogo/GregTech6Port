@@ -9,20 +9,15 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.Property;
 import ru.kernogo.gregtech6port.features.items.like.spray.behaviors.ISprayBehavior;
-import ru.kernogo.gregtech6port.utils.GTUtils;
 import ru.kernogo.gregtech6port.utils.exception.GTUnexpectedValidationFailException;
-
-import java.util.Map;
 
 /** Behavior for sprays that paint blocks/entities (change blocks/entities to their colored variants) */
 @AllArgsConstructor
 public final class PaintSprayBehavior implements ISprayBehavior {
-    private final ColoredSimpleBlockDeterminer coloredSimpleBlockDeterminer = new ColoredSimpleBlockDeterminer();
     private final EntityColorers entityColorers = new EntityColorers();
+    private final TintColoringBlockEntityColorer tintColoringBlockEntityColorer = new TintColoringBlockEntityColorer();
+    private final SimpleBlockColorer simpleBlockColorer = new SimpleBlockColorer();
     private final DyeColor sprayDyeColor;
 
     @Override
@@ -39,17 +34,18 @@ public final class PaintSprayBehavior implements ISprayBehavior {
 
         BlockPos clickedPos = context.getClickedPos();
         Level level = context.getLevel();
-        BlockState clickedBlockState = level.getBlockState(clickedPos);
 
-        Block simpleBlockToColorTo = coloredSimpleBlockDeterminer.getColoredBlockVariant(clickedBlockState.getBlock(), sprayDyeColor);
-
-        if (simpleBlockToColorTo == null || simpleBlockToColorTo == clickedBlockState.getBlock()) {
-            return new ISprayUseResult.CouldNotBeUsedOnThisThing();
+        boolean wasBlockColored = tintColoringBlockEntityColorer.tryColoringABlock(clickedPos, level, sprayDyeColor);
+        if (wasBlockColored) {
+            return new ISprayUseResult.WasUsed(usesToDecrease);
         }
 
-        placeASimpleBlock(simpleBlockToColorTo, clickedBlockState.getValues(), level, clickedPos);
+        wasBlockColored = simpleBlockColorer.tryColoringABlock(clickedPos, level, sprayDyeColor);
+        if (wasBlockColored) {
+            return new ISprayUseResult.WasUsed(usesToDecrease);
+        }
 
-        return new ISprayUseResult.WasUsed(usesToDecrease);
+        return new ISprayUseResult.CouldNotBeUsedOnThisThing();
     }
 
     @Override
@@ -72,7 +68,7 @@ public final class PaintSprayBehavior implements ISprayBehavior {
 
         for (EntityColorers.IEntityColorer entityColorer : entityColorers.getAllEntityColorers()) {
             if (entityColorer.isApplicableEntityClass(interactionTarget)) {
-                wasEntityColored = entityColorer.colorAnEntity(interactionTarget, player, sprayDyeColor);
+                wasEntityColored = entityColorer.tryColoringAnEntity(interactionTarget, player, sprayDyeColor);
                 break;
             }
         }
@@ -82,21 +78,5 @@ public final class PaintSprayBehavior implements ISprayBehavior {
         } else {
             return new ISprayUseResult.WasUsed(usesToDecrease);
         }
-    }
-
-    /**
-     * Place a Block {@code blockToPlace} with copied BlockState properties {@code blockStatePropertiesToCopy}
-     * into BlockPos {@code posToPlaceTheBlock}
-     */
-    private void placeASimpleBlock(Block blockToPlace,
-                                   Map<Property<?>, Comparable<?>> blockStatePropertiesToCopy,
-                                   Level level,
-                                   BlockPos posToPlaceTheBlock) {
-        BlockState newBlockState = GTUtils.getBlockStateWithAllPropertiesCopiedOrFail(
-            blockToPlace.defaultBlockState(),
-            blockStatePropertiesToCopy
-        );
-
-        level.setBlock(posToPlaceTheBlock, newBlockState, Block.UPDATE_ALL_IMMEDIATE);
     }
 }

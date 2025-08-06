@@ -7,6 +7,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import ru.kernogo.gregtech6port.GregTech6Port;
 import ru.kernogo.gregtech6port.registration.registered.GTBlockEntityTypes;
 import ru.kernogo.gregtech6port.registration.registered.GTBlocks;
+import ru.kernogo.gregtech6port.registration.registered.GTCapabilities;
 import ru.kernogo.gregtech6port.registration.registered.GTDataComponentTypes;
 import ru.kernogo.gregtech6port.registration.registered.GTItems;
 
@@ -25,6 +26,7 @@ public final class GTRegistries {
         GTItems.init();
         GTBlockEntityTypes.init();
         GTDataComponentTypes.init();
+        GTCapabilities.init();
 
         // Then register DeferredRegisters with the mod event bus
         BLOCKS.register(modEventBus);

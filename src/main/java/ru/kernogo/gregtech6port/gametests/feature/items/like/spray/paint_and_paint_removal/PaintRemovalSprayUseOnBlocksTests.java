@@ -48,7 +48,7 @@ public class PaintRemovalSprayUseOnBlocksTests {
         );
     }
 
-    public static void doTest_SimpleBlock_Candle(GameTestHelper gameTestHelper) {
+    private static void doTest_SimpleBlock_Candle(GameTestHelper gameTestHelper) {
         Player player = gameTestHelper.makeMockPlayer(GameType.SURVIVAL);
         player.setItemInHand(InteractionHand.MAIN_HAND, GTItems.PAINT_REMOVAL_SPRAY_CAN.toStack());
 
@@ -79,7 +79,7 @@ public class PaintRemovalSprayUseOnBlocksTests {
         gameTestHelper.succeed();
     }
 
-    public static void doTest_SimpleBlock_NonColorableBlock(GameTestHelper gameTestHelper) {
+    private static void doTest_SimpleBlock_NonColorableBlock(GameTestHelper gameTestHelper) {
         Player player = gameTestHelper.makeMockPlayer(GameType.SURVIVAL);
         player.setItemInHand(InteractionHand.MAIN_HAND, GTItems.PAINT_REMOVAL_SPRAY_CAN.toStack());
 

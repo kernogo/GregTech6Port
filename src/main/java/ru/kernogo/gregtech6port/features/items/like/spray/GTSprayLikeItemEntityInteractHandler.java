@@ -13,9 +13,11 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
  * Existing {@link Entity#interact} often consumes the event so that the item-specific logic is never run.
  */
 @EventBusSubscriber
-public class GTSprayLikeItemEntityInteractHandler {
+public final class GTSprayLikeItemEntityInteractHandler {
+    private GTSprayLikeItemEntityInteractHandler() {}
+
     @SubscribeEvent
-    public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
+    private static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
         if (!(event.getItemStack().getItem() instanceof GTSprayLikeItem sprayLikeItem)) {
             return;
         }
