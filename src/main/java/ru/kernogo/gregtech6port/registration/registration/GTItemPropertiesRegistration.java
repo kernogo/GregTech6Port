@@ -1,4 +1,4 @@
-package ru.kernogo.gregtech6port.registration.registration_event_subscribers;
+package ru.kernogo.gregtech6port.registration.registration;
 
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -6,9 +6,6 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.jetbrains.annotations.Nullable;
@@ -19,15 +16,14 @@ import ru.kernogo.gregtech6port.utils.GTUtils;
 import ru.kernogo.gregtech6port.utils.exception.GTUnexpectedValidationFailException;
 
 @Slf4j
-@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
-public final class RegisterItemProperties {
-    private RegisterItemProperties() {}
+public final class GTItemPropertiesRegistration {
+    private GTItemPropertiesRegistration() {}
 
     private static final GTItemWithUsesBehavior itemWithUsesBehavior = new GTItemWithUsesBehavior();
 
-    @SubscribeEvent
-    private static void registerItemProperties(FMLClientSetupEvent event) {
-        event.enqueueWork(RegisterItemProperties::doRegisterItemProperties);
+    /** This gets subscribed with the modBus in another class */
+    public static void registerItemProperties(FMLClientSetupEvent event) {
+        event.enqueueWork(GTItemPropertiesRegistration::doRegisterItemProperties);
     }
 
     private static void doRegisterItemProperties() {
@@ -56,20 +52,20 @@ public final class RegisterItemProperties {
         registerItemWithUses2StageFunc(GTItems.PAINT_REMOVAL_SPRAY_CAN);
     }
 
-    /** @see RegisterItemProperties#makeItemWithUses2StageFunc */
+    /** @see GTItemPropertiesRegistration#makeItemWithUses2StageFunc */
     @SuppressWarnings("deprecation") // ItemPropertyFunction is deprecated, but we ignore that
     private static void registerItemWithUses2StageFunc(DeferredItem<Item> deferredItem) {
         ItemProperties.register(deferredItem.get(),
             GTUtils.modLoc("use_stage"),
-            RegisterItemProperties::makeItemWithUses2StageFunc);
+            GTItemPropertiesRegistration::makeItemWithUses2StageFunc);
     }
 
-    /** @see RegisterItemProperties#makeItemWithUses3StageFunc */
+    /** @see GTItemPropertiesRegistration#makeItemWithUses3StageFunc */
     @SuppressWarnings("deprecation") // ItemPropertyFunction is deprecated, but we ignore that
     private static void registerItemWithUses3StageFunc(DeferredItem<Item> deferredItem) {
         ItemProperties.register(deferredItem.get(),
             GTUtils.modLoc("use_stage"),
-            RegisterItemProperties::makeItemWithUses3StageFunc);
+            GTItemPropertiesRegistration::makeItemWithUses3StageFunc);
     }
 
     /**

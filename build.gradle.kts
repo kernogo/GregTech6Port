@@ -3,6 +3,8 @@ plugins {
     id("maven-publish")
     id("net.neoforged.gradle.userdev") version "7.0.185"
     id("idea")
+    // Convention plugins from buildSrc go below
+    id("merge-english-language-files")
 }
 
 repositories {
@@ -104,11 +106,16 @@ sourceSets {
 dependencies {
     implementation("net.neoforged:neoforge:${project.property("neo_version")}")
 
-    // lombok
+    // Lombok
     compileOnly("org.projectlombok:lombok:${project.property("lombok_version")}")
     annotationProcessor("org.projectlombok:lombok:${project.property("lombok_version")}")
     testCompileOnly("org.projectlombok:lombok:${project.property("lombok_version")}")
     testAnnotationProcessor("org.projectlombok:lombok:${project.property("lombok_version")}")
+
+    // JUnit
+    testImplementation(platform("org.junit:junit-bom:${project.property("junit_version")}"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     // https://www.curseforge.com/minecraft/mc-mods/jei
     compileOnly("mezz.jei:jei-${project.property("minecraft_version")}-neoforge-api:${project.property("jei_version")}")

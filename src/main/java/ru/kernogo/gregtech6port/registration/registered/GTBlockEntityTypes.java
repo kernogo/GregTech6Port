@@ -6,7 +6,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import ru.kernogo.gregtech6port.features.blockentities.ender_garbage_bin.GTEnderGarbageBinBlockEntity;
-import ru.kernogo.gregtech6port.registration.GTRegistries;
+import ru.kernogo.gregtech6port.registration.GTRegisters;
 
 public final class GTBlockEntityTypes {
     private GTBlockEntityTypes() {}
@@ -20,7 +20,7 @@ public final class GTBlockEntityTypes {
         BlockEntityType.BlockEntitySupplier<BE_TYPE> blockEntitySupplier,
         DeferredBlock<Block> deferredBlock
     ) {
-        return GTRegistries.BLOCK_ENTITY_TYPES.register(
+        return GTRegisters.BLOCK_ENTITY_TYPES.register(
             deferredBlock.getKey().location().getPath(),
             () -> {
                 BlockEntityType.Builder<BE_TYPE> builder = BlockEntityType.Builder.of(

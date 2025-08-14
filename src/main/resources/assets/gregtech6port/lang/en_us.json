@@ -7,6 +7,16 @@
   "tooltip.gregtech6port.proc_chance": "Chance: %s%%",
   "tooltip.gregtech6port.can_light_things_on_fire": "Can light things on fire",
 
+  "tooltip.gregtech6port.material_composition.header": "Contained Materials:",
+  "tooltip.gregtech6port.material_composition.pattern": "%s %s (%s %s%s  %s %s%s  %s %s%s)",
+  "tooltip.gregtech6port.material_composition.pattern.melting_point": "M:",
+  "tooltip.gregtech6port.material_composition.pattern.boiling_point": "B:",
+  "tooltip.gregtech6port.material_composition.pattern.weight": "W:",
+  "tooltip.gregtech6port.material_composition.pattern.kelvin": "K",
+  "tooltip.gregtech6port.material_composition.pattern.kg": "kg",
+
+  "gregtech6port.material.leather": "Leather",
+
   "item.gregtech6port.match": "Match",
   "item.gregtech6port.fire_starter_dry_grass": "Fire Starter",
   "item.gregtech6port.fire_starter_dry_tree_bark": "Fire Starter",
