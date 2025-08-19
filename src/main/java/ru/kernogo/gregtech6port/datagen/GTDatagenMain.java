@@ -7,6 +7,8 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import ru.kernogo.gregtech6port.datagen.data_map.GTBaseMaterialCompositionDataMapDatagen;
+import ru.kernogo.gregtech6port.datagen.english_translations.GTMaterialNameEnglishDatagen;
 import ru.kernogo.gregtech6port.datagen.item_model.GTItemDatagen;
 
 import java.util.concurrent.CompletableFuture;
@@ -28,5 +30,8 @@ public final class GTDatagenMain {
 
         GTBlockTagsDatagen blockDatagen = generator.addProvider(event.includeServer(), new GTBlockTagsDatagen(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new GTItemTagsDatagen(packOutput, lookupProvider, blockDatagen.contentsGetter(), existingFileHelper));
+
+        generator.addProvider(event.includeServer(), new GTBaseMaterialCompositionDataMapDatagen(packOutput, lookupProvider));
+        generator.addProvider(event.includeClient(), new GTMaterialNameEnglishDatagen(packOutput));
     }
 }

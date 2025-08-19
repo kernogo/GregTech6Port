@@ -11,13 +11,13 @@ import ru.kernogo.gregtech6port.features.items.like.lighter.GTLighterLikeItem;
 import ru.kernogo.gregtech6port.features.items.like.spray.GTSprayLikeItem;
 import ru.kernogo.gregtech6port.features.items.like.spray.behaviors.paint_and_paint_removal.PaintRemovalSprayBehavior;
 import ru.kernogo.gregtech6port.features.items.like.spray.behaviors.paint_and_paint_removal.PaintSprayBehavior;
-import ru.kernogo.gregtech6port.registration.GTRegistries;
+import ru.kernogo.gregtech6port.registration.GTRegisters;
 
 public final class GTItems {
     private GTItems() {}
 
     public static final DeferredItem<Item> MATCH =
-        GTRegistries.ITEMS.register("match",
+        GTRegisters.ITEMS.register("match",
             () -> new GTLighterLikeItem(
                 new Item.Properties()
                     .component(GTDataComponentTypes.ITEM_WITH_USES,
@@ -25,7 +25,7 @@ public final class GTItems {
                     .component(GTDataComponentTypes.PROC_CHANCE, 0.9)
             ));
     public static final DeferredItem<Item> FIRE_STARTER_DRY_GRASS =
-        GTRegistries.ITEMS.register("fire_starter_dry_grass",
+        GTRegisters.ITEMS.register("fire_starter_dry_grass",
             () -> new GTLighterLikeItem(
                 new Item.Properties()
                     .stacksTo(1)
@@ -34,7 +34,7 @@ public final class GTItems {
                     .component(GTDataComponentTypes.PROC_CHANCE, 0.5)
             ));
     public static final DeferredItem<Item> FIRE_STARTER_DRY_TREE_BARK =
-        GTRegistries.ITEMS.register("fire_starter_dry_tree_bark",
+        GTRegisters.ITEMS.register("fire_starter_dry_tree_bark",
             () -> new GTLighterLikeItem(
                 new Item.Properties()
                     .stacksTo(1)
@@ -43,7 +43,7 @@ public final class GTItems {
                     .component(GTDataComponentTypes.PROC_CHANCE, 0.55)
             ));
     public static final DeferredItem<Item> MATCH_BOX =
-        GTRegistries.ITEMS.register("match_box",
+        GTRegisters.ITEMS.register("match_box",
             () -> new GTLighterLikeItem(
                 new Item.Properties()
                     .component(GTDataComponentTypes.ITEM_WITH_USES,
@@ -51,7 +51,7 @@ public final class GTItems {
                     .component(GTDataComponentTypes.PROC_CHANCE, 0.9)
             ));
     public static final DeferredItem<Item> LIGHTER =
-        GTRegistries.ITEMS.register("lighter",
+        GTRegisters.ITEMS.register("lighter",
             () -> new GTLighterLikeItem(
                 new Item.Properties()
                     .component(GTDataComponentTypes.ITEM_WITH_USES,
@@ -59,7 +59,7 @@ public final class GTItems {
                     .component(GTDataComponentTypes.PROC_CHANCE, 1.0)
             ));
     public static final DeferredItem<Item> SHINY_LIGHTER =
-        GTRegistries.ITEMS.register("shiny_lighter",
+        GTRegisters.ITEMS.register("shiny_lighter",
             () -> new GTLighterLikeItem(
                 new Item.Properties()
                     .component(GTDataComponentTypes.ITEM_WITH_USES,
@@ -67,9 +67,9 @@ public final class GTItems {
                     .component(GTDataComponentTypes.PROC_CHANCE, 1.0)
             ));
     public static final DeferredItem<Item> PLASTIC_LIGHTER_BROKEN =
-        GTRegistries.ITEMS.registerSimpleItem("plastic_lighter_broken");
+        GTRegisters.ITEMS.registerSimpleItem("plastic_lighter_broken");
     public static final DeferredItem<Item> PLASTIC_LIGHTER =
-        GTRegistries.ITEMS.register("plastic_lighter",
+        GTRegisters.ITEMS.register("plastic_lighter",
             () -> new GTLighterLikeItem(
                 new Item.Properties()
                     .component(GTDataComponentTypes.ITEM_WITH_USES,
@@ -77,7 +77,7 @@ public final class GTItems {
                     .component(GTDataComponentTypes.PROC_CHANCE, 0.9)
             ));
 
-    public static final DeferredItem<Item> EMPTY_SPRAY_CAN = GTRegistries.ITEMS.registerSimpleItem("empty_spray_can");
+    public static final DeferredItem<Item> EMPTY_SPRAY_CAN = GTRegisters.ITEMS.registerSimpleItem("empty_spray_can");
 
     public static final DeferredItem<Item> WHITE_PAINT_SPRAY_CAN = registerPaintSprayCanItem(DyeColor.WHITE);
     public static final DeferredItem<Item> ORANGE_PAINT_SPRAY_CAN = registerPaintSprayCanItem(DyeColor.ORANGE);
@@ -97,7 +97,7 @@ public final class GTItems {
     public static final DeferredItem<Item> BLACK_PAINT_SPRAY_CAN = registerPaintSprayCanItem(DyeColor.BLACK);
 
     public static final DeferredItem<Item> PAINT_REMOVAL_SPRAY_CAN =
-        GTRegistries.ITEMS.register("paint_removal_spray_can",
+        GTRegisters.ITEMS.register("paint_removal_spray_can",
             () -> new GTSprayLikeItem(
                 new PaintRemovalSprayBehavior(),
                 new Item.Properties()
@@ -105,10 +105,10 @@ public final class GTItems {
                         new GTItemWithUsesData(256, 256, EMPTY_SPRAY_CAN))
             ));
 
-    public static final DeferredItem<BlockItem> ENDER_GARBAGE_BIN = GTRegistries.ITEMS.registerSimpleBlockItem(GTBlocks.ENDER_GARBAGE_BIN);
+    public static final DeferredItem<BlockItem> ENDER_GARBAGE_BIN = GTRegisters.ITEMS.registerSimpleBlockItem(GTBlocks.ENDER_GARBAGE_BIN);
 
     private static DeferredItem<Item> registerPaintSprayCanItem(DyeColor dyeColor) {
-        return GTRegistries.ITEMS.register(dyeColor.getName() + "_paint_spray_can",
+        return GTRegisters.ITEMS.register(dyeColor.getName() + "_paint_spray_can",
             () -> new GTSprayLikeItem(
                 new PaintSprayBehavior(dyeColor),
                 new Item.Properties()

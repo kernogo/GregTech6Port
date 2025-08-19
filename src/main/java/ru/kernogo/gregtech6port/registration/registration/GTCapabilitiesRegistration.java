@@ -1,27 +1,41 @@
 
-package ru.kernogo.gregtech6port.registration.registration_event_subscribers;
+package ru.kernogo.gregtech6port.registration.registration;
 
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.ICapabilityProvider;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.Nullable;
+import ru.kernogo.gregtech6port.features.behaviors.material_composition.capabilities.GTMaterialCompositionSimpleCapability;
 import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringCapability;
 import ru.kernogo.gregtech6port.features.blockentities.ender_garbage_bin.GTEnderGarbageBinBlockEntity;
 import ru.kernogo.gregtech6port.registration.registered.GTBlockEntityTypes;
 import ru.kernogo.gregtech6port.registration.registered.GTCapabilities;
 
-@EventBusSubscriber(value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
-public final class RegisterCapabilities {
-    private RegisterCapabilities() {}
+public final class GTCapabilitiesRegistration {
+    private GTCapabilitiesRegistration() {}
 
-    @SubscribeEvent
-    private static void registerCapabilities(RegisterCapabilitiesEvent event) {
+    /** This gets subscribed with the modBus in another class */
+    public static void registerAllCapabilities(RegisterCapabilitiesEvent event) {
+        registerMaterialCompositionCapabilityForAllItems(event);
+
         registerTintColoringCapability(event, GTBlockEntityTypes.ENDER_GARBAGE_BIN, GTEnderGarbageBinBlockEntity::getTintColoringCapability);
+    }
+
+    private static void registerMaterialCompositionCapabilityForAllItems(RegisterCapabilitiesEvent event) {
+        for (Item item : BuiltInRegistries.ITEM) {
+            // TODO: specific capabilities for certain items
+
+            // Simple capability is registered for nearly all items
+            event.registerItem(
+                GTCapabilities.MATERIAL_COMPOSITION,
+                (object, context) -> new GTMaterialCompositionSimpleCapability(),
+                item
+            );
+        }
     }
 
     private static <BE extends BlockEntity> void registerTintColoringCapability(

@@ -7,7 +7,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import ru.kernogo.gregtech6port.features.behaviors.item_with_uses.GTItemWithUsesData;
 import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringData;
 import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringSystem;
-import ru.kernogo.gregtech6port.registration.GTRegistries;
+import ru.kernogo.gregtech6port.registration.GTRegisters;
 
 /**
  * In general, the effects of adding data components to items are dependent on each item's implementation.
@@ -22,7 +22,7 @@ public final class GTDataComponentTypes {
      * Does not work automatically.
      */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<GTItemWithUsesData>> ITEM_WITH_USES =
-        GTRegistries.DATA_COMPONENTS_TYPES.registerComponentType(
+        GTRegisters.DATA_COMPONENTS_TYPES.registerComponentType(
             "item_with_uses",
             builder -> builder
                 .persistent(GTItemWithUsesData.CODEC)
@@ -31,7 +31,7 @@ public final class GTDataComponentTypes {
 
     /** Stores the proc chance for items. Does not work automatically. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<Double>> PROC_CHANCE =
-        GTRegistries.DATA_COMPONENTS_TYPES.registerComponentType(
+        GTRegisters.DATA_COMPONENTS_TYPES.registerComponentType(
             "proc_chance",
             builder -> builder.persistent(Codec.DOUBLE).networkSynchronized(ByteBufCodecs.DOUBLE)
         );
@@ -41,7 +41,7 @@ public final class GTDataComponentTypes {
      * Works automatically after registration with the system. See {@link GTTintColoringSystem} for the details.
      */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<GTTintColoringData>> TINT_COLORING =
-        GTRegistries.DATA_COMPONENTS_TYPES.registerComponentType(
+        GTRegisters.DATA_COMPONENTS_TYPES.registerComponentType(
             "tint_coloring",
             builder -> builder
                 .persistent(GTTintColoringData.CODEC)

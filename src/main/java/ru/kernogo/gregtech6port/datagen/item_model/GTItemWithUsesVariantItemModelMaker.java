@@ -25,7 +25,7 @@ final class GTItemWithUsesVariantItemModelMaker {
      *   </li>
      *   <li>main item model "itemName.json" pointing to the 2 variant models and using the item properties to determine which model to use</li>
      * </ul>
-     * Corresponding item Property Function is {@link ru.kernogo.gregtech6port.registration.registration_event_subscribers.RegisterItemProperties#makeItemWithUses2StageFunc}
+     * Corresponding item Property Function is {@link ru.kernogo.gregtech6port.registration.registration.GTItemPropertiesRegistration#makeItemWithUses2StageFunc}
      */
     void makeItemWithUses2StageModel(DeferredItem<Item> deferredItem, String texturePathPrefix) {
         String itemName = deferredItem.getKey().location().getPath();
@@ -61,7 +61,7 @@ final class GTItemWithUsesVariantItemModelMaker {
      *   </li>
      *   <li>main item model "itemName.json" pointing to the 3 variant models and using the item properties to determine which model to use</li>
      * </ul>
-     * Corresponding item Property Function is {@link ru.kernogo.gregtech6port.registration.registration_event_subscribers.RegisterItemProperties#makeItemWithUses3StageFunc}
+     * Corresponding item Property Function is {@link ru.kernogo.gregtech6port.registration.registration.GTItemPropertiesRegistration#makeItemWithUses3StageFunc}
      */
     void makeItemWithUses3StageModel(DeferredItem<Item> deferredItem, String texturePathPrefix) {
         String itemName = deferredItem.getKey().location().getPath();

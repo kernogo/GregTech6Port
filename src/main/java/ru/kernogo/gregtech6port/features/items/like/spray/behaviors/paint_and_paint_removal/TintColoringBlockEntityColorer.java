@@ -20,7 +20,10 @@ import java.util.EnumMap;
 final class TintColoringBlockEntityColorer {
     TintColoringBlockEntityColorer() {}
 
-    /** Dye colors are taken from the original GT6 */
+    /**
+     * Dye colors are taken from the original GT6 without changes <br>
+     * This could've been a DataMap, but for now it isn't.
+     */
     private final ImmutableBiMap<DyeColor, GTTintColoringData> dyeToTintColoringData =
         ImmutableBiMap.copyOf(new EnumMap<>(DyeColor.class) {{
             put(DyeColor.WHITE, GTTintColoringData.createFromArgbComponents(255, 255, 255, 255));

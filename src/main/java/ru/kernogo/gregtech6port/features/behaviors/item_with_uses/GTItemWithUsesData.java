@@ -44,7 +44,7 @@ public record GTItemWithUsesData(
             Codec.INT.fieldOf("max_remaining_uses").forGetter(GTItemWithUsesData::maxRemainingUses),
             BuiltInRegistries.ITEM.holderByNameCodec()
                 .optionalFieldOf("breaks_into")
-                .forGetter(GTItemWithUsesData -> Optional.ofNullable(GTItemWithUsesData.breaksInto))
+                .forGetter(itemWithUsesData -> Optional.ofNullable(itemWithUsesData.breaksInto))
         ).apply(builder, GTItemWithUsesData::create)
     );
 
