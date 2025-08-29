@@ -20,7 +20,7 @@ import java.util.Locale;
 public final class GTMaterialCompositionTooltipProvider {
     private GTMaterialCompositionTooltipProvider() {}
 
-    /** This gets called from an external class */
+    /** This gets subscribed with the NeoForge event bus in another class */
     public static List<Component> getMaterialCompositionTooltip(ItemStack itemStack) {
         IGTMaterialCompositionCapability materialCompositionCapability = itemStack.getCapability(GTCapabilities.MATERIAL_COMPOSITION);
 
@@ -59,7 +59,7 @@ public final class GTMaterialCompositionTooltipProvider {
             result.add(Component.translatable(
                 "tooltip.gregtech6port.material_composition.pattern",
                 amountInMaterialUnits,
-                Component.translatable("gregtech6port.material." + materialName)
+                Component.translatable(material.translationKey())
                     .withStyle(ChatFormatting.YELLOW),
                 Component.translatable("tooltip.gregtech6port.material_composition.pattern.melting_point")
                     .withStyle(ChatFormatting.AQUA),

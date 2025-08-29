@@ -1,6 +1,5 @@
 package ru.kernogo.gregtech6port.registration.registered.materials;
 
-import net.neoforged.neoforge.registries.DeferredHolder;
 import ru.kernogo.gregtech6port.features.behaviors.item_materials.GTMaterial;
 import ru.kernogo.gregtech6port.registration.GTRegisters;
 
@@ -8,17 +7,28 @@ import ru.kernogo.gregtech6port.registration.GTRegisters;
 public final class GTBasicMaterials {
     private GTBasicMaterials() {}
 
-    public static final DeferredHolder<GTMaterial, GTMaterial> LEATHER =
+    public static final GTMaterial LEATHER =
         GTRegisters.MATERIALS.register(
             "leather",
             () -> GTMaterial.builder()
                 .name("leather")
-                .englishLanguageDatagenType(null)
-                .colorData(141, 65, 37, 255)
-                .textureSet("rough")
-                .meltingPoint(null)
-                .boilingPoint(null)
-                .densityGramPerCm3(null)
+                .englishNameForDatagen("Leather")
+                .colorData(255, 141, 65, 37)
+                .textureSet(GTMaterialTextureSets.ROUGH)
+                .meltingBoilingPointsUnknownSoUseDefault()
+                .densityGramPerCm3UnknownSoUseDefault()
+                .build()
+        );
+    public static final GTMaterial STONE =
+        GTRegisters.MATERIALS.register(
+            "stone",
+            () -> GTMaterial.builder()
+                .name("stone")
+                .englishNameForDatagen("Stone")
+                .colorData(255, 205, 205, 205)
+                .textureSet(GTMaterialTextureSets.STONE)
+                .meltingPointKnownOnlySoUseDefault(1100)
+                .densityGramPerCm3UnknownSoUseDefault() // TODO: set density same as in SiO2 (add automatic calculations)
                 .build()
         );
 

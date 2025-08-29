@@ -10,7 +10,7 @@ import java.util.List;
 public final class GTItemTooltipEventHandler {
     private GTItemTooltipEventHandler() {}
 
-    /** This gets subscribed with the modBus in another class */
+    /** This gets subscribed with the NeoForge event bus in another class */
     public static void handleItemTooltipEvent(ItemTooltipEvent event) {
         List<Component> materialCompositionTooltip = GTMaterialCompositionTooltipProvider.getMaterialCompositionTooltip(
             event.getItemStack()

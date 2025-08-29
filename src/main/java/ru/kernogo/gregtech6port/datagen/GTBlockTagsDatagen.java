@@ -9,12 +9,17 @@ import ru.kernogo.gregtech6port.GregTech6Port;
 
 import java.util.concurrent.CompletableFuture;
 
-/** Datagen for block tags */
-public final class GTBlockTagsDatagen extends BlockTagsProvider {
-    public GTBlockTagsDatagen(PackOutput output,
-                              CompletableFuture<HolderLookup.Provider> lookupProvider,
-                              @Nullable ExistingFileHelper existingFileHelper) {
+/** Datagen for some Block Tags */
+final class GTBlockTagsDatagen extends BlockTagsProvider {
+    GTBlockTagsDatagen(PackOutput output,
+                       CompletableFuture<HolderLookup.Provider> lookupProvider,
+                       @Nullable ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, GregTech6Port.MODID, existingFileHelper);
+    }
+
+    @Override
+    public String getName() {
+        return this.getClass().getCanonicalName() + " " + super.getName();
     }
 
     @Override

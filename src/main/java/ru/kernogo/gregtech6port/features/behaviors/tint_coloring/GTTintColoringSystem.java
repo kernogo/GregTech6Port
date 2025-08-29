@@ -8,8 +8,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -47,12 +45,11 @@ import java.util.stream.Stream;
  * </ul>
  * (TODO: add coloring based on Material's color)
  */
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 public final class GTTintColoringSystem {
     private GTTintColoringSystem() {}
 
-    @SubscribeEvent
-    private static void registerBlockColorHandlers(RegisterColorHandlersEvent.Block event) {
+    /** This gets subscribed with the modBus in another class */
+    public static void registerBlockColorHandlers(RegisterColorHandlersEvent.Block event) {
         Block[] blocksToRegister = Stream.of( // Register Blocks corresponding to the BlockEntities here
             GTBlocks.ENDER_GARBAGE_BIN
         ).map(DeferredHolder::get).toArray(Block[]::new);
@@ -60,8 +57,8 @@ public final class GTTintColoringSystem {
         event.register(GTTintColoringSystem::getBlockColor, blocksToRegister);
     }
 
-    @SubscribeEvent
-    private static void registerItemColorHandlers(RegisterColorHandlersEvent.Item event) {
+    /** This gets subscribed with the modBus in another class */
+    public static void registerItemColorHandlers(RegisterColorHandlersEvent.Item event) {
         Item[] itemsToRegister = Stream.of( // Register Items here
             GTItems.ENDER_GARBAGE_BIN
         ).map(DeferredItem::get).toArray(Item[]::new);

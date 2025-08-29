@@ -6,7 +6,16 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import ru.kernogo.gregtech6port.GregTech6Port;
+import ru.kernogo.gregtech6port.datagen.GTDatagenMain;
 import ru.kernogo.gregtech6port.features.behaviors.item_materials.GTMaterial;
+import ru.kernogo.gregtech6port.features.behaviors.item_materials.GTMaterialTextureSet;
+import ru.kernogo.gregtech6port.features.behaviors.item_materials.GTMaterialThingKind;
+import ru.kernogo.gregtech6port.features.behaviors.item_with_uses.GTItemWithUsesItemPropertiesRegistration;
+import ru.kernogo.gregtech6port.features.behaviors.material_composition.capabilities.GTMaterialCompositionCapabilitiesRegistration;
+import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringCapabilitiesRegistration;
+import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringSystem;
+import ru.kernogo.gregtech6port.features.items.like.spray.GTSprayLikeItemEntityInteractHandler;
+import ru.kernogo.gregtech6port.features.material_kind_items.GTMaterialKindItemTintingHandler;
 import ru.kernogo.gregtech6port.registration.registered.GTBlockEntityTypes;
 import ru.kernogo.gregtech6port.registration.registered.GTBlocks;
 import ru.kernogo.gregtech6port.registration.registered.GTCapabilities;
@@ -16,8 +25,8 @@ import ru.kernogo.gregtech6port.registration.registered.GTDataMapTypes;
 import ru.kernogo.gregtech6port.registration.registered.GTItems;
 import ru.kernogo.gregtech6port.registration.registered.materials.GTBasicMaterials;
 import ru.kernogo.gregtech6port.registration.registered.materials.GTChemicalElementMaterials;
-import ru.kernogo.gregtech6port.registration.registration.GTCapabilitiesRegistration;
-import ru.kernogo.gregtech6port.registration.registration.GTItemPropertiesRegistration;
+import ru.kernogo.gregtech6port.registration.registered.materials.GTMaterialTextureSets;
+import ru.kernogo.gregtech6port.registration.registered.materials.GTMaterialThingKinds;
 
 public final class GTRegisters {
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(GregTech6Port.MODID);
@@ -27,22 +36,42 @@ public final class GTRegisters {
 
     // Registers for custom registries go below
 
-    public static final DeferredRegister<GTMaterial> MATERIALS = DeferredRegister.create(
+    public static final GTLessDeferredRegister<GTMaterial> MATERIALS = new GTLessDeferredRegister<>(
         GTCustomRegistries.MATERIALS, GregTech6Port.MODID
+    );
+
+    public static final GTLessDeferredRegister<GTMaterialTextureSet> MATERIAL_TEXTURE_SETS = new GTLessDeferredRegister<>(
+        GTCustomRegistries.MATERIAL_TEXTURE_SETS, GregTech6Port.MODID
+    );
+
+    public static final GTLessDeferredRegister<GTMaterialThingKind> MATERIAL_THING_KINDS = new GTLessDeferredRegister<>(
+        GTCustomRegistries.MATERIAL_THING_KINDS, GregTech6Port.MODID
     );
 
     public static void registerEverything(IEventBus modEventBus) {
         registerObjectsInRegistries(modEventBus);
+        registerListeners(modEventBus);
+    }
 
-        // Remember that there are "@EventBusSubscriber"s that register other listeners by themselves and are not listed here
+    private static void registerListeners(IEventBus modEventBus) {
+        modEventBus.addListener(GTDatagenMain::datagenMain);
+
+        modEventBus.addListener(GTRegisterEventHandler::handleRegisterEvent);
 
         modEventBus.addListener(GTCustomRegistries::registerRegistries);
         modEventBus.addListener(GTDataMapTypes::registerDataMapTypes);
 
-        modEventBus.addListener(GTCapabilitiesRegistration::registerAllCapabilities);
-        modEventBus.addListener(GTItemPropertiesRegistration::registerItemProperties);
+        modEventBus.addListener(GTItemWithUsesItemPropertiesRegistration::registerItemProperties);
+
+        modEventBus.addListener(GTTintColoringCapabilitiesRegistration::registerCapabilities);
+        modEventBus.addListener(GTMaterialCompositionCapabilitiesRegistration::registerCapabilitiesForAllItems);
+
+        modEventBus.addListener(GTTintColoringSystem::registerBlockColorHandlers);
+        modEventBus.addListener(GTTintColoringSystem::registerItemColorHandlers);
+        modEventBus.addListener(GTMaterialKindItemTintingHandler::registerItemColorHandlers);
 
         NeoForge.EVENT_BUS.addListener(GTItemTooltipEventHandler::handleItemTooltipEvent);
+        NeoForge.EVENT_BUS.addListener(GTSprayLikeItemEntityInteractHandler::onEntityInteract);
     }
 
     private static void registerObjectsInRegistries(IEventBus modEventBus) {
@@ -55,6 +84,8 @@ public final class GTRegisters {
         GTDataMapTypes.init();
 
         // Custom registered data classes go below
+        GTMaterialTextureSets.init();
+        GTMaterialThingKinds.init();
         GTChemicalElementMaterials.init();
         GTBasicMaterials.init();
 
@@ -65,7 +96,7 @@ public final class GTRegisters {
         DATA_COMPONENTS_TYPES.register(modEventBus);
 
         // Custom registers go below
-        MATERIALS.register(modEventBus);
+        // ...
 
         GTCapabilities.init(); // Capabilities don't need an externally created registry
     }
