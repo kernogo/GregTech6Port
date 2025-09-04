@@ -8,10 +8,15 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import ru.kernogo.gregtech6port.GregTech6Port;
 import ru.kernogo.gregtech6port.registration.registered.GTBlocks;
 
-/** Datagen for block models and BlockStates */
-public final class GTBlockDatagen extends BlockStateProvider {
-    public GTBlockDatagen(PackOutput output, ExistingFileHelper exFileHelper) {
+/** Datagen for some Block Models and BlockStates */
+final class GTBlockDatagen extends BlockStateProvider {
+    GTBlockDatagen(PackOutput output, ExistingFileHelper exFileHelper) {
         super(output, GregTech6Port.MODID, exFileHelper);
+    }
+
+    @Override
+    public String getName() {
+        return this.getClass().getCanonicalName() + " " + super.getName();
     }
 
     @Override

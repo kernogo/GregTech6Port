@@ -3,8 +3,6 @@ package ru.kernogo.gregtech6port.features.items.like.spray;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
 /**
@@ -12,12 +10,11 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
  * (e.g., {@link Entity#interact}) in the interaction pipeline for the entities. <br>
  * Existing {@link Entity#interact} often consumes the event so that the item-specific logic is never run.
  */
-@EventBusSubscriber
 public final class GTSprayLikeItemEntityInteractHandler {
     private GTSprayLikeItemEntityInteractHandler() {}
 
-    @SubscribeEvent
-    private static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
+    /** This gets subscribed with the NeoForge event bus in another class */
+    public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
         if (!(event.getItemStack().getItem() instanceof GTSprayLikeItem sprayLikeItem)) {
             return;
         }
