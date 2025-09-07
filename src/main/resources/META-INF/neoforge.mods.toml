@@ -26,4 +26,7 @@ versionRange="${minecraft_version_range}"
 ordering="NONE"
 side="BOTH"
 
+[[mixins]]
+config="gregtech6port.mixins.json"
+
 # TODO: include optional dependencies here
