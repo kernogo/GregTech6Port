@@ -28,7 +28,8 @@ public final class GTMaterialKindItemTintingHandler {
             return -1; // We only tint the tintIndex 0 (layer 0)
         }
         if (!(stack.getItem() instanceof GTMaterialKindItem materialKindItem)) {
-            log.error("Expected the Item of stack={} to be an instance of GTMaterialKindItem, but it was not", stack);
+            log.error("Expected the Item of stack={} to be an instance of GTMaterialKindItem, but it was not", stack,
+                new RuntimeException("Exception thrown for stack trace purposes"));
             return -1;
         }
         GTMaterial.ColorData colorData = materialKindItem.getColorDataForTinting();

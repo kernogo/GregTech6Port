@@ -5,6 +5,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import ru.kernogo.gregtech6port.datagen.recipes.crafting.GTDustToDustCraftingRecipeDatagen;
 import ru.kernogo.gregtech6port.features.behaviors.item_materials.GTMaterialNameEnglishDatagen;
 import ru.kernogo.gregtech6port.features.behaviors.item_with_uses.GTItemWithUsesModelDatagen;
 import ru.kernogo.gregtech6port.features.behaviors.material_composition.GTBaseMaterialCompositionDataMapDatagen;
@@ -44,5 +45,7 @@ public final class GTDatagenMain {
         generator.addProvider(event.includeServer(), new GTBaseMaterialCompositionDataMapDatagen(packOutput, lookupProvider));
 
         generator.addProvider(event.includeClient(), new GTEnglishLanguageDatagen(packOutput));
+
+        generator.addProvider(event.includeServer(), new GTDustToDustCraftingRecipeDatagen(packOutput, lookupProvider));
     }
 }

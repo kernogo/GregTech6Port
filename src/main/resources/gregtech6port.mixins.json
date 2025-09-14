@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8.5",
+  "package": "ru.kernogo.gregtech6port.mixins",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "one_input_modulo_crafting_recipe.CraftingInputMixin"
+  ],
+  "client": [],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

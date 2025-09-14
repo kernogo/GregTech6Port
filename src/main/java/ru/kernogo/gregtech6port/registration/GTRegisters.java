@@ -1,6 +1,7 @@
 package ru.kernogo.gregtech6port.registration;
 
 import net.minecraft.core.registries.Registries;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.NeoForge;
@@ -23,6 +24,7 @@ import ru.kernogo.gregtech6port.registration.registered.GTCustomRegistries;
 import ru.kernogo.gregtech6port.registration.registered.GTDataComponentTypes;
 import ru.kernogo.gregtech6port.registration.registered.GTDataMapTypes;
 import ru.kernogo.gregtech6port.registration.registered.GTItems;
+import ru.kernogo.gregtech6port.registration.registered.GTRecipeSerializers;
 import ru.kernogo.gregtech6port.registration.registered.materials.GTBasicMaterials;
 import ru.kernogo.gregtech6port.registration.registered.materials.GTChemicalElementMaterials;
 import ru.kernogo.gregtech6port.registration.registered.materials.GTMaterialTextureSets;
@@ -33,6 +35,7 @@ public final class GTRegisters {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(GregTech6Port.MODID);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, GregTech6Port.MODID);
     public static final DeferredRegister.DataComponents DATA_COMPONENTS_TYPES = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, GregTech6Port.MODID);
+    public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, GregTech6Port.MODID);
 
     // Registers for custom registries go below
 
@@ -81,6 +84,8 @@ public final class GTRegisters {
         GTItems.init();
         GTBlockEntityTypes.init();
         GTDataComponentTypes.init();
+        GTRecipeSerializers.init();
+
         GTDataMapTypes.init();
 
         // Custom registered data classes go below
@@ -94,6 +99,7 @@ public final class GTRegisters {
         ITEMS.register(modEventBus);
         BLOCK_ENTITY_TYPES.register(modEventBus);
         DATA_COMPONENTS_TYPES.register(modEventBus);
+        RECIPE_SERIALIZERS.register(modEventBus);
 
         // Custom registers go below
         // ...
