@@ -65,6 +65,17 @@ public final class GTMaterialThingKinds {
                 List.of()
             )
         );
+    // Original GT6 name: "plate"
+    public static final GTMaterialThingKind PLATE =
+        GTRegisters.MATERIAL_THING_KINDS.register(
+            "plate",
+            () -> GTMaterialThingKind.of(
+                "plate",
+                "%s Plate",
+                GTMaterialAmount.of(1),
+                List.of()
+            )
+        );
     // Original GT6 name: "stick"
     public static final GTMaterialThingKind ROD =
         GTRegisters.MATERIAL_THING_KINDS.register(

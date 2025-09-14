@@ -7,6 +7,7 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.Nullable;
 import ru.kernogo.gregtech6port.features.blockentities.ender_garbage_bin.GTEnderGarbageBinBlockEntity;
+import ru.kernogo.gregtech6port.features.blockentities.material.anvil.GTAnvilMaterialBlockEntity;
 import ru.kernogo.gregtech6port.registration.registered.GTBlockEntityTypes;
 import ru.kernogo.gregtech6port.registration.registered.GTCapabilities;
 
@@ -17,6 +18,7 @@ public final class GTTintColoringCapabilitiesRegistration {
     /** This gets subscribed with the modBus in another class */
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         register(event, GTBlockEntityTypes.ENDER_GARBAGE_BIN, GTEnderGarbageBinBlockEntity::getTintColoringCapability);
+        register(event, GTBlockEntityTypes.ANVIL, GTAnvilMaterialBlockEntity::getTintColoringCapability);
     }
 
     private static <BE extends BlockEntity> void register(

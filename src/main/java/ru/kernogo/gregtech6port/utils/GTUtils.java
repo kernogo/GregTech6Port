@@ -5,12 +5,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 import ru.kernogo.gregtech6port.GregTech6Port;
-import ru.kernogo.gregtech6port.features.blockentities.ender_garbage_bin.GTEnderGarbageBinBlockEntity;
 import ru.kernogo.gregtech6port.utils.exception.GTUnexpectedValidationFailException;
 
 import java.util.Map;
@@ -82,7 +82,7 @@ public final class GTUtils {
      * Here we hope that both {@code oldState} and {@code newState} parameters of {@link Level#sendBlockUpdated}
      * can be the same value without any problems.
      */
-    public static void updateTheBlockEntity(GTEnderGarbageBinBlockEntity blockEntity) {
+    public static void updateTheBlockEntity(BlockEntity blockEntity) {
         blockEntity.setChanged();
         Level level = blockEntity.getLevel();
         if (level != null) {

@@ -106,6 +106,7 @@ public final class GTItems {
             ));
 
     public static final DeferredItem<BlockItem> ENDER_GARBAGE_BIN = GTRegisters.ITEMS.registerSimpleBlockItem(GTBlocks.ENDER_GARBAGE_BIN);
+    public static final DeferredItem<BlockItem> STEEL_ANVIL = GTRegisters.ITEMS.registerSimpleBlockItem(GTBlocks.STEEL_ANVIL);
 
     private static DeferredItem<Item> registerPaintSprayCanItem(DyeColor dyeColor) {
         return GTRegisters.ITEMS.register(dyeColor.getName() + "_paint_spray_can",

@@ -4,6 +4,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import ru.kernogo.gregtech6port.GregTech6Port;
@@ -15,6 +16,7 @@ import ru.kernogo.gregtech6port.features.behaviors.item_with_uses.GTItemWithUses
 import ru.kernogo.gregtech6port.features.behaviors.material_composition.capabilities.GTMaterialCompositionCapabilitiesRegistration;
 import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringCapabilitiesRegistration;
 import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringSystem;
+import ru.kernogo.gregtech6port.features.blockentities.material.anvil.GTAnvilMaterialBlockEntityRenderer;
 import ru.kernogo.gregtech6port.features.items.like.spray.GTSprayLikeItemEntityInteractHandler;
 import ru.kernogo.gregtech6port.features.material_kind_items.GTMaterialKindItemTintingHandler;
 import ru.kernogo.gregtech6port.registration.registered.GTBlockEntityTypes;
@@ -53,10 +55,15 @@ public final class GTRegisters {
 
     public static void registerEverything(IEventBus modEventBus) {
         registerObjectsInRegistries(modEventBus);
-        registerListeners(modEventBus);
+        registerCommonListeners(modEventBus);
+        if (FMLEnvironment.dist.isClient()) {
+            // TODO: will probably have to move this somewhere else,
+            //  so there is no chance that something client-only gets loaded on a server (and causes a crash)
+            registerClientOnlyListeners(modEventBus);
+        }
     }
 
-    private static void registerListeners(IEventBus modEventBus) {
+    private static void registerCommonListeners(IEventBus modEventBus) {
         modEventBus.addListener(GTDatagenMain::datagenMain);
 
         modEventBus.addListener(GTRegisterEventHandler::handleRegisterEvent);
@@ -64,17 +71,21 @@ public final class GTRegisters {
         modEventBus.addListener(GTCustomRegistries::registerRegistries);
         modEventBus.addListener(GTDataMapTypes::registerDataMapTypes);
 
-        modEventBus.addListener(GTItemWithUsesItemPropertiesRegistration::registerItemProperties);
-
         modEventBus.addListener(GTTintColoringCapabilitiesRegistration::registerCapabilities);
         modEventBus.addListener(GTMaterialCompositionCapabilitiesRegistration::registerCapabilitiesForAllItems);
+
+        NeoForge.EVENT_BUS.addListener(GTItemTooltipEventHandler::handleItemTooltipEvent);
+        NeoForge.EVENT_BUS.addListener(GTSprayLikeItemEntityInteractHandler::onEntityInteract);
+    }
+
+    private static void registerClientOnlyListeners(IEventBus modEventBus) {
+        modEventBus.addListener(GTItemWithUsesItemPropertiesRegistration::registerItemProperties);
+
+        modEventBus.addListener(GTAnvilMaterialBlockEntityRenderer::registerEntityRenderer);
 
         modEventBus.addListener(GTTintColoringSystem::registerBlockColorHandlers);
         modEventBus.addListener(GTTintColoringSystem::registerItemColorHandlers);
         modEventBus.addListener(GTMaterialKindItemTintingHandler::registerItemColorHandlers);
-
-        NeoForge.EVENT_BUS.addListener(GTItemTooltipEventHandler::handleItemTooltipEvent);
-        NeoForge.EVENT_BUS.addListener(GTSprayLikeItemEntityInteractHandler::onEntityInteract);
     }
 
     private static void registerObjectsInRegistries(IEventBus modEventBus) {
