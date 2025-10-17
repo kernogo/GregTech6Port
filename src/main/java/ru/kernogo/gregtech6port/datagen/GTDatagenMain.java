@@ -5,11 +5,12 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
-import ru.kernogo.gregtech6port.datagen.recipes.crafting.GTDustToDustCraftingRecipeDatagen;
 import ru.kernogo.gregtech6port.features.behaviors.item_materials.GTMaterialNameEnglishDatagen;
 import ru.kernogo.gregtech6port.features.behaviors.item_with_uses.GTItemWithUsesModelDatagen;
 import ru.kernogo.gregtech6port.features.behaviors.material_composition.GTBaseMaterialCompositionDataMapDatagen;
-import ru.kernogo.gregtech6port.features.material_kind_items.registration.GTMaterialKindItemModelDatagen;
+import ru.kernogo.gregtech6port.features.material_kind_things.blocks.registration.GTMaterialKindBlockDatagen;
+import ru.kernogo.gregtech6port.features.material_kind_things.items.registration.GTMaterialKindItemModelDatagen;
+import ru.kernogo.gregtech6port.features.material_kind_things.items.registration.GTMaterialKindItemTagsDatagen;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -38,14 +39,16 @@ public final class GTDatagenMain {
         generator.addProvider(event.includeClient(), new GTMaterialKindItemModelDatagen(packOutput, existingFileHelper));
 
         generator.addProvider(event.includeClient(), new GTBlockDatagen(packOutput, existingFileHelper));
+        generator.addProvider(event.includeClient(), new GTMaterialKindBlockDatagen(packOutput, existingFileHelper));
 
         GTBlockTagsDatagen blockDatagen = generator.addProvider(event.includeServer(), new GTBlockTagsDatagen(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new GTItemTagsDatagen(packOutput, lookupProvider, blockDatagen.contentsGetter(), existingFileHelper));
+        generator.addProvider(event.includeServer(), new GTMaterialKindItemTagsDatagen(packOutput, lookupProvider, blockDatagen.contentsGetter(), existingFileHelper));
 
         generator.addProvider(event.includeServer(), new GTBaseMaterialCompositionDataMapDatagen(packOutput, lookupProvider));
 
         generator.addProvider(event.includeClient(), new GTEnglishLanguageDatagen(packOutput));
 
-        generator.addProvider(event.includeServer(), new GTDustToDustCraftingRecipeDatagen(packOutput, lookupProvider));
+        generator.addProvider(event.includeServer(), new GTRecipeDatagen(packOutput, lookupProvider));
     }
 }

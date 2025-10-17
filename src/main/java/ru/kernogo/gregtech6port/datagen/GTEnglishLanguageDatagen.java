@@ -4,7 +4,7 @@ import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import ru.kernogo.gregtech6port.GregTech6Port;
 import ru.kernogo.gregtech6port.features.behaviors.item_materials.GTMaterialNameEnglishDatagen;
-import ru.kernogo.gregtech6port.features.material_kind_items.registration.GTMaterialKindItemEnglishLanguageDatagen;
+import ru.kernogo.gregtech6port.features.material_kind_things.items.registration.GTMaterialKindItemEnglishLanguageDatagen;
 
 /** Datagen for all entries in en_us.json file */
 public final class GTEnglishLanguageDatagen extends LanguageProvider {

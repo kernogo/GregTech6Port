@@ -2,7 +2,9 @@ package ru.kernogo.gregtech6port.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -93,5 +95,30 @@ public final class GTUtils {
             log.warn("Level was null during the update of the BlockEntity",
                 new RuntimeException("Exception thrown for stack trace purposes"));
         }
+    }
+
+    /** Get Holder from an Item */
+    public static Holder.Reference<Item> getHolder(Item item) {
+        // This method is deprecated, but it should still be fine to use, at least in MC 1.21.1
+        //noinspection deprecation
+        return item.builtInRegistryHolder();
+    }
+
+    /** Get ResourceLocation of an Item */
+    public static ResourceLocation getResourceLocation(Item item) {
+        // This method is deprecated, but it should still be fine to use, at least in MC 1.21.1
+        //noinspection deprecation
+        return item.builtInRegistryHolder()
+            .key()
+            .location();
+    }
+
+    /** Get ResourceLocation of a Block */
+    public static ResourceLocation getResourceLocation(Block block) {
+        // This method is deprecated, but it should still be fine to use, at least in MC 1.21.1
+        //noinspection deprecation
+        return block.builtInRegistryHolder()
+            .key()
+            .location();
     }
 }

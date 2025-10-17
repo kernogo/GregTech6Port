@@ -1,0 +1,39 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"render_type": "cutout",
+	"textures": {
+		"particle": "gregtech6port:block/template_to_be_replaced_texture",
+		"all_sides": "gregtech6port:block/template_to_be_replaced_texture",
+		"overlay": "gregtech6port:block/template_to_be_replaced_texture"
+	},
+	"elements": [
+		{
+			"name": "cube",
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#all_sides", "tintindex": 0},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#all_sides", "tintindex": 0},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#all_sides", "tintindex": 0},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#all_sides", "tintindex": 0},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#all_sides", "tintindex": 0},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#all_sides", "tintindex": 0}
+			}
+		},
+		{
+			"name": "overlay",
+			"from": [-0.02, -0.02, -0.02],
+			"to": [16.02, 16.02, 16.02],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#overlay"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#overlay"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#overlay"},
+				"west": {"uv": [0, 0, 16, 16], "texture": "#overlay"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#overlay"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#overlay"}
+			}
+		}
+	]
+}
