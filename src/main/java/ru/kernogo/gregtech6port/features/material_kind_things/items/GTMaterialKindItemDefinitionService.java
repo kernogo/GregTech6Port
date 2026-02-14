@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @see GTMaterialKindItemDefinition
  * @see ru.kernogo.gregtech6port.features.material_kind_things.blocks.GTMaterialKindBlockDefinitionService
- * Another sevice which is made similarly to this service
+ * Another service which is made similarly to this service
  * (if anything changes here, you should probably change it there too)
  */
 public final class GTMaterialKindItemDefinitionService {

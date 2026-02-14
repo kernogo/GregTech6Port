@@ -49,6 +49,6 @@ public final class GTDatagenMain {
 
         generator.addProvider(event.includeClient(), new GTEnglishLanguageDatagen(packOutput));
 
-        generator.addProvider(event.includeServer(), new GTRecipeDatagen(packOutput, lookupProvider));
+        generator.addProvider(event.includeServer(), new GTRecipeProvider.Runner(packOutput, lookupProvider));
     }
 }

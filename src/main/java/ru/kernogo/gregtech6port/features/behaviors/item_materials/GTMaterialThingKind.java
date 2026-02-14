@@ -5,6 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import org.jetbrains.annotations.Nullable;
 import ru.kernogo.gregtech6port.GregTech6Port;
 import ru.kernogo.gregtech6port.features.behaviors.material_composition.GTMaterialAmount;
@@ -78,21 +79,26 @@ public record GTMaterialThingKind(
     @FunctionalInterface
     public interface IItemCreator {
         /**
-         * @param block    Block created with {@link IBlockCreator} will be supplied here
-         * @param material Material for an Item
-         * @param kind     Kind for an Item
+         * @param itemProperties Base properties for the creation of the Item (like "id", supplied by the DeferredRegister).
+         *                       Additional properties can be set inside the implementation of this method.
+         * @param block          Block created with {@link IBlockCreator} will be supplied here.
+         *                       Will be null, if {@link IBlockCreator} is null for this Material Thing Kind.
+         * @param material       Material for an Item
+         * @param kind           Kind for an Item
          * @return {@link Item} created using parameters above
          */
-        Item createItem(@Nullable Block block, GTMaterial material, GTMaterialThingKind kind);
+        Item createItem(Item.Properties itemProperties, @Nullable Block block, GTMaterial material, GTMaterialThingKind kind);
     }
 
     @FunctionalInterface
     public interface IBlockCreator {
         /**
-         * @param material Material for a Block
-         * @param kind     Kind for a Block
+         * @param blockProperties Base properties for the creation of the Block (like "id", supplied by the DeferredRegister).
+         *                        Additional properties can be set inside the implementation of this method.
+         * @param material        Material for a Block
+         * @param kind            Kind for a Block
          * @return {@link Block} created using parameters above
          */
-        Block createBlock(GTMaterial material, GTMaterialThingKind kind);
+        Block createBlock(BlockBehaviour.Properties blockProperties, GTMaterial material, GTMaterialThingKind kind);
     }
 }

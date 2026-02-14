@@ -8,10 +8,11 @@ import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 import org.jetbrains.annotations.Nullable;
 
@@ -75,11 +76,11 @@ public class GTOneInputModuloCraftingRecipeBuilder implements RecipeBuilder {
     }
 
     @Override
-    public void save(RecipeOutput recipeOutput, ResourceLocation id) {
-        this.ensureValid(id);
+    public void save(RecipeOutput recipeOutput, ResourceKey<Recipe<?>> resourceKey) {
+        this.ensureValid(resourceKey);
         Advancement.Builder advancementBuilder = recipeOutput.advancement()
-            .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(id))
-            .rewards(AdvancementRewards.Builder.recipe(id))
+            .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(resourceKey))
+            .rewards(AdvancementRewards.Builder.recipe(resourceKey))
             .requirements(AdvancementRequirements.Strategy.OR);
         this.criteria.forEach(advancementBuilder::addCriterion);
 
@@ -93,16 +94,16 @@ public class GTOneInputModuloCraftingRecipeBuilder implements RecipeBuilder {
         );
 
         recipeOutput.accept(
-            id,
+            resourceKey,
             recipe,
-            advancementBuilder.build(id.withPrefix("recipes/" + this.category.getFolderName() + "/"))
+            advancementBuilder.build(resourceKey.location().withPrefix("recipes/" + this.category.getFolderName() + "/"))
         );
     }
 
     /** Makes sure that this recipe is valid and obtainable. */
-    private void ensureValid(ResourceLocation id) {
+    private void ensureValid(ResourceKey<Recipe<?>> recipe) {
         if (this.criteria.isEmpty()) {
-            throw new IllegalStateException("No way of obtaining recipe " + id);
+            throw new IllegalStateException("No way of obtaining recipe " + recipe.location());
         }
     }
 }

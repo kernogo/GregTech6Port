@@ -8,13 +8,16 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.ShapelessCraftingRecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 import ru.kernogo.gregtech6port.registration.registered.GTRecipeSerializers;
 
 import java.util.List;
@@ -96,36 +99,29 @@ public class GTOneInputModuloCraftingRecipe extends CustomRecipe {
         return false;
     }
 
-    private static @Nullable ItemStack getTheOnlyNonEmptyItemOrElseNull(GTCraftingInputWithContainerContext inputWithContext) {
-        List<ItemStack> nonEmptyItems = inputWithContext.getContainerItems().stream()
-            .filter(stack -> !stack.isEmpty())
-            .toList();
-
-        return nonEmptyItems.size() == 1 ? nonEmptyItems.getFirst() : null;
-    }
-
     @Override
     public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
         return this.result.copy();
     }
 
     @Override
-    public boolean canCraftInDimensions(int width, int height) {
-        return width * height >= 1;
+    public List<RecipeDisplay> display() {
+        return List.of(
+            new ShapelessCraftingRecipeDisplay(
+                List.of(this.ingredient.display()),
+                new SlotDisplay.ItemStackSlotDisplay(this.result),
+                new SlotDisplay.ItemSlotDisplay(Items.CRAFTING_TABLE)
+            )
+        );
     }
 
     @Override
-    public ItemStack getResultItem(HolderLookup.Provider registries) {
-        return this.result;
-    }
-
-    @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<? extends CustomRecipe> getSerializer() {
         return GTRecipeSerializers.ONE_INPUT_MODULO_CRAFTING.get();
     }
 
     @Override
-    public String getGroup() {
+    public String group() {
         return this.group;
     }
 
@@ -134,7 +130,7 @@ public class GTOneInputModuloCraftingRecipe extends CustomRecipe {
             builder -> builder.group(
                     Codec.STRING.optionalFieldOf("group", "").forGetter(recipe -> recipe.group),
                     CraftingBookCategory.CODEC.fieldOf("category").orElse(CraftingBookCategory.MISC).forGetter(GTOneInputModuloCraftingRecipe::category),
-                    Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(recipe -> recipe.ingredient),
+                    Ingredient.CODEC.fieldOf("ingredient").forGetter(recipe -> recipe.ingredient),
                     ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
                     Codec.INT.fieldOf("modulo").forGetter(recipe -> recipe.modulo),
                     Codec.INT.fieldOf("remainder").forGetter(recipe -> recipe.remainder)

@@ -10,7 +10,7 @@ import java.util.Objects;
 
 /**
  * @see ru.kernogo.gregtech6port.features.material_kind_things.items.GTDominantMaterialKindItemAccessService
- * Another sevice which is made similarly to this service,
+ * Another service which is made similarly to this service,
  * see it for the details.
  * (If anything changes here, you should probably change it there too)
  */

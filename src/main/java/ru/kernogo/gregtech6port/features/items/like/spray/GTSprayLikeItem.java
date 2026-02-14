@@ -128,7 +128,7 @@ public class GTSprayLikeItem extends Item {
                     );
                 }
                 itemWithUsesBehavior.decreaseUsesOrBreak(numUsesToDecrease, stack, player, usedHand);
-                yield InteractionResult.sidedSuccess(level.isClientSide());
+                yield InteractionResult.SUCCESS;
             }
         };
     }

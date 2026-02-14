@@ -21,7 +21,7 @@ public final class GTGameTestUtils {
     private GTGameTestUtils() {}
 
     /**
-     * Make a test functions with good defaults for use in
+     * Make a test function with good defaults for use in
      * {@link net.minecraft.gametest.framework.GameTestGenerator}-annotated methods. <br>
      * Caller-sensitive, prepends the calling class and method names to the {@code baseTestName}.
      */

@@ -113,6 +113,7 @@ public class LighterLikeItemClickUntilFireTests {
             "This test was made for the lighters that break into the AIR item only");
 
         Player player = gameTestHelper.makeMockPlayer(GameType.SURVIVAL);
+        player.setItemInHand(InteractionHand.MAIN_HAND, deferredLighterItem.toStack());
 
         clickUntilFireAppearsOrFail(gameTestHelper,
             player,
@@ -134,13 +135,13 @@ public class LighterLikeItemClickUntilFireTests {
         int numberOfClicks = 0;
         boolean fireAppeared = false;
         while (numberOfClicks < maxTimesToClick) {
+            GTGameTestUtils.useBlockOutsideUp(gameTestHelper, player, blockPos);
+            numberOfClicks++;
             if (isSingleUse) {
                 gameTestHelper.assertTrue(player.getMainHandItem().is(Items.AIR),
                     "Expected the lighter item to not be present");
                 player.setItemInHand(InteractionHand.MAIN_HAND, deferredLighterItem.toStack());
             }
-            numberOfClicks++;
-            GTGameTestUtils.useBlockOutsideUp(gameTestHelper, player, blockPos);
             if (gameTestHelper.getBlockState(blockPos.above()).is(Blocks.FIRE)) {
                 fireAppeared = true;
                 break;

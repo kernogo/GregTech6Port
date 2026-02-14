@@ -1,7 +1,5 @@
 package ru.kernogo.gregtech6port.registration.registered.materials;
 
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import ru.kernogo.gregtech6port.features.behaviors.item_materials.GTMaterialThingKind;
 import ru.kernogo.gregtech6port.features.behaviors.material_composition.GTMaterialAmount;
 import ru.kernogo.gregtech6port.features.behaviors.material_composition.GTMaterialAndAmount;
@@ -25,7 +23,7 @@ public final class GTMaterialThingKinds {
                 "%s Dust",
                 GTMaterialAmount.of(1),
                 List.of(),
-                (block, material, kind) -> new GTSimpleMaterialKindItem(new Item.Properties(), material, kind),
+                (itemProperties, block, material, kind) -> new GTSimpleMaterialKindItem(itemProperties, material, kind),
                 null
             )
         );
@@ -38,7 +36,7 @@ public final class GTMaterialThingKinds {
                 "Small Pile of %s Dust",
                 GTMaterialAmount.of(0, 1, 4),
                 List.of(),
-                (block, material, kind) -> new GTSimpleMaterialKindItem(new Item.Properties(), material, kind),
+                (itemProperties, block, material, kind) -> new GTSimpleMaterialKindItem(itemProperties, material, kind),
                 null
             )
         );
@@ -51,7 +49,7 @@ public final class GTMaterialThingKinds {
                 "Tiny Pile of %s Dust",
                 GTMaterialAmount.of(0, 1, 9),
                 List.of(),
-                (block, material, kind) -> new GTSimpleMaterialKindItem(new Item.Properties(), material, kind),
+                (itemProperties, block, material, kind) -> new GTSimpleMaterialKindItem(itemProperties, material, kind),
                 null
             )
         );
@@ -64,7 +62,7 @@ public final class GTMaterialThingKinds {
                 "1/72nd of a Pile of %s Dust",
                 GTMaterialAmount.of(0, 1, 72),
                 List.of(),
-                (block, material, kind) -> new GTSimpleMaterialKindItem(new Item.Properties(), material, kind),
+                (itemProperties, block, material, kind) -> new GTSimpleMaterialKindItem(itemProperties, material, kind),
                 null
             )
         );
@@ -77,7 +75,7 @@ public final class GTMaterialThingKinds {
                 "%s Ingot",
                 GTMaterialAmount.of(1),
                 List.of(),
-                (block, material, kind) -> new GTSimpleMaterialKindItem(new Item.Properties(), material, kind),
+                (itemProperties, block, material, kind) -> new GTSimpleMaterialKindItem(itemProperties, material, kind),
                 null
             )
         );
@@ -90,7 +88,7 @@ public final class GTMaterialThingKinds {
                 "%s Rod",
                 GTMaterialAmount.of(0, 1, 2),
                 List.of(),
-                (block, material, kind) -> new GTSimpleMaterialKindItem(new Item.Properties(), material, kind),
+                (itemProperties, block, material, kind) -> new GTSimpleMaterialKindItem(itemProperties, material, kind),
                 null
             )
         );
@@ -103,7 +101,7 @@ public final class GTMaterialThingKinds {
                 "Crushed %s Ore",
                 GTMaterialAmount.of(0, 1, 2),
                 List.of(new GTMaterialAndAmount(GTBasicMaterials.STONE, GTMaterialAmount.of(1))),
-                (block, material, kind) -> new GTSimpleMaterialKindItem(new Item.Properties(), material, kind),
+                (itemProperties, block, material, kind) -> new GTSimpleMaterialKindItem(itemProperties, material, kind),
                 null
             )
         );
@@ -119,8 +117,8 @@ public final class GTMaterialThingKinds {
                 "Block of %s Dust",
                 GTMaterialAmount.of(9),
                 List.of(),
-                (block, material, kind) -> new GTSimpleMaterialKindBlockItem(Objects.requireNonNull(block), new Item.Properties(), material, kind),
-                (material, kind) -> new GTSimpleMaterialKindBlock(BlockBehaviour.Properties.of(), material, kind)
+                (itemProperties, block, material, kind) -> new GTSimpleMaterialKindBlockItem(Objects.requireNonNull(block), itemProperties, material, kind),
+                (blockProperties, material, kind) -> new GTSimpleMaterialKindBlock(blockProperties, material, kind)
             )
         );
 
