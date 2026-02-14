@@ -44,9 +44,9 @@ public final class GTMaterialKindItemsAndBlocksRegistration {
     public static void registerAllMaterialKindItemsAndBlocks() {
         // These registries are already registered and populated by this point
         Registry<GTMaterial> materialsRegistry = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY)
-            .registryOrThrow(GTCustomRegistries.MATERIALS.key());
+            .lookupOrThrow(GTCustomRegistries.MATERIALS.key());
         Registry<GTMaterialThingKind> kindsRegistry = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY)
-            .registryOrThrow(GTCustomRegistries.MATERIAL_THING_KINDS.key());
+            .lookupOrThrow(GTCustomRegistries.MATERIAL_THING_KINDS.key());
 
         // We register all Material-Kind Items and Blocks, whether or not they will be used.
         // TODO: hide unused Items
@@ -83,16 +83,25 @@ public final class GTMaterialKindItemsAndBlocksRegistration {
         String blockAndItemName = "%s_%s".formatted(material.name(), kind.name());
 
         final DeferredBlock<Block> deferredBlockOrNull = kind.blockCreator() == null ? null :
-            GTRegisters.BLOCKS.register(
+            GTRegisters.BLOCKS.registerBlock(
                 blockAndItemName,
-                () -> kind.blockCreator().createBlock(material, kind)
+                blockProperties -> kind.blockCreator().createBlock(
+                    blockProperties,
+                    material,
+                    kind
+                )
             );
 
         // Minecraft registers Items after Blocks,
         // so deferredBlockOrNull.get() will return an already registered Block.
-        final DeferredItem<Item> deferredItem = GTRegisters.ITEMS.register(
+        final DeferredItem<Item> deferredItem = GTRegisters.ITEMS.registerItem(
             blockAndItemName,
-            () -> kind.itemCreator().createItem(deferredBlockOrNull != null ? deferredBlockOrNull.get() : null, material, kind)
+            itemProperties -> kind.itemCreator().createItem(
+                itemProperties,
+                deferredBlockOrNull != null ? deferredBlockOrNull.get() : null,
+                material,
+                kind
+            )
         );
 
         materialKindItemDefinitionService.addGTMaterialKindItemDefinition(

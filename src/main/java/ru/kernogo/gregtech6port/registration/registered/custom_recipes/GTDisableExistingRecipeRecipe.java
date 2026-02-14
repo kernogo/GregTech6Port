@@ -30,12 +30,7 @@ public class GTDisableExistingRecipeRecipe extends CustomRecipe {
     }
 
     @Override
-    public boolean canCraftInDimensions(int width, int height) {
-        return false;
-    }
-
-    @Override
-    public RecipeSerializer<?> getSerializer() {
+    public RecipeSerializer<? extends CustomRecipe> getSerializer() {
         return GTRecipeSerializers.DISABLE_EXISTING_RECIPE.get();
     }
 

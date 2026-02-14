@@ -1,7 +1,7 @@
 plugins {
     id("java-library")
     id("maven-publish")
-    id("net.neoforged.gradle.userdev") version "7.0.185"
+    id("net.neoforged.gradle.userdev") version "7.1.20"
     id("idea")
     // Convention plugins from buildSrc go below
     id("merge-english-language-files")
@@ -119,39 +119,39 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     // https://www.curseforge.com/minecraft/mc-mods/jei
-    compileOnly("mezz.jei:jei-${project.property("minecraft_version")}-neoforge-api:${project.property("jei_version")}")
-    runtimeOnly("mezz.jei:jei-${project.property("minecraft_version")}-neoforge:${project.property("jei_version")}")
+    // compileOnly("mezz.jei:jei-${project.property("minecraft_version")}-neoforge-api:${project.property("jei_version")}")
+    // runtimeOnly("mezz.jei:jei-${project.property("minecraft_version")}-neoforge:${project.property("jei_version")}")
 
     // https://www.curseforge.com/minecraft/mc-mods/emi
-    compileOnly("dev.emi:emi-neoforge:${project.property("emi_version")}:api")
-    runtimeOnly("dev.emi:emi-neoforge:${project.property("emi_version")}")
+    // compileOnly("dev.emi:emi-neoforge:${project.property("emi_version")}:api")
+    // runtimeOnly("dev.emi:emi-neoforge:${project.property("emi_version")}")
 
     // https://www.curseforge.com/minecraft/mc-mods/the-twilight-forest
-    implementation("team-twilight:twilightforest:${project.property("twilightforest_version")}:universal")
+    // implementation("team-twilight:twilightforest:${project.property("twilightforest_version")}:universal")
 
     // https://www.curseforge.com/minecraft/mc-mods/applied-energistics-2
-    compileOnly("org.appliedenergistics:appliedenergistics2:${project.property("ae2_version")}:api")
-    runtimeOnly("org.appliedenergistics:appliedenergistics2:${project.property("ae2_version")}")
+    // compileOnly("org.appliedenergistics:appliedenergistics2:${project.property("ae2_version")}:api")
+    // runtimeOnly("org.appliedenergistics:appliedenergistics2:${project.property("ae2_version")}")
 
     // https://www.curseforge.com/minecraft/mc-mods/railcraft-reborn
-    compileOnly("curse.maven:railcraft-reborn-901491:${project.property("railcraft_api_curse_version")}")
-    runtimeOnly("curse.maven:railcraft-reborn-901491:${project.property("railcraft_curse_version")}")
+    // compileOnly("curse.maven:railcraft-reborn-901491:${project.property("railcraft_api_curse_version")}")
+    // runtimeOnly("curse.maven:railcraft-reborn-901491:${project.property("railcraft_curse_version")}")
 
     // https://www.curseforge.com/minecraft/mc-mods/curios
-    compileOnly("top.theillusivec4.curios:curios-neoforge:${project.property("curios_version")}:api")
-    runtimeOnly("top.theillusivec4.curios:curios-neoforge:${project.property("curios_version")}")
+    // compileOnly("top.theillusivec4.curios:curios-neoforge:${project.property("curios_version")}:api")
+    // runtimeOnly("top.theillusivec4.curios:curios-neoforge:${project.property("curios_version")}")
 
     // https://www.curseforge.com/minecraft/mc-mods/jade
-    implementation("maven.modrinth:jade:${project.property("jade_version")}")
+    // implementation("maven.modrinth:jade:${project.property("jade_version")}")
 
     // https://www.curseforge.com/minecraft/mc-mods/journeymap
-    runtimeOnly("curse.maven:journeymap-32274:${project.property("journeymap_curse_version")}")
+    // runtimeOnly("curse.maven:journeymap-32274:${project.property("journeymap_curse_version")}")
 
     // https://www.curseforge.com/minecraft/mc-mods/patchouli
-    runtimeOnly("vazkii.patchouli:Patchouli:${project.property("patchouli_version")}")
+    // runtimeOnly("vazkii.patchouli:Patchouli:${project.property("patchouli_version")}")
 
     // https://www.curseforge.com/minecraft/mc-mods/building-gadgets
-    runtimeOnly("curse.maven:building-gadgets-298187:${project.property("building_gadgets_curse_version")}")
+    // runtimeOnly("curse.maven:building-gadgets-298187:${project.property("building_gadgets_curse_version")}")
 }
 
 tasks.withType<ProcessResources>().configureEach {
