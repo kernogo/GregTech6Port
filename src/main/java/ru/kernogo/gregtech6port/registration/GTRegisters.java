@@ -16,7 +16,7 @@ import ru.kernogo.gregtech6port.features.behaviors.material_composition.capabili
 import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringCapabilitiesRegistration;
 import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringSystem;
 import ru.kernogo.gregtech6port.features.items.like.spray.GTSprayLikeItemEntityInteractHandler;
-import ru.kernogo.gregtech6port.features.material_kind_items.GTMaterialKindItemTintingHandler;
+import ru.kernogo.gregtech6port.features.material_kind_things.GTMaterialKindItemsAndBlocksTintingHandler;
 import ru.kernogo.gregtech6port.registration.registered.GTBlockEntityTypes;
 import ru.kernogo.gregtech6port.registration.registered.GTBlocks;
 import ru.kernogo.gregtech6port.registration.registered.GTCapabilities;
@@ -71,7 +71,8 @@ public final class GTRegisters {
 
         modEventBus.addListener(GTTintColoringSystem::registerBlockColorHandlers);
         modEventBus.addListener(GTTintColoringSystem::registerItemColorHandlers);
-        modEventBus.addListener(GTMaterialKindItemTintingHandler::registerItemColorHandlers);
+        modEventBus.addListener(GTMaterialKindItemsAndBlocksTintingHandler::registerItemColorHandlers);
+        modEventBus.addListener(GTMaterialKindItemsAndBlocksTintingHandler::registerBlockColorHandlers);
 
         NeoForge.EVENT_BUS.addListener(GTItemTooltipEventHandler::handleItemTooltipEvent);
         NeoForge.EVENT_BUS.addListener(GTSprayLikeItemEntityInteractHandler::onEntityInteract);

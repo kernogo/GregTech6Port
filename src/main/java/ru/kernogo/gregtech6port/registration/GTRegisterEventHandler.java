@@ -1,7 +1,7 @@
 package ru.kernogo.gregtech6port.registration;
 
 import net.neoforged.neoforge.registries.RegisterEvent;
-import ru.kernogo.gregtech6port.features.material_kind_items.registration.GTMaterialKindItemsRegistration;
+import ru.kernogo.gregtech6port.features.material_kind_things.GTMaterialKindItemsAndBlocksRegistration;
 
 public final class GTRegisterEventHandler {
     private GTRegisterEventHandler() {}
@@ -24,7 +24,8 @@ public final class GTRegisterEventHandler {
         // (https://docs.neoforged.net/docs/1.21.1/concepts/registries#querying-registries).
         // But we ignore that for some of our custom registries
 
-        GTMaterialKindItemsRegistration.registerAllMaterialKindItems();
+        GTMaterialKindItemsAndBlocksRegistration.registerAllMaterialKindItemsAndBlocks();
+        GTMaterialKindItemsAndBlocksRegistration.registerExistingMaterialKindItemsAndBlocks();
 
         isAlreadyRan = true;
     }

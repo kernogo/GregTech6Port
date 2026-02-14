@@ -31,6 +31,30 @@ public final class GTBasicMaterials {
                 .densityGramPerCm3UnknownSoUseDefault() // TODO: set density same as in SiO2 (add automatic calculations)
                 .build()
         );
+    public static final GTMaterial REDSTONE =
+        GTRegisters.MATERIALS.register(
+            "redstone",
+            () -> GTMaterial.builder()
+                .name("redstone")
+                .englishNameForDatagen("Redstone")
+                .colorData(255, 200, 0, 0)
+                .textureSet(GTMaterialTextureSets.REDSTONE) // TODO: auto calculations
+                .meltingBoilingPointsUnknownSoUseDefault()
+                .densityGramPerCm3UnknownSoUseDefault()
+                .build()
+        );
+    public static final GTMaterial GLOWSTONE =
+        GTRegisters.MATERIALS.register(
+            "glowstone",
+            () -> GTMaterial.builder()
+                .name("glowstone")
+                .englishNameForDatagen("Glowstone")
+                .colorData(255, 255, 255, 0)
+                .textureSet(GTMaterialTextureSets.REDSTONE) // TODO: auto calculations
+                .meltingBoilingPointsUnknownSoUseDefault()
+                .densityGramPerCm3UnknownSoUseDefault()
+                .build()
+        );
 
     /** This gets called to classload this class (to initialize all static fields in this class) */
     public static void init() {}

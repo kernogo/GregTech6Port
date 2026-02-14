@@ -1,6 +1,11 @@
 package ru.kernogo.gregtech6port.features.behaviors.item_materials;
 
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.Nullable;
+import ru.kernogo.gregtech6port.GregTech6Port;
 import ru.kernogo.gregtech6port.features.behaviors.material_composition.GTMaterialAmount;
 import ru.kernogo.gregtech6port.utils.exception.GTUnexpectedValidationFailException;
 
@@ -11,12 +16,15 @@ import ru.kernogo.gregtech6port.utils.exception.GTUnexpectedValidationFailExcept
  * @param translationKey     key of a {@link #englishTranslation} in language JSON files
  * @param englishTranslation English-translated Material name
  * @param colorData          color or a Material which is used for the coloring
- * @param textureSet         a set of textures used as model textures for Material-Kind Items
- *                           ({@link ru.kernogo.gregtech6port.features.material_kind_items.GTMaterialKindItem})
- *                           (and Blocks TODO) having this Material
+ * @param textureSet         a set of textures used as model textures for Material-Kind Items and Blocks
+ *                           ({@link ru.kernogo.gregtech6port.features.material_kind_things})
+ *                           having this Material
  * @param meltingPoint       melting point in Kelvin
  * @param boilingPoint       boiling point in Kelvin
  * @param densityGramPerCm3  density in gram per cubic centimeter
+ * @param itemTag            Item Tag that all Items with this Material will have.
+ *                           Note that not only Material-Kind Items can have that tag,
+ *                           but also other Items (vanilla or modded).
  */
 public record GTMaterial(
     String name,
@@ -26,7 +34,8 @@ public record GTMaterial(
     GTMaterialTextureSet textureSet,
     int meltingPoint,
     int boilingPoint,
-    double densityGramPerCm3
+    double densityGramPerCm3,
+    TagKey<Item> itemTag
 ) {
     public record ColorData(int a, int r, int g, int b) {
         public static void validateAndThrowIfInvalid(ColorData colorData) {
@@ -53,7 +62,7 @@ public record GTMaterial(
 
     /**
      * We don't use Lombok's @Builder because we want additional validations. <br>
-     * {@link GTMaterial#translationKey} is created automatically.
+     * {@link GTMaterial#translationKey} and {@link GTMaterial#itemTag} are created automatically.
      */
     public static class Builder {
         private @Nullable String name;
@@ -147,6 +156,11 @@ public record GTMaterial(
 
             String translationKey = "gregtech6port.material." + name;
 
+            TagKey<Item> itemTag = TagKey.create(
+                Registries.ITEM,
+                ResourceLocation.fromNamespaceAndPath(GregTech6Port.MODID, "materials/" + name)
+            );
+
             return new GTMaterial(
                 name,
                 translationKey,
@@ -155,7 +169,8 @@ public record GTMaterial(
                 textureSet,
                 meltingPoint,
                 boilingPoint,
-                densityGramPerCm3
+                densityGramPerCm3,
+                itemTag
             );
         }
 

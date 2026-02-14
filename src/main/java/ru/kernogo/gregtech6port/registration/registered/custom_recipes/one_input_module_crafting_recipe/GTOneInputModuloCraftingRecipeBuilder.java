@@ -52,6 +52,11 @@ public class GTOneInputModuloCraftingRecipeBuilder implements RecipeBuilder {
         return this;
     }
 
+    public GTOneInputModuloCraftingRecipeBuilder requires(Ingredient ingredient) {
+        this.ingredient = ingredient;
+        return this;
+    }
+
     @Override
     public RecipeBuilder unlockedBy(String name, Criterion<?> criterion) {
         this.criteria.put(name, criterion);

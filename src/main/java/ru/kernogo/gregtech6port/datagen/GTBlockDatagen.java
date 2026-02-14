@@ -25,10 +25,10 @@ final class GTBlockDatagen extends BlockStateProvider {
     }
 
     /** Shorthand method for the datagen of simple BlockItems with an existing model */
-    private void register(String modelName, DeferredBlock<Block> deferredBlock) {
+    private void register(String blockModelPath, DeferredBlock<Block> deferredBlock) {
         simpleBlockWithItem(
             deferredBlock.get(),
-            models().getExistingFile(modLoc(modelName))
+            models().getExistingFile(modLoc(blockModelPath))
         );
     }
 }

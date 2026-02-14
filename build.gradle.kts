@@ -5,6 +5,7 @@ plugins {
     id("idea")
     // Convention plugins from buildSrc go below
     id("merge-english-language-files")
+    id("ensure-package-info")
 }
 
 repositories {
@@ -154,6 +155,7 @@ dependencies {
 }
 
 tasks.withType<ProcessResources>().configureEach {
+    // @formatter:off
     val replaceProperties = mapOf(
         "minecraft_version"       to project.property("minecraft_version") as String,
         "minecraft_version_range" to project.property("minecraft_version_range") as String,
@@ -167,6 +169,7 @@ tasks.withType<ProcessResources>().configureEach {
         "mod_authors"             to project.property("mod_authors") as String,
         "mod_description"         to project.property("mod_description") as String
     )
+    // @formatter:on
     inputs.properties(replaceProperties)
 
     filesMatching(listOf("META-INF/neoforge.mods.toml")) {

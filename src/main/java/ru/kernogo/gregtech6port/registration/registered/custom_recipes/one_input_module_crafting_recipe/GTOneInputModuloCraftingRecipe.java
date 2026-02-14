@@ -133,7 +133,7 @@ public class GTOneInputModuloCraftingRecipe extends CustomRecipe {
         private static final MapCodec<GTOneInputModuloCraftingRecipe> CODEC = RecordCodecBuilder.mapCodec(
             builder -> builder.group(
                     Codec.STRING.optionalFieldOf("group", "").forGetter(recipe -> recipe.group),
-                    CraftingBookCategory.CODEC.fieldOf("category").orElse(CraftingBookCategory.MISC).forGetter(recipe -> recipe.category()),
+                    CraftingBookCategory.CODEC.fieldOf("category").orElse(CraftingBookCategory.MISC).forGetter(GTOneInputModuloCraftingRecipe::category),
                     Ingredient.CODEC_NONEMPTY.fieldOf("ingredient").forGetter(recipe -> recipe.ingredient),
                     ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
                     Codec.INT.fieldOf("modulo").forGetter(recipe -> recipe.modulo),
