@@ -1,6 +1,9 @@
 package ru.kernogo.gregtech6port.registration;
 
+import com.mojang.serialization.MapCodec;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.gametest.framework.GameTestInstance;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
@@ -22,6 +25,7 @@ import ru.kernogo.gregtech6port.registration.registered.GTCapabilities;
 import ru.kernogo.gregtech6port.registration.registered.GTCustomRegistries;
 import ru.kernogo.gregtech6port.registration.registered.GTDataComponentTypes;
 import ru.kernogo.gregtech6port.registration.registered.GTDataMapTypes;
+import ru.kernogo.gregtech6port.registration.registered.GTGameTestInstanceTypes;
 import ru.kernogo.gregtech6port.registration.registered.GTItems;
 import ru.kernogo.gregtech6port.registration.registered.GTRecipeSerializers;
 import ru.kernogo.gregtech6port.registration.registered.materials.GTBasicMaterials;
@@ -35,6 +39,7 @@ public final class GTRegisters {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, GregTech6Port.MODID);
     public static final DeferredRegister.DataComponents DATA_COMPONENTS_TYPES = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, GregTech6Port.MODID);
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, GregTech6Port.MODID);
+    public static final DeferredRegister<MapCodec<? extends GameTestInstance>> TEST_INSTANCE_TYPES = DeferredRegister.create(BuiltInRegistries.TEST_INSTANCE_TYPE, GregTech6Port.MODID);
 
     // Registers for custom registries go below
 
@@ -85,6 +90,7 @@ public final class GTRegisters {
         GTBlockEntityTypes.init();
         GTDataComponentTypes.init();
         GTRecipeSerializers.init();
+        GTGameTestInstanceTypes.init();
 
         GTDataMapTypes.init();
 
@@ -100,6 +106,7 @@ public final class GTRegisters {
         BLOCK_ENTITY_TYPES.register(modEventBus);
         DATA_COMPONENTS_TYPES.register(modEventBus);
         RECIPE_SERIALIZERS.register(modEventBus);
+        TEST_INSTANCE_TYPES.register(modEventBus);
 
         // Custom registers go below
         // ...

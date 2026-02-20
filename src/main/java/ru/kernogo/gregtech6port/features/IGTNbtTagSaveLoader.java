@@ -1,8 +1,8 @@
 package ru.kernogo.gregtech6port.features;
 
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -14,8 +14,7 @@ public interface IGTNbtTagSaveLoader<T> {
 
     void saveAdditional(CompoundTag compoundTag, @Nullable T data);
 
-    // Access transformer allows BlockEntity.DataComponentInput to be available
-    @Nullable T getDataForApplyImplicitComponents(BlockEntity.DataComponentInput componentInput);
+    @Nullable T getDataForApplyImplicitComponents(DataComponentGetter componentInput);
 
     void collectImplicitComponents(DataComponentMap.Builder components, @Nullable T data);
 

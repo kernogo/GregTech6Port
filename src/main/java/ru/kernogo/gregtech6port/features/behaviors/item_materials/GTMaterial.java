@@ -45,7 +45,7 @@ public record GTMaterial(
             int b = colorData.b();
             if (a < 0 || a > 255 || r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) {
                 throw new GTUnexpectedValidationFailException(
-                    "Some of the argb components are out of bounds. a=%s, r=%s, g=%s, b=%s".formatted(a, r, g, b)
+                    "Some of the ARGB components are out of bounds. a=%s, r=%s, g=%s, b=%s".formatted(a, r, g, b)
                 );
             }
         }

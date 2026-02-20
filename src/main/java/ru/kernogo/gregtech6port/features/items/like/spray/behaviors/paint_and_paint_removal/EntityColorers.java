@@ -3,8 +3,8 @@ package ru.kernogo.gregtech6port.features.items.like.spray.behaviors.paint_and_p
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.animal.Cat;
-import net.minecraft.world.entity.animal.Sheep;
-import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.entity.animal.sheep.Sheep;
+import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import ru.kernogo.gregtech6port.utils.exception.GTUnexpectedValidationFailException;
@@ -108,6 +108,6 @@ final class EntityColorers {
     private static boolean isOwner(Player player, OwnableEntity ownableEntity) {
         // Mock player in game tests does not show up in TamableEntity#isOwnedBy,
         // so we compare the UUIDs instead of calling TamableEntity#isOwnedBy.
-        return ownableEntity.getOwnerUUID() != null && ownableEntity.getOwnerUUID().equals(player.getUUID());
+        return ownableEntity.getOwnerReference() != null && ownableEntity.getOwnerReference().getUUID().equals(player.getUUID());
     }
 }

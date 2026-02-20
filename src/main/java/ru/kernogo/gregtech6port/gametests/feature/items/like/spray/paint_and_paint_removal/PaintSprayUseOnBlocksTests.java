@@ -2,9 +2,7 @@ package ru.kernogo.gregtech6port.gametests.feature.items.like.spray.paint_and_pa
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.gametest.framework.GameTestGenerator;
 import net.minecraft.gametest.framework.GameTestHelper;
-import net.minecraft.gametest.framework.TestFunction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
@@ -14,26 +12,24 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.neoforged.neoforge.gametest.GameTestHolder;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.RegisterGameTestsEvent;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.apache.commons.lang3.tuple.Triple;
-import ru.kernogo.gregtech6port.GregTech6Port;
 import ru.kernogo.gregtech6port.gametests.GTGameTestUtils;
 import ru.kernogo.gregtech6port.gametests.GTItemWithUsesGameTestUtils;
 import ru.kernogo.gregtech6port.registration.registered.GTItems;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 
 /** A set of tests to check the Paint Spray Can behavior on blocks */
-@GameTestHolder(GregTech6Port.MODID)
+@EventBusSubscriber
 public class PaintSprayUseOnBlocksTests {
     /** Test the coloring of a simple GLAZED_TERRACOTTA block (it must keep its HORIZONTAL_FACING property) */
-    @GameTestGenerator
-    public static Collection<TestFunction> tests_SimpleBlock_GlazedTerracotta() {
-        ArrayList<TestFunction> tests = new ArrayList<>();
+    @SubscribeEvent
+    public static void tests_SimpleBlock_GlazedTerracotta(RegisterGameTestsEvent event) {
         // Paint spray can; paint spray can color; expected result block
         for (Triple<DeferredItem<Item>, DyeColor, Block> testCase : List.of(
             Triple.of(GTItems.WHITE_PAINT_SPRAY_CAN, DyeColor.WHITE, Blocks.WHITE_GLAZED_TERRACOTTA),
@@ -57,21 +53,20 @@ public class PaintSprayUseOnBlocksTests {
             DyeColor sprayColor = testCase.getMiddle();
             Block block = testCase.getRight();
 
-            tests.add(GTGameTestUtils.makeTestFunction(
+            GTGameTestUtils.registerTestFunction(
+                event,
                 testCase.getLeft().getKey().location().getPath(),
                 "gametest_bedrock_1x2x1",
                 gameTestHelper -> doTest_SimpleBlock_GlazedTerracotta(
                     gameTestHelper, deferredItem, sprayColor, block
                 )
-            ));
+            );
         }
-        return tests;
     }
 
     /** Test the clicking on a non-colorable block */
-    @GameTestGenerator
-    public static Collection<TestFunction> tests_SimpleBlock_NonColorableBlock() {
-        ArrayList<TestFunction> tests = new ArrayList<>();
+    @SubscribeEvent
+    public static void tests_SimpleBlock_NonColorableBlock(RegisterGameTestsEvent event) {
         for (DeferredItem<Item> deferredItem : List.of(
             GTItems.WHITE_PAINT_SPRAY_CAN,
             GTItems.ORANGE_PAINT_SPRAY_CAN,
@@ -90,13 +85,13 @@ public class PaintSprayUseOnBlocksTests {
             GTItems.RED_PAINT_SPRAY_CAN,
             GTItems.BLACK_PAINT_SPRAY_CAN
         )) {
-            tests.add(GTGameTestUtils.makeTestFunction(
+            GTGameTestUtils.registerTestFunction(
+                event,
                 deferredItem.getKey().location().getPath(),
                 "gametest_bedrock_1x2x1",
                 gameTestHelper -> doTest_SimpleBlock_NonColorableBlock(gameTestHelper, deferredItem)
-            ));
+            );
         }
-        return tests;
     }
 
     private static void doTest_SimpleBlock_GlazedTerracotta(GameTestHelper gameTestHelper,
@@ -108,7 +103,7 @@ public class PaintSprayUseOnBlocksTests {
 
         int initialRemainingUses = GTItemWithUsesGameTestUtils.getRemainingUses(player.getMainHandItem());
 
-        BlockPos posToClick = new BlockPos(0, 2, 0);
+        BlockPos posToClick = new BlockPos(0, 1, 0);
         BlockState initialBlockState = dyeColor != DyeColor.PURPLE ?
             Blocks.PURPLE_GLAZED_TERRACOTTA.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.WEST) :
             Blocks.MAGENTA_GLAZED_TERRACOTTA.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.WEST);
@@ -118,8 +113,9 @@ public class PaintSprayUseOnBlocksTests {
 
         BlockState expectedBlockState = expectedResultBlock.defaultBlockState()
             .setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.WEST);
-        gameTestHelper.assertBlockState(posToClick, Predicate.isEqual(expectedBlockState),
-            () -> "BlockState changed to a wrong one or didn't change");
+        GTGameTestUtils.assertBlockState(gameTestHelper,
+            posToClick, Predicate.isEqual(expectedBlockState),
+            "BlockState changed to a wrong one or didn't change");
 
         GTItemWithUsesGameTestUtils.assertRemainingUsesEquals(
             gameTestHelper, player.getMainHandItem(), initialRemainingUses - 1
@@ -143,7 +139,7 @@ public class PaintSprayUseOnBlocksTests {
 
         int initialRemainingUses = GTItemWithUsesGameTestUtils.getRemainingUses(player.getMainHandItem());
 
-        BlockPos posToClick = new BlockPos(0, 2, 0);
+        BlockPos posToClick = new BlockPos(0, 1, 0);
         BlockState nonColorableBlockState = Blocks.SPRUCE_STAIRS.defaultBlockState()
             .setValue(BlockStateProperties.HORIZONTAL_FACING, Direction.WEST);
         gameTestHelper.setBlock(posToClick, nonColorableBlockState);
@@ -152,8 +148,9 @@ public class PaintSprayUseOnBlocksTests {
         GTGameTestUtils.useBlockOutsideUp(gameTestHelper, player, posToClick);
         GTGameTestUtils.useBlockOutsideUp(gameTestHelper, player, posToClick);
 
-        gameTestHelper.assertBlockState(posToClick, Predicate.isEqual(nonColorableBlockState),
-            () -> "BlockState should not have changed");
+        GTGameTestUtils.assertBlockState(gameTestHelper,
+            posToClick, Predicate.isEqual(nonColorableBlockState),
+            "BlockState should not have changed");
 
         GTItemWithUsesGameTestUtils.assertRemainingUsesEquals(
             gameTestHelper, player.getMainHandItem(), initialRemainingUses
