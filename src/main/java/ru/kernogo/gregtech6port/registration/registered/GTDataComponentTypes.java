@@ -6,7 +6,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import ru.kernogo.gregtech6port.features.behaviors.item_with_uses.GTItemWithUsesData;
 import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringData;
-import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringSystem;
 import ru.kernogo.gregtech6port.registration.GTRegisters;
 
 /**
@@ -38,7 +37,8 @@ public final class GTDataComponentTypes {
 
     /**
      * Data component for the tint coloring of items. <br>
-     * Works automatically after registration with the system. See {@link GTTintColoringSystem} for the details.
+     * See also: {@link ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringTintSource} -
+     * Tint source that uses this data component
      */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<GTTintColoringData>> TINT_COLORING =
         GTRegisters.DATA_COMPONENTS_TYPES.registerComponentType(

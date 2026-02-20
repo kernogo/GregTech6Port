@@ -14,7 +14,7 @@ import java.util.Map;
  * Colors or uncolors Simple Blocks (Blocks without BlockEntities).
  * Uses the {@link ColoredSimpleBlockDeterminer} to find the colored variant of blocks.
  *
- * @see ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringSystem
+ * @see ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringForBlocks
  */
 final class SimpleBlockColorer {
     SimpleBlockColorer() {}

@@ -7,7 +7,7 @@ import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.neoforged.neoforge.common.conditions.FalseCondition;
+import net.neoforged.neoforge.common.conditions.NeverCondition;
 import ru.kernogo.gregtech6port.datagen.GTRecipeProvider;
 import ru.kernogo.gregtech6port.registration.registered.custom_recipes.GTDisableExistingRecipeRecipe;
 
@@ -36,7 +36,7 @@ public final class GTDisabledVanillaCraftingRecipeProvider {
     private void disableVanillaRecipe(String name) {
         SpecialRecipeBuilder.special(craftingBookCategory -> new GTDisableExistingRecipeRecipe())
             .save(
-                recipeOutput.withConditions(FalseCondition.INSTANCE),
+                recipeOutput.withConditions(NeverCondition.INSTANCE),
                 ResourceKey.create(Registries.RECIPE, ResourceLocation.withDefaultNamespace(name))
             );
     }

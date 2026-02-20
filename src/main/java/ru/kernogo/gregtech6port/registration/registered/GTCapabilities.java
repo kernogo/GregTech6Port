@@ -7,14 +7,14 @@ import org.jetbrains.annotations.Nullable;
 import ru.kernogo.gregtech6port.GregTech6Port;
 import ru.kernogo.gregtech6port.features.behaviors.material_composition.capabilities.IGTMaterialCompositionCapability;
 import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringCapability;
-import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringSystem;
+import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringForBlocks;
 
 public final class GTCapabilities {
     private GTCapabilities() {}
 
     /**
      * Capability for the tint coloring of Blocks corresponding to BlockEntities. <br>
-     * Works automatically after registration with the system. See {@link GTTintColoringSystem} for the details.
+     * See {@link GTTintColoringForBlocks} - Block model tinting that uses this capability.
      */
     public static final BlockCapability<GTTintColoringCapability, @Nullable Void> TINT_COLORING =
         BlockCapability.createVoid(

@@ -5,8 +5,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import org.jetbrains.annotations.Nullable;
 import ru.kernogo.gregtech6port.GregTech6Port;
 import ru.kernogo.gregtech6port.features.material_kind_things.items.GTExistingMaterialKindItemDefinition;
 import ru.kernogo.gregtech6port.features.material_kind_things.items.GTMaterialKindItemDefinition;
@@ -21,9 +19,8 @@ public final class GTMaterialKindItemTagsDatagen extends ItemTagsProvider {
 
     public GTMaterialKindItemTagsDatagen(PackOutput output,
                                          CompletableFuture<HolderLookup.Provider> lookupProvider,
-                                         CompletableFuture<TagLookup<Block>> blockTags,
-                                         @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, blockTags, GregTech6Port.MODID, existingFileHelper);
+                                         CompletableFuture<TagLookup<Block>> blockTags) {
+        super(output, lookupProvider, blockTags, GregTech6Port.MODID);
     }
 
     @Override

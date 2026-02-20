@@ -11,6 +11,7 @@ import net.neoforged.neoforge.gametest.GameTestHolder;
 import ru.kernogo.gregtech6port.GregTech6Port;
 import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringCapability;
 import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringData;
+import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringForBlocks;
 import ru.kernogo.gregtech6port.gametests.GTGameTestUtils;
 import ru.kernogo.gregtech6port.registration.registered.GTBlocks;
 import ru.kernogo.gregtech6port.registration.registered.GTCapabilities;
@@ -22,7 +23,7 @@ import java.util.Objects;
 
 /**
  * A set of tests to check the Paint Removal Spray Can behavior on tint colorable BlockEntities <br>
- * (see {@link ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringSystem})
+ * (see {@link GTTintColoringForBlocks})
  */
 @GameTestHolder(GregTech6Port.MODID)
 public class PaintRemovalSprayTintColoringTests {

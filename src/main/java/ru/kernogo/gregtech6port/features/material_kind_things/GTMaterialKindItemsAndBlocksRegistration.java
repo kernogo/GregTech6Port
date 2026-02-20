@@ -109,7 +109,7 @@ public final class GTMaterialKindItemsAndBlocksRegistration {
                 deferredItem,
                 material,
                 kind,
-                deferredBlockOrNull != null
+                deferredBlockOrNull
             )
         );
 

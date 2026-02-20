@@ -83,7 +83,8 @@ runs {
         systemProperty("neoforge.enabledGameTestNamespaces", project.property("mod_id") as String)
     }
 
-    create("data") {
+    create("clientData") {
+        // We generate all data in one "clientData" run, we don't use "serverData" run
         arguments.addAll(
             "--mod",
             project.property("mod_id") as String,
@@ -119,8 +120,8 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     // https://www.curseforge.com/minecraft/mc-mods/jei
-    // compileOnly("mezz.jei:jei-${project.property("minecraft_version")}-neoforge-api:${project.property("jei_version")}")
-    // runtimeOnly("mezz.jei:jei-${project.property("minecraft_version")}-neoforge:${project.property("jei_version")}")
+    compileOnly("mezz.jei:jei-${project.property("minecraft_version")}-neoforge-api:${project.property("jei_version")}")
+    runtimeOnly("mezz.jei:jei-${project.property("minecraft_version")}-neoforge:${project.property("jei_version")}")
 
     // https://www.curseforge.com/minecraft/mc-mods/emi
     // compileOnly("dev.emi:emi-neoforge:${project.property("emi_version")}:api")

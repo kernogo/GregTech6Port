@@ -3,7 +3,6 @@ package ru.kernogo.gregtech6port.datagen;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import ru.kernogo.gregtech6port.features.behaviors.item_materials.GTMaterialNameEnglishDatagen;
 import ru.kernogo.gregtech6port.features.behaviors.item_with_uses.GTItemWithUsesModelDatagen;
@@ -29,26 +28,27 @@ public final class GTDatagenMain {
     private GTDatagenMain() {}
 
     /** This gets subscribed with the modBus in another class */
-    public static void datagenMain(GatherDataEvent event) {
+    public static void datagenMain(GatherDataEvent.Client event) {
+        // We generate all data in one "clientData" run, we don't use "serverData" run.
+
         DataGenerator generator = event.getGenerator();
         PackOutput packOutput = generator.getPackOutput();
-        ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-        generator.addProvider(event.includeClient(), new GTItemWithUsesModelDatagen(packOutput, existingFileHelper));
-        generator.addProvider(event.includeClient(), new GTMaterialKindItemModelDatagen(packOutput, existingFileHelper));
+        event.addProvider(new GTItemWithUsesModelDatagen(packOutput));
+        event.addProvider(new GTMaterialKindItemModelDatagen(packOutput));
 
-        generator.addProvider(event.includeClient(), new GTBlockDatagen(packOutput, existingFileHelper));
-        generator.addProvider(event.includeClient(), new GTMaterialKindBlockDatagen(packOutput, existingFileHelper));
+        event.addProvider(new GTBlockDatagen(packOutput));
+        event.addProvider(new GTMaterialKindBlockDatagen(packOutput));
 
-        GTBlockTagsDatagen blockDatagen = generator.addProvider(event.includeServer(), new GTBlockTagsDatagen(packOutput, lookupProvider, existingFileHelper));
-        generator.addProvider(event.includeServer(), new GTItemTagsDatagen(packOutput, lookupProvider, blockDatagen.contentsGetter(), existingFileHelper));
-        generator.addProvider(event.includeServer(), new GTMaterialKindItemTagsDatagen(packOutput, lookupProvider, blockDatagen.contentsGetter(), existingFileHelper));
+        GTBlockTagsDatagen blockTagsDatagen = event.addProvider(new GTBlockTagsDatagen(packOutput, lookupProvider));
+        event.addProvider(new GTItemTagsDatagen(packOutput, lookupProvider, blockTagsDatagen.contentsGetter()));
+        event.addProvider(new GTMaterialKindItemTagsDatagen(packOutput, lookupProvider, blockTagsDatagen.contentsGetter()));
 
-        generator.addProvider(event.includeServer(), new GTBaseMaterialCompositionDataMapDatagen(packOutput, lookupProvider));
+        event.addProvider(new GTBaseMaterialCompositionDataMapDatagen(packOutput, lookupProvider));
 
-        generator.addProvider(event.includeClient(), new GTEnglishLanguageDatagen(packOutput));
+        event.addProvider(new GTEnglishLanguageDatagen(packOutput));
 
-        generator.addProvider(event.includeServer(), new GTRecipeProvider.Runner(packOutput, lookupProvider));
+        event.addProvider(new GTRecipeProvider.Runner(packOutput, lookupProvider));
     }
 }

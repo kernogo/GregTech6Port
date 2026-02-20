@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 /**
  * Capability to tint color the Blocks / BlockEntities
  *
- * @see GTTintColoringSystem
+ * @see GTTintColoringForBlocks
  */
 @AllArgsConstructor
 public final class GTTintColoringCapability {

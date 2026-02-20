@@ -15,7 +15,7 @@ import java.util.EnumMap;
  * Colors and uncolores BlockEntities that have a
  * {@link ru.kernogo.gregtech6port.registration.registered.GTCapabilities#TINT_COLORING} capability
  *
- * @see ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringSystem
+ * @see ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringForBlocks
  */
 final class TintColoringBlockEntityColorer {
     TintColoringBlockEntityColorer() {}
