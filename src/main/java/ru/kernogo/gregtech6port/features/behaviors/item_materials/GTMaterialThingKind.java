@@ -28,6 +28,9 @@ import java.util.List;
  * @param itemTag                               Item Tag that all Items of this Kind will have.
  *                                              Note that not only Material-Kind Items can have that tag,
  *                                              but also other Items (vanilla or modded).
+ * @param blockTag                              Block Tag that all Blocks of this Kind will have.
+ *                                              Note that not only Material-Kind Blocks can have that tag,
+ *                                              but also other Blocks (vanilla or modded).
  * @param itemCreator                           Method to create an instance of Item of this Kind (for registration).
  *                                              See available parameters in {@link IItemCreator}.
  * @param blockCreator                          Method to create an instance of Block of this Kind (for registration).
@@ -41,6 +44,7 @@ public record GTMaterialThingKind(
     GTMaterialAmount amountForAnItem,
     List<GTMaterialAndAmount> additionalMaterialCompositionInAnItem,
     TagKey<Item> itemTag,
+    TagKey<Block> blockTag,  // TODO: datagen for these block tags
     IItemCreator itemCreator,
     @Nullable IBlockCreator blockCreator
 ) {
@@ -64,6 +68,11 @@ public record GTMaterialThingKind(
             ResourceLocation.fromNamespaceAndPath(GregTech6Port.MODID, "kinds/" + name)
         );
 
+        TagKey<Block> blockTag = TagKey.create(
+            Registries.BLOCK,
+            ResourceLocation.fromNamespaceAndPath(GregTech6Port.MODID, "kinds/" + name)
+        );
+
         return new GTMaterialThingKind(
             name,
             translationKey,
@@ -71,6 +80,7 @@ public record GTMaterialThingKind(
             amountForAnItem,
             additionalMaterialCompositionInAnItem,
             itemTag,
+            blockTag,
             itemCreator,
             blockCreator
         );

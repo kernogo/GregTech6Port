@@ -41,9 +41,7 @@ public final class GTDatagenMain {
         event.addProvider(new GTBlockDatagen(packOutput));
         event.addProvider(new GTMaterialKindBlockDatagen(packOutput));
 
-        GTBlockTagsDatagen blockTagsDatagen = event.addProvider(new GTBlockTagsDatagen(packOutput, lookupProvider));
-        event.addProvider(new GTItemTagsDatagen(packOutput, lookupProvider, blockTagsDatagen.contentsGetter()));
-        event.addProvider(new GTMaterialKindItemTagsDatagen(packOutput, lookupProvider, blockTagsDatagen.contentsGetter()));
+        event.addProvider(new GTMaterialKindItemTagsDatagen(packOutput, lookupProvider));
 
         event.addProvider(new GTBaseMaterialCompositionDataMapDatagen(packOutput, lookupProvider));
 

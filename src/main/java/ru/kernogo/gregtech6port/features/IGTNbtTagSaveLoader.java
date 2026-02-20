@@ -2,7 +2,8 @@ package ru.kernogo.gregtech6port.features;
 
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -10,13 +11,13 @@ import org.jetbrains.annotations.Nullable;
  * to save/load tags into/from NBT for a specific Data Component of type {@code T}
  */
 public interface IGTNbtTagSaveLoader<T> {
-    @Nullable T getDataForLoadAdditional(CompoundTag compoundTag);
+    @Nullable T getDataForLoadAdditional(ValueInput input);
 
-    void saveAdditional(CompoundTag compoundTag, @Nullable T data);
+    void saveAdditional(ValueOutput output, @Nullable T data);
 
     @Nullable T getDataForApplyImplicitComponents(DataComponentGetter componentInput);
 
     void collectImplicitComponents(DataComponentMap.Builder components, @Nullable T data);
 
-    void removeComponentsFromTag(CompoundTag tag);
+    void removeComponentsFromTag(ValueOutput output);
 }

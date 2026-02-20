@@ -2,7 +2,8 @@ package ru.kernogo.gregtech6port.features.behaviors.tint_coloring;
 
 import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 import ru.kernogo.gregtech6port.features.IGTNbtTagSaveLoader;
 import ru.kernogo.gregtech6port.registration.registered.GTDataComponentTypes;
@@ -12,17 +13,17 @@ public final class GTTintColoringNbtTagSaveLoader implements IGTNbtTagSaveLoader
     private final String TAG_NAME = GTDataComponentTypes.TINT_COLORING.getKey().location().toString();
 
     @Override
-    public @Nullable GTTintColoringData getDataForLoadAdditional(CompoundTag compoundTag) {
-        if (compoundTag.contains(TAG_NAME)) {
-            return new GTTintColoringData(compoundTag.getIntOr(TAG_NAME, -1));
+    public @Nullable GTTintColoringData getDataForLoadAdditional(ValueInput input) {
+        if (input.getInt(TAG_NAME).isPresent()) {
+            return new GTTintColoringData(input.getInt(TAG_NAME).get());
         }
         return null;
     }
 
     @Override
-    public void saveAdditional(CompoundTag compoundTag, @Nullable GTTintColoringData data) {
+    public void saveAdditional(ValueOutput output, @Nullable GTTintColoringData data) {
         if (data != null) {
-            compoundTag.putInt(TAG_NAME, data.argbColor());
+            output.putInt(TAG_NAME, data.argbColor());
         }
     }
 
@@ -39,7 +40,7 @@ public final class GTTintColoringNbtTagSaveLoader implements IGTNbtTagSaveLoader
     }
 
     @Override
-    public void removeComponentsFromTag(CompoundTag tag) {
-        tag.remove(TAG_NAME);
+    public void removeComponentsFromTag(ValueOutput output) {
+        output.discard(TAG_NAME);
     }
 }
