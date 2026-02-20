@@ -22,5 +22,5 @@ that use the [NeoGradle](https://github.com/neoforged/NeoGradle) plugin:
 - Open the cloned repository in your IDE, let the Gradle project import finish
 - Execute the Gradle `build` task once, just in case
 - Use Gradle tasks of the `neogradle/runs` group to run the game:
-    - First, execute the `runData` task to run the datagen
+    - First, execute the `runClientData` task to run the datagen
     - Then, run the client with `runClient`, or server with `runServer`

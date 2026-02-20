@@ -11,10 +11,9 @@ import ru.kernogo.gregtech6port.datagen.GTDatagenMain;
 import ru.kernogo.gregtech6port.features.behaviors.item_materials.GTMaterial;
 import ru.kernogo.gregtech6port.features.behaviors.item_materials.GTMaterialTextureSet;
 import ru.kernogo.gregtech6port.features.behaviors.item_materials.GTMaterialThingKind;
-import ru.kernogo.gregtech6port.features.behaviors.item_with_uses.GTItemWithUsesItemPropertiesRegistration;
 import ru.kernogo.gregtech6port.features.behaviors.material_composition.capabilities.GTMaterialCompositionCapabilitiesRegistration;
 import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringCapabilitiesRegistration;
-import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringSystem;
+import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringForBlocks;
 import ru.kernogo.gregtech6port.features.items.like.spray.GTSprayLikeItemEntityInteractHandler;
 import ru.kernogo.gregtech6port.features.material_kind_things.GTMaterialKindItemsAndBlocksTintingHandler;
 import ru.kernogo.gregtech6port.registration.registered.GTBlockEntityTypes;
@@ -64,14 +63,14 @@ public final class GTRegisters {
         modEventBus.addListener(GTCustomRegistries::registerRegistries);
         modEventBus.addListener(GTDataMapTypes::registerDataMapTypes);
 
-        modEventBus.addListener(GTItemWithUsesItemPropertiesRegistration::registerItemProperties);
+        modEventBus.addListener(GTRegisterSelectItemModelPropertyEventHandler::handle);
 
         modEventBus.addListener(GTTintColoringCapabilitiesRegistration::registerCapabilities);
         modEventBus.addListener(GTMaterialCompositionCapabilitiesRegistration::registerCapabilitiesForAllItems);
 
-        modEventBus.addListener(GTTintColoringSystem::registerBlockColorHandlers);
-        modEventBus.addListener(GTTintColoringSystem::registerItemColorHandlers);
-        modEventBus.addListener(GTMaterialKindItemsAndBlocksTintingHandler::registerItemColorHandlers);
+        modEventBus.addListener(GTItemTintSourcesHandler::registerItemTintSources);
+
+        modEventBus.addListener(GTTintColoringForBlocks::registerBlockColorHandlers);
         modEventBus.addListener(GTMaterialKindItemsAndBlocksTintingHandler::registerBlockColorHandlers);
 
         NeoForge.EVENT_BUS.addListener(GTItemTooltipEventHandler::handleItemTooltipEvent);

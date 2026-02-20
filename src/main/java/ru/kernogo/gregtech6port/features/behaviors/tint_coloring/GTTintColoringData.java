@@ -7,8 +7,7 @@ import net.minecraft.network.codec.StreamCodec;
 import ru.kernogo.gregtech6port.utils.exception.GTUnexpectedValidationFailException;
 
 /**
- * Data for the tint coloring of GT blocks. See {@link GTTintColoringSystem} for the details.
- * Alpha channel seems to be ignored in Minecraft's tinting (at least in MC 1.21.1), but still we include it just in case. <br>
+ * Data for the tint coloring of GT blocks. See {@link GTTintColoringForBlocks} for the details.
  *
  * @param argbColor color in ARGB format stored as an {@code int} variable;
  *                  good thing about ARGB {@code int} is that any {@code int} value is a valid ARGB color.
