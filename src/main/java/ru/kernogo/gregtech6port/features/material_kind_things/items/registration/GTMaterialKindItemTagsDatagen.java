@@ -2,9 +2,8 @@ package ru.kernogo.gregtech6port.features.material_kind_things.items.registratio
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.common.data.ItemTagsProvider;
 import ru.kernogo.gregtech6port.GregTech6Port;
 import ru.kernogo.gregtech6port.features.material_kind_things.items.GTExistingMaterialKindItemDefinition;
 import ru.kernogo.gregtech6port.features.material_kind_things.items.GTMaterialKindItemDefinition;
@@ -17,10 +16,8 @@ public final class GTMaterialKindItemTagsDatagen extends ItemTagsProvider {
     private final GTMaterialKindItemDefinitionService materialKindItemDefinitionService =
         GTMaterialKindItemDefinitionService.getInstance();
 
-    public GTMaterialKindItemTagsDatagen(PackOutput output,
-                                         CompletableFuture<HolderLookup.Provider> lookupProvider,
-                                         CompletableFuture<TagLookup<Block>> blockTags) {
-        super(output, lookupProvider, blockTags, GregTech6Port.MODID);
+    public GTMaterialKindItemTagsDatagen(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+        super(output, lookupProvider, GregTech6Port.MODID);
     }
 
     @Override

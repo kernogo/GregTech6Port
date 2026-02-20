@@ -8,8 +8,12 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.TagValueOutput;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
 import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringCapability;
 import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringData;
@@ -26,15 +30,15 @@ public class GTEnderGarbageBinBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        tintColoringData = tintColoringNbtTagSaveLoader.getDataForLoadAdditional(tag);
+    protected void loadAdditional(ValueInput input) {
+        super.loadAdditional(input);
+        tintColoringData = tintColoringNbtTagSaveLoader.getDataForLoadAdditional(input);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
-        tintColoringNbtTagSaveLoader.saveAdditional(tag, tintColoringData);
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        tintColoringNbtTagSaveLoader.saveAdditional(output, tintColoringData);
     }
 
     @Override
@@ -50,9 +54,9 @@ public class GTEnderGarbageBinBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void removeComponentsFromTag(CompoundTag tag) {
-        super.removeComponentsFromTag(tag);
-        tintColoringNbtTagSaveLoader.removeComponentsFromTag(tag);
+    public void removeComponentsFromTag(ValueOutput output) {
+        super.removeComponentsFromTag(output);
+        tintColoringNbtTagSaveLoader.removeComponentsFromTag(output);
     }
 
     @Override
@@ -62,9 +66,9 @@ public class GTEnderGarbageBinBlockEntity extends BlockEntity {
 
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        CompoundTag tag = new CompoundTag();
-        saveAdditional(tag, registries);
-        return tag;
+        TagValueOutput output = TagValueOutput.createWithContext(ProblemReporter.DISCARDING, registries);
+        saveAdditional(output);
+        return output.buildResult();
     }
 
     public static GTTintColoringCapability getTintColoringCapability(GTEnderGarbageBinBlockEntity blockEntity,

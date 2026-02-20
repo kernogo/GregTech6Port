@@ -4,6 +4,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
 import ru.kernogo.gregtech6port.GregTech6Port;
 import ru.kernogo.gregtech6port.features.behaviors.material_composition.GTMaterialAmount;
@@ -25,6 +26,9 @@ import ru.kernogo.gregtech6port.utils.exception.GTUnexpectedValidationFailExcept
  * @param itemTag            Item Tag that all Items with this Material will have.
  *                           Note that not only Material-Kind Items can have that tag,
  *                           but also other Items (vanilla or modded).
+ * @param blockTag           Block Tag that all Blocks with this Material will have.
+ *                           Note that not only Material-Kind Blocks can have that tag,
+ *                           but also other Blocks (vanilla or modded).
  */
 public record GTMaterial(
     String name,
@@ -35,7 +39,8 @@ public record GTMaterial(
     int meltingPoint,
     int boilingPoint,
     double densityGramPerCm3,
-    TagKey<Item> itemTag
+    TagKey<Item> itemTag,
+    TagKey<Block> blockTag // TODO: datagen for these block tags
 ) {
     public record ColorData(int a, int r, int g, int b) {
         public static void validateAndThrowIfInvalid(ColorData colorData) {
@@ -161,6 +166,11 @@ public record GTMaterial(
                 ResourceLocation.fromNamespaceAndPath(GregTech6Port.MODID, "materials/" + name)
             );
 
+            TagKey<Block> blockTag = TagKey.create(
+                Registries.BLOCK,
+                ResourceLocation.fromNamespaceAndPath(GregTech6Port.MODID, "materials/" + name)
+            );
+
             return new GTMaterial(
                 name,
                 translationKey,
@@ -170,7 +180,8 @@ public record GTMaterial(
                 meltingPoint,
                 boilingPoint,
                 densityGramPerCm3,
-                itemTag
+                itemTag,
+                blockTag
             );
         }
 
