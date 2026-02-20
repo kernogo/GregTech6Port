@@ -3,13 +3,14 @@ package ru.kernogo.gregtech6port.datagen;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
+import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
-import net.minecraft.client.data.models.blockstates.Variant;
-import net.minecraft.client.data.models.blockstates.VariantProperties;
 import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
+import net.minecraft.client.renderer.block.model.Variant;
 import net.minecraft.core.Holder;
 import net.minecraft.data.PackOutput;
+import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -48,11 +49,10 @@ final class GTBlockDatagen extends ModelProvider {
         // Block model corresponding to deferredBlock is in manually created resources
 
         blockModels.blockStateOutput.accept(
-            MultiVariantGenerator.multiVariant(
+            MultiVariantGenerator.dispatch(
                 deferredBlock.get(),
-                Variant.variant().with(
-                    VariantProperties.MODEL,
-                    ModelLocationUtils.getModelLocation(deferredBlock.get())
+                new MultiVariant(
+                    WeightedList.of(new Variant(ModelLocationUtils.getModelLocation(deferredBlock.get())))
                 )
             )
         );

@@ -1,8 +1,8 @@
 package ru.kernogo.gregtech6port.features.behaviors.tint_coloring;
 
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
 import ru.kernogo.gregtech6port.features.IGTNbtTagSaveLoader;
 import ru.kernogo.gregtech6port.registration.registered.GTDataComponentTypes;
@@ -14,7 +14,7 @@ public final class GTTintColoringNbtTagSaveLoader implements IGTNbtTagSaveLoader
     @Override
     public @Nullable GTTintColoringData getDataForLoadAdditional(CompoundTag compoundTag) {
         if (compoundTag.contains(TAG_NAME)) {
-            return new GTTintColoringData(compoundTag.getInt(TAG_NAME));
+            return new GTTintColoringData(compoundTag.getIntOr(TAG_NAME, -1));
         }
         return null;
     }
@@ -27,7 +27,7 @@ public final class GTTintColoringNbtTagSaveLoader implements IGTNbtTagSaveLoader
     }
 
     @Override
-    public @Nullable GTTintColoringData getDataForApplyImplicitComponents(BlockEntity.DataComponentInput componentInput) {
+    public @Nullable GTTintColoringData getDataForApplyImplicitComponents(DataComponentGetter componentInput) {
         return componentInput.get(GTDataComponentTypes.TINT_COLORING);
     }
 

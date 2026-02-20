@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import ru.kernogo.gregtech6port.features.behaviors.item_with_uses.GTItemWithUsesBehavior;
@@ -16,7 +17,7 @@ import ru.kernogo.gregtech6port.features.items.like.spray.behaviors.ISprayBehavi
 import ru.kernogo.gregtech6port.registration.registered.GTDataComponentTypes;
 import ru.kernogo.gregtech6port.utils.exception.GTUnexpectedValidationFailException;
 
-import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Item class for all spray-like items. <br>
@@ -57,12 +58,15 @@ public class GTSprayLikeItem extends Item {
         }
     }
 
+    @SuppressWarnings("deprecation") // appendHoverText is deprecated
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents, TooltipFlag tooltipFlag) {
-        super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
+    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay tooltipDisplay, Consumer<Component> tooltipAdder, TooltipFlag flag) {
+        super.appendHoverText(stack, context, tooltipDisplay, tooltipAdder, flag);
 
         try {
-            tooltipComponents.addAll(itemWithUsesBehavior.makeTooltip(stack));
+            for (Component tooltipLine : itemWithUsesBehavior.makeTooltip(stack)) {
+                tooltipAdder.accept(tooltipLine);
+            }
         } catch (GTUnexpectedValidationFailException e) {
             log.error("Unexpected validation fail occurred", e);
         }

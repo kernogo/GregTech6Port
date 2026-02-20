@@ -1,5 +1,6 @@
 package ru.kernogo.gregtech6port.features.behaviors.item_with_uses;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,10 +35,12 @@ public record GTItemWithUsesUseStageModelProperty() implements SelectItemModelPr
         }
     }
 
+    public static final Codec<UseStage> VALUE_CODEC = StringRepresentable.fromValues(UseStage::values);
+
     public static final SelectItemModelProperty.Type<GTItemWithUsesUseStageModelProperty, UseStage> TYPE =
         SelectItemModelProperty.Type.create(
             MapCodec.unit(new GTItemWithUsesUseStageModelProperty()),
-            StringRepresentable.fromValues(UseStage::values)
+            VALUE_CODEC
         );
 
     @Override
@@ -62,6 +65,11 @@ public record GTItemWithUsesUseStageModelProperty() implements SelectItemModelPr
         }
 
         return UseStage.FULL; // return some reasonable value on error (full)
+    }
+
+    @Override
+    public Codec<UseStage> valueCodec() {
+        return VALUE_CODEC;
     }
 
     @Override

@@ -1,40 +1,36 @@
 package ru.kernogo.gregtech6port.gametests.feature.items.like.spray.paint_and_paint_removal;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.gametest.framework.GameTestGenerator;
 import net.minecraft.gametest.framework.GameTestHelper;
-import net.minecraft.gametest.framework.TestFunction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.Cat;
-import net.minecraft.world.entity.animal.Sheep;
-import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.entity.animal.sheep.Sheep;
+import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.GameType;
-import net.neoforged.neoforge.gametest.GameTestHolder;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.RegisterGameTestsEvent;
 import net.neoforged.neoforge.registries.DeferredItem;
 import org.apache.commons.lang3.tuple.Pair;
-import ru.kernogo.gregtech6port.GregTech6Port;
 import ru.kernogo.gregtech6port.gametests.GTGameTestUtils;
 import ru.kernogo.gregtech6port.gametests.GTItemWithUsesGameTestUtils;
 import ru.kernogo.gregtech6port.registration.registered.GTItems;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 /** A set of tests to check the Paint Spray Can behavior on entities */
-@GameTestHolder(GregTech6Port.MODID)
+@EventBusSubscriber
 public class PaintSprayUseOnEntitiesTests {
     /** Test the painting of colorable entities */
-    @GameTestGenerator
-    public static Collection<TestFunction> tests_ColorableEntities() {
-        ArrayList<TestFunction> tests = new ArrayList<>();
+    @SubscribeEvent
+    public static void tests_ColorableEntities(RegisterGameTestsEvent event) {
         // Paint spray can; paint spray can color
         for (Pair<DeferredItem<Item>, DyeColor> testCase : List.of(
             Pair.of(GTItems.WHITE_PAINT_SPRAY_CAN, DyeColor.WHITE),
@@ -57,55 +53,56 @@ public class PaintSprayUseOnEntitiesTests {
             DeferredItem<Item> deferredItem = testCase.getLeft();
             DyeColor sprayColor = testCase.getRight();
 
-            tests.add(GTGameTestUtils.makeTestFunction(
+            GTGameTestUtils.registerTestFunction(
+                event,
                 deferredItem.getKey().location().getPath() + "_colorable_sheep",
                 "gametest_bedrock_1x2x1",
                 gameTestHelper -> doTest_Colorable_Sheep(gameTestHelper, deferredItem, sprayColor)
-            ));
-            tests.add(GTGameTestUtils.makeTestFunction(
+            );
+            GTGameTestUtils.registerTestFunction(
+                event,
                 deferredItem.getKey().location().getPath() + "_colorable_wolf",
                 "gametest_bedrock_1x2x1",
                 gameTestHelper -> doTest_Colorable_Wolf(gameTestHelper, deferredItem, sprayColor)
-            ));
-            tests.add(GTGameTestUtils.makeTestFunction(
+            );
+            GTGameTestUtils.registerTestFunction(
+                event,
                 deferredItem.getKey().location().getPath() + "_colorable_cat",
                 "gametest_bedrock_1x2x1",
                 gameTestHelper -> doTest_Colorable_Cat(gameTestHelper, deferredItem, sprayColor)
-            ));
+            );
         }
-        return tests;
     }
 
     /** Test the painting of non-colorable entities */
-    @GameTestGenerator
-    public static Collection<TestFunction> tests_NonColorableEntities() {
-        ArrayList<TestFunction> tests = new ArrayList<>();
-
+    @SubscribeEvent
+    public static void tests_NonColorableEntities(RegisterGameTestsEvent event) {
         DeferredItem<Item> deferredItem = GTItems.PURPLE_PAINT_SPRAY_CAN;
 
-        tests.add(GTGameTestUtils.makeTestFunction(
+        GTGameTestUtils.registerTestFunction(
+            event,
             deferredItem.getKey().location().getPath() + "_noncolorable_wolf",
             "gametest_bedrock_1x2x1",
             gameTestHelper -> doTest_NonColorable_Wolf(gameTestHelper, deferredItem)
-        ));
-        tests.add(GTGameTestUtils.makeTestFunction(
+        );
+        GTGameTestUtils.registerTestFunction(
+            event,
             deferredItem.getKey().location().getPath() + "_noncolorable_cat",
             "gametest_bedrock_1x2x1",
             gameTestHelper -> doTest_NonColorable_Cat(gameTestHelper, deferredItem)
-        ));
-        tests.add(GTGameTestUtils.makeTestFunction(
+        );
+        GTGameTestUtils.registerTestFunction(
+            event,
             deferredItem.getKey().location().getPath() + "_noncolorable_end_crystal",
             "gametest_bedrock_1x2x1",
             gameTestHelper -> doTest_NonColorable_EndCrystal(gameTestHelper, deferredItem)
-        ));
-
-        return tests;
+        );
     }
 
     private static void doTest_Colorable_Sheep(GameTestHelper gameTestHelper, DeferredItem<Item> deferredSprayCanItem, DyeColor sprayColor) {
         doTest_Colorable_Entity(gameTestHelper, deferredSprayCanItem,
             ignored -> {
-                Sheep sheep = gameTestHelper.spawn(EntityType.SHEEP, new BlockPos(0, 2, 0));
+                Sheep sheep = gameTestHelper.spawn(EntityType.SHEEP, new BlockPos(0, 1, 0));
                 sheep.setColor(sprayColor != DyeColor.PURPLE ? DyeColor.PURPLE : DyeColor.MAGENTA);
                 return sheep;
             },
@@ -115,7 +112,7 @@ public class PaintSprayUseOnEntitiesTests {
     private static void doTest_Colorable_Wolf(GameTestHelper gameTestHelper, DeferredItem<Item> deferredSprayCanItem, DyeColor sprayColor) {
         doTest_Colorable_Entity(gameTestHelper, deferredSprayCanItem,
             player -> {
-                Wolf entity = gameTestHelper.spawn(EntityType.WOLF, new BlockPos(0, 2, 0));
+                Wolf entity = gameTestHelper.spawn(EntityType.WOLF, new BlockPos(0, 1, 0));
                 entity.setCollarColor(sprayColor != DyeColor.PURPLE ? DyeColor.PURPLE : DyeColor.MAGENTA);
                 entity.tame(player);
                 return entity;
@@ -126,7 +123,7 @@ public class PaintSprayUseOnEntitiesTests {
     private static void doTest_Colorable_Cat(GameTestHelper gameTestHelper, DeferredItem<Item> deferredSprayCanItem, DyeColor sprayColor) {
         doTest_Colorable_Entity(gameTestHelper, deferredSprayCanItem,
             player -> {
-                Cat entity = gameTestHelper.spawn(EntityType.CAT, new BlockPos(0, 2, 0));
+                Cat entity = gameTestHelper.spawn(EntityType.CAT, new BlockPos(0, 1, 0));
                 entity.setCollarColor(sprayColor != DyeColor.PURPLE ? DyeColor.PURPLE : DyeColor.MAGENTA);
                 entity.tame(player);
                 return entity;
@@ -150,7 +147,8 @@ public class PaintSprayUseOnEntitiesTests {
         for (int i = 0; i < 5; i++) {
             player.interactOn(entity, InteractionHand.MAIN_HAND);
 
-            gameTestHelper.assertTrue(predicateToTest.test(entity),
+            GTGameTestUtils.assertTrue(gameTestHelper,
+                predicateToTest.test(entity),
                 "Entity doesn't pass a predicate");
 
             GTItemWithUsesGameTestUtils.assertRemainingUsesEquals(
@@ -165,7 +163,7 @@ public class PaintSprayUseOnEntitiesTests {
     private static void doTest_NonColorable_Wolf(GameTestHelper gameTestHelper, DeferredItem<Item> deferredSprayCanItem) {
         doTest_NonColorable_Entity(gameTestHelper, deferredSprayCanItem,
             player -> {
-                Wolf entity = gameTestHelper.spawn(EntityType.WOLF, new BlockPos(0, 2, 0));
+                Wolf entity = gameTestHelper.spawn(EntityType.WOLF, new BlockPos(0, 1, 0));
                 entity.setCollarColor(DyeColor.WHITE);
                 return entity;
             },
@@ -176,7 +174,7 @@ public class PaintSprayUseOnEntitiesTests {
     private static void doTest_NonColorable_Cat(GameTestHelper gameTestHelper, DeferredItem<Item> deferredSprayCanItem) {
         doTest_NonColorable_Entity(gameTestHelper, deferredSprayCanItem,
             player -> {
-                Cat entity = gameTestHelper.spawn(EntityType.CAT, new BlockPos(0, 2, 0));
+                Cat entity = gameTestHelper.spawn(EntityType.CAT, new BlockPos(0, 1, 0));
                 entity.setCollarColor(DyeColor.WHITE);
                 return entity;
             },
@@ -186,7 +184,7 @@ public class PaintSprayUseOnEntitiesTests {
     /** End crystal is non-colorable */
     private static void doTest_NonColorable_EndCrystal(GameTestHelper gameTestHelper, DeferredItem<Item> deferredSprayCanItem) {
         doTest_NonColorable_Entity(gameTestHelper, deferredSprayCanItem,
-            player -> gameTestHelper.spawn(EntityType.END_CRYSTAL, new BlockPos(0, 2, 0)),
+            player -> gameTestHelper.spawn(EntityType.END_CRYSTAL, new BlockPos(0, 1, 0)),
             endCrystal -> true); // If it does not give an error, it's good enough
     }
 
@@ -206,7 +204,8 @@ public class PaintSprayUseOnEntitiesTests {
         for (int i = 0; i < 5; i++) {
             player.interactOn(entity, InteractionHand.MAIN_HAND);
 
-            gameTestHelper.assertTrue(predicateToTest.test(entity),
+            GTGameTestUtils.assertTrue(gameTestHelper,
+                predicateToTest.test(entity),
                 "Entity doesn't pass a predicate");
 
             GTItemWithUsesGameTestUtils.assertRemainingUsesEquals(

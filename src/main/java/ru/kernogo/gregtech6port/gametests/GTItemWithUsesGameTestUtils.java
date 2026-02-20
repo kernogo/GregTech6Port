@@ -24,6 +24,7 @@ public final class GTItemWithUsesGameTestUtils {
     public static void assertRemainingUsesEquals(GameTestHelper gameTestHelper, ItemStack itemStack, int expectedRemainingUses) {
         GTItemWithUsesData itemWithUsesData = itemWithUsesBehavior.validateAndGetItemWithUsesData(itemStack);
         int actualRemainingUses = itemWithUsesData.remainingUses();
-        gameTestHelper.assertValueEqual(actualRemainingUses, expectedRemainingUses, "remaining uses");
+        GTGameTestUtils.assertEquals(gameTestHelper,
+            expectedRemainingUses, actualRemainingUses, "remaining uses");
     }
 }

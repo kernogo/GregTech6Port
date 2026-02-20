@@ -2,6 +2,7 @@ package ru.kernogo.gregtech6port.features.blockentities.ender_garbage_bin;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -43,9 +44,9 @@ public class GTEnderGarbageBinBlockEntity extends BlockEntity {
     }
 
     @Override
-    protected void applyImplicitComponents(DataComponentInput componentInput) {
-        super.applyImplicitComponents(componentInput);
-        tintColoringData = tintColoringNbtTagSaveLoader.getDataForApplyImplicitComponents(componentInput);
+    protected void applyImplicitComponents(DataComponentGetter componentGetter) {
+        super.applyImplicitComponents(componentGetter);
+        tintColoringData = tintColoringNbtTagSaveLoader.getDataForApplyImplicitComponents(componentGetter);
     }
 
     @Override
