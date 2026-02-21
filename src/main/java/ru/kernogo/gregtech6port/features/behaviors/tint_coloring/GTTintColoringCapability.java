@@ -1,7 +1,7 @@
 package ru.kernogo.gregtech6port.features.behaviors.tint_coloring;
 
 import lombok.AllArgsConstructor;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.function.Consumer;
 import java.util.function.Supplier;

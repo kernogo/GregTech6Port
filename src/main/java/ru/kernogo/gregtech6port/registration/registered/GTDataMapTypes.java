@@ -1,7 +1,7 @@
 package ru.kernogo.gregtech6port.registration.registered;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.datamaps.DataMapType;
 import net.neoforged.neoforge.registries.datamaps.RegisterDataMapTypesEvent;
@@ -23,7 +23,7 @@ public final class GTDataMapTypes {
      * to get the actual material composition of an item.
      */
     public static final DataMapType<Item, List<GTMaterialAndAmount>> BASE_MATERIAL_COMPOSITION = DataMapType.builder(
-        ResourceLocation.fromNamespaceAndPath(GregTech6Port.MODID, "base_material_composition"),
+        Identifier.fromNamespaceAndPath(GregTech6Port.MODID, "base_material_composition"),
         Registries.ITEM,
         GTMaterialAndAmount.MATERIAL_UNITS_CODEC.listOf()
     ).synced(GTMaterialAndAmount.MATERIAL_UNITS_CODEC.listOf(), false).build();

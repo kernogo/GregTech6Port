@@ -56,8 +56,6 @@ public final class GTMaterialKindItemModelDatagen extends ModelProvider {
             String textureSetName = definition.material().textureSet().name();
             String kindName = definition.kind().name();
 
-            // TODO: Fix the z-fighting because of overlapping and transparent layers.
-            //  Will likely need to create some custom rendering code.
             ModelTemplates.TWO_LAYERED_ITEM.create(
                 definition.deferredItem().get(),
                 new TextureMapping()

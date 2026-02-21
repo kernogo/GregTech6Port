@@ -3,7 +3,7 @@ package ru.kernogo.gregtech6port.features.behaviors.material_composition.capabil
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import ru.kernogo.gregtech6port.features.behaviors.material_composition.GTMaterialAndAmount;
 import ru.kernogo.gregtech6port.features.behaviors.material_composition.GTMaterialCompositionData;
 import ru.kernogo.gregtech6port.registration.registered.GTDataMapTypes;

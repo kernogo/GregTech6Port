@@ -1,9 +1,9 @@
 package ru.kernogo.gregtech6port.features.material_kind_things.items;
 
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import ru.kernogo.gregtech6port.features.behaviors.item_materials.GTMaterial;
 import ru.kernogo.gregtech6port.features.behaviors.item_materials.GTMaterialThingKind;
 
@@ -14,18 +14,18 @@ import ru.kernogo.gregtech6port.features.behaviors.item_materials.GTMaterialThin
  * @see GTMaterialKindItemDefinitionService
  */
 public record GTExistingMaterialKindItemDefinition(
-    ResourceLocation itemResourceLocation,
+    Identifier itemIdentifier,
     GTMaterial material,
     GTMaterialThingKind kind
 ) {
     /**
-     * Convenience method to resolve {@link #itemResourceLocation} into an Item. <br>
+     * Convenience method to resolve {@link #itemIdentifier} into an Item. <br>
      * Returns null if it was not resolved <br>
      * (other mod Items will not be resolved if mods were not loaded (yet or at all)).
      */
     public @Nullable Item getItemOrElseNull() {
         return BuiltInRegistries.ITEM
-            .getOptional(itemResourceLocation)
+            .getOptional(itemIdentifier)
             .orElse(null);
     }
 }

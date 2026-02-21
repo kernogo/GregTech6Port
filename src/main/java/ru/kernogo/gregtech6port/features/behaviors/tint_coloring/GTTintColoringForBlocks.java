@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import ru.kernogo.gregtech6port.registration.registered.GTBlocks;
 import ru.kernogo.gregtech6port.registration.registered.GTCapabilities;
 

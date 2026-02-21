@@ -2,14 +2,14 @@ package ru.kernogo.gregtech6port.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.advancements.criterion.ItemPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import ru.kernogo.gregtech6port.GregTech6Port;
 import ru.kernogo.gregtech6port.features.blockentities.ender_garbage_bin.GTEnderGarbageBinBlockEntity;
 import ru.kernogo.gregtech6port.utils.exception.GTUnexpectedValidationFailException;
@@ -38,13 +38,13 @@ public final class GTUtils {
         return RANDOM.nextDouble() < probability;
     }
 
-    public static ResourceLocation modLoc(String name) {
-        return ResourceLocation.fromNamespaceAndPath(GregTech6Port.MODID, name);
+    public static Identifier modLoc(String name) {
+        return Identifier.fromNamespaceAndPath(GregTech6Port.MODID, name);
     }
 
     /** Recipe resource key from mod loc (useful for recipe datagen) */
     public static ResourceKey<Recipe<?>> modLocRecipeResourceKey(String name) {
-        return ResourceKey.create(Registries.RECIPE, ResourceLocation.fromNamespaceAndPath(GregTech6Port.MODID, name));
+        return ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath(GregTech6Port.MODID, name));
     }
 
     /**
@@ -117,22 +117,22 @@ public final class GTUtils {
         return item.builtInRegistryHolder();
     }
 
-    /** Get ResourceLocation of an Item */
-    public static ResourceLocation getResourceLocation(Item item) {
+    /** Get Identifier of an Item */
+    public static Identifier getIdentifier(Item item) {
         // This method is deprecated, but it should still be fine to use, at least in MC 1.21.1
         //noinspection deprecation
         return item.builtInRegistryHolder()
             .key()
-            .location();
+            .identifier();
     }
 
-    /** Get ResourceLocation of a Block */
-    public static ResourceLocation getResourceLocation(Block block) {
+    /** Get Identifier of a Block */
+    public static Identifier getIdentifier(Block block) {
         // This method is deprecated, but it should still be fine to use, at least in MC 1.21.1
         //noinspection deprecation
         return block.builtInRegistryHolder()
             .key()
-            .location();
+            .identifier();
     }
 
     /** Dummy trigger for use in Recipe Providers, because using ingredients for inventoryTrigger is not easy (TODO) */

@@ -5,7 +5,7 @@ import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.Cat;
+import net.minecraft.world.entity.animal.feline.Cat;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.player.Player;
@@ -55,19 +55,19 @@ public class PaintSprayUseOnEntitiesTests {
 
             GTGameTestUtils.registerTestFunction(
                 event,
-                deferredItem.getKey().location().getPath() + "_colorable_sheep",
+                deferredItem.getKey().identifier().getPath() + "_colorable_sheep",
                 "gametest_bedrock_1x2x1",
                 gameTestHelper -> doTest_Colorable_Sheep(gameTestHelper, deferredItem, sprayColor)
             );
             GTGameTestUtils.registerTestFunction(
                 event,
-                deferredItem.getKey().location().getPath() + "_colorable_wolf",
+                deferredItem.getKey().identifier().getPath() + "_colorable_wolf",
                 "gametest_bedrock_1x2x1",
                 gameTestHelper -> doTest_Colorable_Wolf(gameTestHelper, deferredItem, sprayColor)
             );
             GTGameTestUtils.registerTestFunction(
                 event,
-                deferredItem.getKey().location().getPath() + "_colorable_cat",
+                deferredItem.getKey().identifier().getPath() + "_colorable_cat",
                 "gametest_bedrock_1x2x1",
                 gameTestHelper -> doTest_Colorable_Cat(gameTestHelper, deferredItem, sprayColor)
             );
@@ -81,19 +81,19 @@ public class PaintSprayUseOnEntitiesTests {
 
         GTGameTestUtils.registerTestFunction(
             event,
-            deferredItem.getKey().location().getPath() + "_noncolorable_wolf",
+            deferredItem.getKey().identifier().getPath() + "_noncolorable_wolf",
             "gametest_bedrock_1x2x1",
             gameTestHelper -> doTest_NonColorable_Wolf(gameTestHelper, deferredItem)
         );
         GTGameTestUtils.registerTestFunction(
             event,
-            deferredItem.getKey().location().getPath() + "_noncolorable_cat",
+            deferredItem.getKey().identifier().getPath() + "_noncolorable_cat",
             "gametest_bedrock_1x2x1",
             gameTestHelper -> doTest_NonColorable_Cat(gameTestHelper, deferredItem)
         );
         GTGameTestUtils.registerTestFunction(
             event,
-            deferredItem.getKey().location().getPath() + "_noncolorable_end_crystal",
+            deferredItem.getKey().identifier().getPath() + "_noncolorable_end_crystal",
             "gametest_bedrock_1x2x1",
             gameTestHelper -> doTest_NonColorable_EndCrystal(gameTestHelper, deferredItem)
         );

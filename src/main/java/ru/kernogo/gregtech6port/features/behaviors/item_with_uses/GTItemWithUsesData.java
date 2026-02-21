@@ -9,7 +9,7 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.Item;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import ru.kernogo.gregtech6port.registration.registered.GTDataComponentTypes;
 
 import java.util.Optional;

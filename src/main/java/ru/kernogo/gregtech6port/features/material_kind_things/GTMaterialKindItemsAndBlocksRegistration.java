@@ -127,7 +127,7 @@ public final class GTMaterialKindItemsAndBlocksRegistration {
     private static void registerExistingMaterialKindItem(Item item, GTMaterial material, GTMaterialThingKind kind) {
         materialKindItemDefinitionService.addExistingMaterialKindItemDefinition(
             new GTExistingMaterialKindItemDefinition(
-                GTUtils.getResourceLocation(item),
+                GTUtils.getIdentifier(item),
                 material,
                 kind
             )
@@ -139,7 +139,7 @@ public final class GTMaterialKindItemsAndBlocksRegistration {
 
         materialKindBlockDefinitionService.addExistingMaterialKindBlockDefinition(
             new GTExistingMaterialKindBlockDefinition(
-                GTUtils.getResourceLocation(block),
+                GTUtils.getIdentifier(block),
                 material,
                 kind
             )

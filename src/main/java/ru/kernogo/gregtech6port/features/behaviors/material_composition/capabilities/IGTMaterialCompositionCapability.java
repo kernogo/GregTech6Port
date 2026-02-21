@@ -1,7 +1,7 @@
 package ru.kernogo.gregtech6port.features.behaviors.material_composition.capabilities;
 
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import ru.kernogo.gregtech6port.features.behaviors.material_composition.GTMaterialCompositionData;
 
 /**

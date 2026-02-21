@@ -11,7 +11,7 @@ import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.renderer.item.SelectItemModel;
 import net.minecraft.core.Holder;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -67,35 +67,37 @@ public final class GTItemWithUsesModelDatagen extends ModelProvider {
     }
 
     private void makeBasicLighterLikeItem(ItemModelGenerators itemModels, DeferredItem<Item> deferredItem) {
-        ResourceLocation textureLoc = modLocation("item/like/lighter/" + deferredItem.getKey().location().getPath());
-        makeBasicItem(itemModels, deferredItem, textureLoc);
+        Identifier textureIdent = modLocation("item/like/lighter/" + deferredItem.getKey().identifier().getPath());
+        makeBasicItem(itemModels, deferredItem, textureIdent);
     }
 
     private void makeBasicSprayLikeItem(ItemModelGenerators itemModels, DeferredItem<Item> deferredItem) {
-        ResourceLocation textureLoc = modLocation("item/like/spray/" + deferredItem.getKey().location().getPath());
-        makeBasicItem(itemModels, deferredItem, textureLoc);
+        Identifier textureIdent = modLocation("item/like/spray/" + deferredItem.getKey().identifier().getPath());
+        makeBasicItem(itemModels, deferredItem, textureIdent);
     }
 
     private void make2StageLighterLikeItem(ItemModelGenerators itemModels, DeferredItem<Item> deferredItem) {
-        ResourceLocation textureBaseLoc = modLocation("item/like/lighter/");
-        make2StageVariantModel(itemModels, deferredItem, textureBaseLoc);
+        Identifier textureBaseIdent = modLocation("item/like/lighter/");
+        make2StageVariantModel(itemModels, deferredItem, textureBaseIdent);
     }
 
     private void make3StageLighterLikeItem(ItemModelGenerators itemModels, DeferredItem<Item> deferredItem) {
-        ResourceLocation textureBaseLoc = modLocation("item/like/lighter/");
-        make3StageVariantModel(itemModels, deferredItem, textureBaseLoc);
+        Identifier textureBaseIdent = modLocation("item/like/lighter/");
+        make3StageVariantModel(itemModels, deferredItem, textureBaseIdent);
     }
 
     private void make2StageSprayLikeItem(ItemModelGenerators itemModels, DeferredItem<Item> deferredItem) {
-        ResourceLocation textureBaseLoc = modLocation("item/like/spray/");
-        make2StageVariantModel(itemModels, deferredItem, textureBaseLoc);
+        Identifier textureBaseIdent = modLocation("item/like/spray/");
+        make2StageVariantModel(itemModels, deferredItem, textureBaseIdent);
     }
 
-    private void makeBasicItem(ItemModelGenerators itemModels, DeferredItem<Item> deferredItem, ResourceLocation textureLoc) {
+    private void makeBasicItem(ItemModelGenerators itemModels,
+                               DeferredItem<Item> deferredItem,
+                               Identifier textureIdent) {
         ModelTemplates.FLAT_ITEM.create(
             deferredItem.get(),
             new TextureMapping()
-                .put(TextureSlot.LAYER0, textureLoc),
+                .put(TextureSlot.LAYER0, textureIdent),
             itemModels.modelOutput
         );
 
@@ -108,22 +110,28 @@ public final class GTItemWithUsesModelDatagen extends ModelProvider {
     /** Generates an Items Model Definition with 2 visible stages of use - full, and partially used */
     private void make2StageVariantModel(ItemModelGenerators itemModels,
                                         DeferredItem<Item> deferredItem,
-                                        ResourceLocation textureBaseLoc) {
-        ResourceLocation fullModelLoc = ModelLocationUtils.getModelLocation(deferredItem.get())
+                                        Identifier textureBaseIdent) {
+        Identifier fullModelIdent = ModelLocationUtils.getModelLocation(deferredItem.get())
             .withSuffix("/full");
-        ResourceLocation partiallyUsedModelLoc = ModelLocationUtils.getModelLocation(deferredItem.get())
+        Identifier partiallyUsedModelIdent = ModelLocationUtils.getModelLocation(deferredItem.get())
             .withSuffix("/partially_used");
 
         ModelTemplates.FLAT_ITEM.create(
-            fullModelLoc,
+            fullModelIdent,
             new TextureMapping()
-                .put(TextureSlot.LAYER0, textureBaseLoc.withSuffix(deferredItem.getKey().location().getPath() + "/full")),
+                .put(
+                    TextureSlot.LAYER0,
+                    textureBaseIdent.withSuffix(deferredItem.getKey().identifier().getPath() + "/full")
+                ),
             itemModels.modelOutput
         );
         ModelTemplates.FLAT_ITEM.create(
-            partiallyUsedModelLoc,
+            partiallyUsedModelIdent,
             new TextureMapping()
-                .put(TextureSlot.LAYER0, textureBaseLoc.withSuffix(deferredItem.getKey().location().getPath() + "/partially_used")),
+                .put(
+                    TextureSlot.LAYER0,
+                    textureBaseIdent.withSuffix(deferredItem.getKey().identifier().getPath() + "/partially_used")
+                ),
             itemModels.modelOutput
         );
 
@@ -133,11 +141,11 @@ public final class GTItemWithUsesModelDatagen extends ModelProvider {
                 new GTItemWithUsesUseStageModelProperty(),
                 new SelectItemModel.SwitchCase<>(
                     List.of(GTItemWithUsesUseStageModelProperty.UseStage.FULL),
-                    ItemModelUtils.plainModel(fullModelLoc)
+                    ItemModelUtils.plainModel(fullModelIdent)
                 ),
                 new SelectItemModel.SwitchCase<>(
                     List.of(GTItemWithUsesUseStageModelProperty.UseStage.PARTIALLY_USED),
-                    ItemModelUtils.plainModel(partiallyUsedModelLoc)
+                    ItemModelUtils.plainModel(partiallyUsedModelIdent)
                 )
             )
         );
@@ -146,30 +154,39 @@ public final class GTItemWithUsesModelDatagen extends ModelProvider {
     /** Generates an Items Model Definition with 3 visible stages of use - full, partially used, and empty */
     private void make3StageVariantModel(ItemModelGenerators itemModels,
                                         DeferredItem<Item> deferredItem,
-                                        ResourceLocation textureBaseLoc) {
-        ResourceLocation fullModelLoc = ModelLocationUtils.getModelLocation(deferredItem.get())
+                                        Identifier textureBaseIdent) {
+        Identifier fullModelIdent = ModelLocationUtils.getModelLocation(deferredItem.get())
             .withSuffix("/full");
-        ResourceLocation partiallyUsedModelLoc = ModelLocationUtils.getModelLocation(deferredItem.get())
+        Identifier partiallyUsedModelIdent = ModelLocationUtils.getModelLocation(deferredItem.get())
             .withSuffix("/partially_used");
-        ResourceLocation emptyModelLoc = ModelLocationUtils.getModelLocation(deferredItem.get())
+        Identifier emptyModelIdent = ModelLocationUtils.getModelLocation(deferredItem.get())
             .withSuffix("/empty");
 
         ModelTemplates.FLAT_ITEM.create(
-            fullModelLoc,
+            fullModelIdent,
             new TextureMapping()
-                .put(TextureSlot.LAYER0, textureBaseLoc.withSuffix(deferredItem.getKey().location().getPath() + "/full")),
+                .put(
+                    TextureSlot.LAYER0,
+                    textureBaseIdent.withSuffix(deferredItem.getKey().identifier().getPath() + "/full")
+                ),
             itemModels.modelOutput
         );
         ModelTemplates.FLAT_ITEM.create(
-            partiallyUsedModelLoc,
+            partiallyUsedModelIdent,
             new TextureMapping()
-                .put(TextureSlot.LAYER0, textureBaseLoc.withSuffix(deferredItem.getKey().location().getPath() + "/partially_used")),
+                .put(
+                    TextureSlot.LAYER0,
+                    textureBaseIdent.withSuffix(deferredItem.getKey().identifier().getPath() + "/partially_used")
+                ),
             itemModels.modelOutput
         );
         ModelTemplates.FLAT_ITEM.create(
-            emptyModelLoc,
+            emptyModelIdent,
             new TextureMapping()
-                .put(TextureSlot.LAYER0, textureBaseLoc.withSuffix(deferredItem.getKey().location().getPath() + "/empty")),
+                .put(
+                    TextureSlot.LAYER0,
+                    textureBaseIdent.withSuffix(deferredItem.getKey().identifier().getPath() + "/empty")
+                ),
             itemModels.modelOutput
         );
 
@@ -179,15 +196,15 @@ public final class GTItemWithUsesModelDatagen extends ModelProvider {
                 new GTItemWithUsesUseStageModelProperty(),
                 new SelectItemModel.SwitchCase<>(
                     List.of(GTItemWithUsesUseStageModelProperty.UseStage.FULL),
-                    ItemModelUtils.plainModel(fullModelLoc)
+                    ItemModelUtils.plainModel(fullModelIdent)
                 ),
                 new SelectItemModel.SwitchCase<>(
                     List.of(GTItemWithUsesUseStageModelProperty.UseStage.PARTIALLY_USED),
-                    ItemModelUtils.plainModel(partiallyUsedModelLoc)
+                    ItemModelUtils.plainModel(partiallyUsedModelIdent)
                 ),
                 new SelectItemModel.SwitchCase<>(
                     List.of(GTItemWithUsesUseStageModelProperty.UseStage.EMPTY),
-                    ItemModelUtils.plainModel(emptyModelLoc)
+                    ItemModelUtils.plainModel(emptyModelIdent)
                 )
             )
         );

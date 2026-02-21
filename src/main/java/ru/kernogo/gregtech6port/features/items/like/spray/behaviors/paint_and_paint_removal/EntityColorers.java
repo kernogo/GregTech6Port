@@ -2,7 +2,7 @@ package ru.kernogo.gregtech6port.features.items.like.spray.behaviors.paint_and_p
 
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.OwnableEntity;
-import net.minecraft.world.entity.animal.Cat;
+import net.minecraft.world.entity.animal.feline.Cat;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.player.Player;

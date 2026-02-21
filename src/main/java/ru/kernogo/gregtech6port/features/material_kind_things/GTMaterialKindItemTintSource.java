@@ -6,7 +6,7 @@ import net.minecraft.client.color.item.ItemTintSource;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import ru.kernogo.gregtech6port.features.behaviors.item_materials.GTMaterial;
 import ru.kernogo.gregtech6port.features.material_kind_things.items.IGTTintedMaterialKindItem;
 import ru.kernogo.gregtech6port.utils.exception.GTUnexpectedValidationFailException;

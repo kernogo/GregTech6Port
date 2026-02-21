@@ -1,7 +1,7 @@
 package ru.kernogo.gregtech6port.registration;
 
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import org.apache.commons.lang3.tuple.Pair;
 import ru.kernogo.gregtech6port.utils.exception.GTUnexpectedValidationFailException;
 
@@ -24,7 +24,7 @@ public final class GTLessDeferredRegister<T> {
     private final String namespace;
 
     /** Objects to write into Minecraft's {@link Registry} */
-    private final List<Pair<ResourceLocation, T>> toRegister = new ArrayList<>();
+    private final List<Pair<Identifier, T>> toRegister = new ArrayList<>();
 
     /** True if this class has already written objects into Minecraft's {@link Registry} */
     private boolean isActuallyRegistered = false;
@@ -48,7 +48,7 @@ public final class GTLessDeferredRegister<T> {
             );
         }
 
-        toRegister.add(Pair.of(ResourceLocation.fromNamespaceAndPath(namespace, name), result));
+        toRegister.add(Pair.of(Identifier.fromNamespaceAndPath(namespace, name), result));
 
         return result;
     }
@@ -57,10 +57,10 @@ public final class GTLessDeferredRegister<T> {
     public void actuallyRegister() {
         isActuallyRegistered = true;
 
-        for (Pair<ResourceLocation, T> pair : toRegister) {
-            ResourceLocation location = pair.getLeft();
+        for (Pair<Identifier, T> pair : toRegister) {
+            Identifier identifier = pair.getLeft();
             T object = pair.getRight();
-            Registry.register(registry, location, object);
+            Registry.register(registry, identifier, object);
         }
     }
 }

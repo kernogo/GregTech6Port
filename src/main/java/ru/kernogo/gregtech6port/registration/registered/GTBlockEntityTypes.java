@@ -21,7 +21,7 @@ public final class GTBlockEntityTypes {
         DeferredBlock<Block> deferredBlock
     ) {
         return GTRegisters.BLOCK_ENTITY_TYPES.register(
-            deferredBlock.getKey().location().getPath(),
+            deferredBlock.getKey().identifier().getPath(),
             () -> new BlockEntityType<>(blockEntitySupplier, deferredBlock.get())
         );
     }
