@@ -34,7 +34,7 @@ public final class GTDisabledVanillaCraftingRecipeProvider {
     }
 
     private void disableVanillaRecipe(String name) {
-        SpecialRecipeBuilder.special(craftingBookCategory -> new GTDisableExistingRecipeRecipe())
+        SpecialRecipeBuilder.special(GTDisableExistingRecipeRecipe::new)
             .save(
                 recipeOutput.withConditions(NeverCondition.INSTANCE),
                 ResourceKey.create(Registries.RECIPE, Identifier.withDefaultNamespace(name))

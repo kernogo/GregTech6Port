@@ -4,15 +4,17 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import lombok.extern.slf4j.Slf4j;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
+import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import net.minecraft.world.item.crafting.display.ShapelessCraftingRecipeDisplay;
@@ -40,24 +42,57 @@ import java.util.List;
  */
 @Slf4j
 public class GTOneInputModuloCraftingRecipe extends CustomRecipe {
-    private final String group;
+    public static final MapCodec<GTOneInputModuloCraftingRecipe> MAP_CODEC = RecordCodecBuilder.mapCodec(
+        i -> i.group(
+                CommonInfo.MAP_CODEC.fieldOf("commonInfo").forGetter(o -> o.commonInfo),
+                CraftingBookInfo.MAP_CODEC.fieldOf("craftingBookInfo").forGetter(o -> o.craftingBookInfo),
+                Ingredient.CODEC.fieldOf("ingredient").forGetter(o -> o.ingredient),
+                Codec.INT.fieldOf("modulo").forGetter(o -> o.modulo),
+                Codec.INT.fieldOf("remainder").forGetter(o -> o.remainder),
+                ItemStackTemplate.CODEC.fieldOf("result").forGetter(o -> o.result)
+            )
+            .apply(i, GTOneInputModuloCraftingRecipe::new)
+    );
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, GTOneInputModuloCraftingRecipe> STREAM_CODEC = StreamCodec.composite(
+        CommonInfo.STREAM_CODEC,
+        o -> o.commonInfo,
+        CraftingBookInfo.STREAM_CODEC,
+        o -> o.craftingBookInfo,
+        Ingredient.CONTENTS_STREAM_CODEC,
+        o -> o.ingredient,
+        ByteBufCodecs.INT,
+        o -> o.modulo,
+        ByteBufCodecs.INT,
+        o -> o.remainder,
+        ItemStackTemplate.STREAM_CODEC,
+        o -> o.result,
+        GTOneInputModuloCraftingRecipe::new
+    );
+
+    public static final RecipeSerializer<GTOneInputModuloCraftingRecipe> SERIALIZER = new RecipeSerializer<>(MAP_CODEC, STREAM_CODEC);
+
+    private final CommonInfo commonInfo;
+    private final CraftingBookInfo craftingBookInfo;
+
     private final Ingredient ingredient;
-    private final ItemStack result;
     private final int modulo;
     private final int remainder;
+    private final ItemStackTemplate result;
 
-    public GTOneInputModuloCraftingRecipe(String group,
-                                          CraftingBookCategory category,
+    public GTOneInputModuloCraftingRecipe(Recipe.CommonInfo commonInfo,
+                                          CraftingRecipe.CraftingBookInfo craftingBookInfo,
                                           Ingredient ingredient,
-                                          ItemStack result,
                                           int modulo,
-                                          int remainder) {
-        super(category);
-        this.group = group;
+                                          int remainder,
+                                          ItemStackTemplate result) {
+        this.commonInfo = commonInfo;
+        this.craftingBookInfo = craftingBookInfo;
+
         this.ingredient = ingredient;
-        this.result = result;
         this.modulo = modulo;
         this.remainder = remainder;
+        this.result = result;
     }
 
     @Override
@@ -100,8 +135,8 @@ public class GTOneInputModuloCraftingRecipe extends CustomRecipe {
     }
 
     @Override
-    public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
-        return this.result.copy();
+    public ItemStack assemble(CraftingInput input) {
+        return this.result.create();
     }
 
     @Override
@@ -118,58 +153,5 @@ public class GTOneInputModuloCraftingRecipe extends CustomRecipe {
     @Override
     public RecipeSerializer<? extends CustomRecipe> getSerializer() {
         return GTRecipeSerializers.ONE_INPUT_MODULO_CRAFTING.get();
-    }
-
-    @Override
-    public String group() {
-        return this.group;
-    }
-
-    public static class Serializer implements RecipeSerializer<GTOneInputModuloCraftingRecipe> {
-        private static final MapCodec<GTOneInputModuloCraftingRecipe> CODEC = RecordCodecBuilder.mapCodec(
-            builder -> builder.group(
-                    Codec.STRING.optionalFieldOf("group", "").forGetter(recipe -> recipe.group),
-                    CraftingBookCategory.CODEC.fieldOf("category").orElse(CraftingBookCategory.MISC).forGetter(GTOneInputModuloCraftingRecipe::category),
-                    Ingredient.CODEC.fieldOf("ingredient").forGetter(recipe -> recipe.ingredient),
-                    ItemStack.STRICT_CODEC.fieldOf("result").forGetter(recipe -> recipe.result),
-                    Codec.INT.fieldOf("modulo").forGetter(recipe -> recipe.modulo),
-                    Codec.INT.fieldOf("remainder").forGetter(recipe -> recipe.remainder)
-                )
-                .apply(builder, GTOneInputModuloCraftingRecipe::new)
-        );
-
-        private static final StreamCodec<RegistryFriendlyByteBuf, GTOneInputModuloCraftingRecipe> STREAM_CODEC = StreamCodec.of(
-            GTOneInputModuloCraftingRecipe.Serializer::toNetwork, GTOneInputModuloCraftingRecipe.Serializer::fromNetwork
-        );
-
-        @Override
-        public MapCodec<GTOneInputModuloCraftingRecipe> codec() {
-            return CODEC;
-        }
-
-        @Override
-        public StreamCodec<RegistryFriendlyByteBuf, GTOneInputModuloCraftingRecipe> streamCodec() {
-            return STREAM_CODEC;
-        }
-
-        private static GTOneInputModuloCraftingRecipe fromNetwork(RegistryFriendlyByteBuf buffer) {
-            String group = buffer.readUtf();
-            CraftingBookCategory category = buffer.readEnum(CraftingBookCategory.class);
-            Ingredient ingredient = Ingredient.CONTENTS_STREAM_CODEC.decode(buffer);
-            ItemStack result = ItemStack.STREAM_CODEC.decode(buffer);
-            int modulo = buffer.readVarInt();
-            int remainder = buffer.readVarInt();
-
-            return new GTOneInputModuloCraftingRecipe(group, category, ingredient, result, modulo, remainder);
-        }
-
-        private static void toNetwork(RegistryFriendlyByteBuf buffer, GTOneInputModuloCraftingRecipe recipe) {
-            buffer.writeUtf(recipe.group);
-            buffer.writeEnum(recipe.category());
-            Ingredient.CONTENTS_STREAM_CODEC.encode(buffer, recipe.ingredient);
-            ItemStack.STREAM_CODEC.encode(buffer, recipe.result);
-            buffer.writeVarInt(recipe.modulo);
-            buffer.writeVarInt(recipe.remainder);
-        }
     }
 }

@@ -8,6 +8,7 @@ import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.renderer.block.model.Material;
 import net.minecraft.client.renderer.item.SelectItemModel;
 import net.minecraft.core.Holder;
 import net.minecraft.data.PackOutput;
@@ -97,7 +98,7 @@ public final class GTItemWithUsesModelDatagen extends ModelProvider {
         ModelTemplates.FLAT_ITEM.create(
             deferredItem.get(),
             new TextureMapping()
-                .put(TextureSlot.LAYER0, textureIdent),
+                .put(TextureSlot.LAYER0, new Material(textureIdent)),
             itemModels.modelOutput
         );
 
@@ -121,7 +122,7 @@ public final class GTItemWithUsesModelDatagen extends ModelProvider {
             new TextureMapping()
                 .put(
                     TextureSlot.LAYER0,
-                    textureBaseIdent.withSuffix(deferredItem.getKey().identifier().getPath() + "/full")
+                    new Material(textureBaseIdent.withSuffix(deferredItem.getKey().identifier().getPath() + "/full"))
                 ),
             itemModels.modelOutput
         );
@@ -130,7 +131,7 @@ public final class GTItemWithUsesModelDatagen extends ModelProvider {
             new TextureMapping()
                 .put(
                     TextureSlot.LAYER0,
-                    textureBaseIdent.withSuffix(deferredItem.getKey().identifier().getPath() + "/partially_used")
+                    new Material(textureBaseIdent.withSuffix(deferredItem.getKey().identifier().getPath() + "/partially_used"))
                 ),
             itemModels.modelOutput
         );
@@ -167,7 +168,7 @@ public final class GTItemWithUsesModelDatagen extends ModelProvider {
             new TextureMapping()
                 .put(
                     TextureSlot.LAYER0,
-                    textureBaseIdent.withSuffix(deferredItem.getKey().identifier().getPath() + "/full")
+                    new Material(textureBaseIdent.withSuffix(deferredItem.getKey().identifier().getPath() + "/full"))
                 ),
             itemModels.modelOutput
         );
@@ -176,7 +177,7 @@ public final class GTItemWithUsesModelDatagen extends ModelProvider {
             new TextureMapping()
                 .put(
                     TextureSlot.LAYER0,
-                    textureBaseIdent.withSuffix(deferredItem.getKey().identifier().getPath() + "/partially_used")
+                    new Material(textureBaseIdent.withSuffix(deferredItem.getKey().identifier().getPath() + "/partially_used"))
                 ),
             itemModels.modelOutput
         );
@@ -185,7 +186,7 @@ public final class GTItemWithUsesModelDatagen extends ModelProvider {
             new TextureMapping()
                 .put(
                     TextureSlot.LAYER0,
-                    textureBaseIdent.withSuffix(deferredItem.getKey().identifier().getPath() + "/empty")
+                    new Material(textureBaseIdent.withSuffix(deferredItem.getKey().identifier().getPath() + "/empty"))
                 ),
             itemModels.modelOutput
         );

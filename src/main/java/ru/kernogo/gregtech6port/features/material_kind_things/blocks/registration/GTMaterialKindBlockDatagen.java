@@ -8,10 +8,10 @@ import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.renderer.block.model.Material;
 import net.minecraft.client.renderer.block.model.Variant;
 import net.minecraft.core.Holder;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.Identifier;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -48,12 +48,12 @@ public final class GTMaterialKindBlockDatagen extends ModelProvider {
                 String textureSetName = definition.material().textureSet().name();
                 String kindName = definition.kind().name();
 
-                Identifier blockTextureIdent = modLocation(
+                Material blockTextureMat = new Material(modLocation(
                     "block/material_icons/%s/%s".formatted(textureSetName, kindName)
-                );
-                Identifier blockTextureOverlayIdent = modLocation(
+                ));
+                Material blockTextureOverlayMat = new Material(modLocation(
                     "block/material_icons/%s/%s_overlay".formatted(textureSetName, kindName)
-                );
+                ));
 
                 TextureSlot particle = TextureSlot.create("particle");
                 TextureSlot allSides = TextureSlot.create("all_sides");
@@ -69,9 +69,9 @@ public final class GTMaterialKindBlockDatagen extends ModelProvider {
                 template.create(
                     definition.deferredBlock().get(),
                     new TextureMapping()
-                        .put(particle, blockTextureIdent)
-                        .put(allSides, blockTextureIdent)
-                        .put(overlay, blockTextureOverlayIdent),
+                        .put(particle, blockTextureMat)
+                        .put(allSides, blockTextureMat)
+                        .put(overlay, blockTextureOverlayMat),
                     blockModels.modelOutput
                 );
 
