@@ -1,9 +1,9 @@
 package ru.kernogo.gregtech6port.registration.registered;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.ItemCapability;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import ru.kernogo.gregtech6port.GregTech6Port;
 import ru.kernogo.gregtech6port.features.behaviors.material_composition.capabilities.IGTMaterialCompositionCapability;
 import ru.kernogo.gregtech6port.features.behaviors.tint_coloring.GTTintColoringCapability;
@@ -18,7 +18,7 @@ public final class GTCapabilities {
      */
     public static final BlockCapability<GTTintColoringCapability, @Nullable Void> TINT_COLORING =
         BlockCapability.createVoid(
-            ResourceLocation.fromNamespaceAndPath(GregTech6Port.MODID, "tint_coloring"),
+            Identifier.fromNamespaceAndPath(GregTech6Port.MODID, "tint_coloring"),
             GTTintColoringCapability.class
         );
 
@@ -28,7 +28,7 @@ public final class GTCapabilities {
      */
     public static final ItemCapability<IGTMaterialCompositionCapability, @Nullable Void> MATERIAL_COMPOSITION =
         ItemCapability.createVoid(
-            ResourceLocation.fromNamespaceAndPath(GregTech6Port.MODID, "material_composition"),
+            Identifier.fromNamespaceAndPath(GregTech6Port.MODID, "material_composition"),
             IGTMaterialCompositionCapability.class
         );
 

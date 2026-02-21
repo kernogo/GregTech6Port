@@ -55,7 +55,7 @@ public class PaintSprayUseOnBlocksTests {
 
             GTGameTestUtils.registerTestFunction(
                 event,
-                testCase.getLeft().getKey().location().getPath(),
+                testCase.getLeft().getKey().identifier().getPath(),
                 "gametest_bedrock_1x2x1",
                 gameTestHelper -> doTest_SimpleBlock_GlazedTerracotta(
                     gameTestHelper, deferredItem, sprayColor, block
@@ -87,7 +87,7 @@ public class PaintSprayUseOnBlocksTests {
         )) {
             GTGameTestUtils.registerTestFunction(
                 event,
-                deferredItem.getKey().location().getPath(),
+                deferredItem.getKey().identifier().getPath(),
                 "gametest_bedrock_1x2x1",
                 gameTestHelper -> doTest_SimpleBlock_NonColorableBlock(gameTestHelper, deferredItem)
             );

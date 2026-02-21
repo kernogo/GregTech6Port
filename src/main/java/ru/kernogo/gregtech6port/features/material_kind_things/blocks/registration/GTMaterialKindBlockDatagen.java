@@ -11,7 +11,7 @@ import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.renderer.block.model.Variant;
 import net.minecraft.core.Holder;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.random.WeightedList;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -48,10 +48,10 @@ public final class GTMaterialKindBlockDatagen extends ModelProvider {
                 String textureSetName = definition.material().textureSet().name();
                 String kindName = definition.kind().name();
 
-                ResourceLocation blockTextureLoc = modLocation(
+                Identifier blockTextureIdent = modLocation(
                     "block/material_icons/%s/%s".formatted(textureSetName, kindName)
                 );
-                ResourceLocation blockTextureOverlayLoc = modLocation(
+                Identifier blockTextureOverlayIdent = modLocation(
                     "block/material_icons/%s/%s_overlay".formatted(textureSetName, kindName)
                 );
 
@@ -69,9 +69,9 @@ public final class GTMaterialKindBlockDatagen extends ModelProvider {
                 template.create(
                     definition.deferredBlock().get(),
                     new TextureMapping()
-                        .put(particle, blockTextureLoc)
-                        .put(allSides, blockTextureLoc)
-                        .put(overlay, blockTextureOverlayLoc),
+                        .put(particle, blockTextureIdent)
+                        .put(allSides, blockTextureIdent)
+                        .put(overlay, blockTextureOverlayIdent),
                     blockModels.modelOutput
                 );
 

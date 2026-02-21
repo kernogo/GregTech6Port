@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.context.UseOnContext;
@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.common.ItemAbilities;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import ru.kernogo.gregtech6port.utils.exception.GTUnexpectedValidationFailException;
 
 /** Behavior for lighter's use on blocks */
@@ -61,8 +61,8 @@ final class LighterBehaviorForBlocks {
         if (!ModList.get().isLoaded("ae2")) { // this check is not needed but why not
             return null;
         }
-        ResourceLocation ae2TinyTntResLoc = ResourceLocation.fromNamespaceAndPath("ae2", "tiny_tnt");
-        return BuiltInRegistries.BLOCK.getOptional(ae2TinyTntResLoc).orElse(null);
+        Identifier ae2TinyTntIdentifier = Identifier.fromNamespaceAndPath("ae2", "tiny_tnt");
+        return BuiltInRegistries.BLOCK.getOptional(ae2TinyTntIdentifier).orElse(null);
     }
 
     /**

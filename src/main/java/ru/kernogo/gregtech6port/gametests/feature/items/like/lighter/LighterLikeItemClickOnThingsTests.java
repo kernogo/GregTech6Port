@@ -46,7 +46,7 @@ public class LighterLikeItemClickOnThingsTests {
         )) {
             GTGameTestUtils.registerTestFunction(
                 event,
-                deferredItem.getKey().location().getPath(),
+                deferredItem.getKey().identifier().getPath(),
                 "gametest_bedrock_10x5x10",
                 gameTestHelper -> doTest_ClickOnThings_MultiUse(gameTestHelper, deferredItem)
             );
@@ -62,7 +62,7 @@ public class LighterLikeItemClickOnThingsTests {
         )) {
             GTGameTestUtils.registerTestFunction(
                 event,
-                deferredItem.getKey().location().getPath(),
+                deferredItem.getKey().identifier().getPath(),
                 "gametest_bedrock_10x5x10",
                 gameTestHelper -> doTest_ClickOnThings_SingleUse(gameTestHelper, deferredItem)
             );

@@ -1,11 +1,11 @@
 package ru.kernogo.gregtech6port.features.behaviors.item_materials;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import ru.kernogo.gregtech6port.GregTech6Port;
 import ru.kernogo.gregtech6port.features.behaviors.material_composition.GTMaterialAmount;
 import ru.kernogo.gregtech6port.utils.exception.GTUnexpectedValidationFailException;
@@ -163,12 +163,12 @@ public record GTMaterial(
 
             TagKey<Item> itemTag = TagKey.create(
                 Registries.ITEM,
-                ResourceLocation.fromNamespaceAndPath(GregTech6Port.MODID, "materials/" + name)
+                Identifier.fromNamespaceAndPath(GregTech6Port.MODID, "materials/" + name)
             );
 
             TagKey<Block> blockTag = TagKey.create(
                 Registries.BLOCK,
-                ResourceLocation.fromNamespaceAndPath(GregTech6Port.MODID, "materials/" + name)
+                Identifier.fromNamespaceAndPath(GregTech6Port.MODID, "materials/" + name)
             );
 
             return new GTMaterial(
