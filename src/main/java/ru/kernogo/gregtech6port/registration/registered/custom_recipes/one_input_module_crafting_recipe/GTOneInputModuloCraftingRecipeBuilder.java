@@ -1,24 +1,16 @@
 package ru.kernogo.gregtech6port.registration.registered.custom_recipes.one_input_module_crafting_recipe;
 
-import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementRequirements;
-import net.minecraft.advancements.AdvancementRewards;
+import lombok.RequiredArgsConstructor;
 import net.minecraft.advancements.Criterion;
-import net.minecraft.advancements.criterion.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.RecipeUnlockAdvancementBuilder;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.level.ItemLike;
 import org.jspecify.annotations.Nullable;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * Recipe builder for {@link GTOneInputModuloCraftingRecipe}. <br>
@@ -26,41 +18,40 @@ import java.util.Objects;
  *
  * @see GTOneInputModuloCraftingRecipe
  */
+@RequiredArgsConstructor
 public class GTOneInputModuloCraftingRecipeBuilder implements RecipeBuilder {
-    private final RecipeCategory category;
-    private final ItemStack resultStack;
+    private final Ingredient ingredient;
     private final int modulo;
     private final int remainder;
+    private final ItemStackTemplate result;
 
+    private final boolean showNotification;
+    private final RecipeCategory category;
     private @Nullable String group;
-    private @Nullable Ingredient ingredient;
 
-    private final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
+    private final RecipeUnlockAdvancementBuilder advancementBuilder = new RecipeUnlockAdvancementBuilder();
 
     /** @see GTOneInputModuloCraftingRecipe */
-    public GTOneInputModuloCraftingRecipeBuilder(RecipeCategory category,
-                                                 ItemStack resultStack,
+    public GTOneInputModuloCraftingRecipeBuilder(Ingredient ingredient,
                                                  int modulo,
-                                                 int remainder) {
-        this.category = category;
-        this.resultStack = resultStack;
+                                                 int remainder,
+                                                 ItemStackTemplate result,
+                                                 boolean showNotification,
+                                                 RecipeCategory category,
+                                                 String group) {
+        this.ingredient = ingredient;
         this.modulo = modulo;
         this.remainder = remainder;
-    }
+        this.result = result;
 
-    public GTOneInputModuloCraftingRecipeBuilder requires(ItemLike item) {
-        this.ingredient = Ingredient.of(item);
-        return this;
-    }
-
-    public GTOneInputModuloCraftingRecipeBuilder requires(Ingredient ingredient) {
-        this.ingredient = ingredient;
-        return this;
+        this.showNotification = showNotification;
+        this.category = category;
+        this.group = group;
     }
 
     @Override
     public RecipeBuilder unlockedBy(String name, Criterion<?> criterion) {
-        this.criteria.put(name, criterion);
+        this.advancementBuilder.unlockedBy(name, criterion);
         return this;
     }
 
@@ -71,39 +62,25 @@ public class GTOneInputModuloCraftingRecipeBuilder implements RecipeBuilder {
     }
 
     @Override
-    public Item getResult() {
-        return this.resultStack.getItem();
+    public ResourceKey<Recipe<?>> defaultId() {
+        return RecipeBuilder.getDefaultRecipeId(result);
     }
 
     @Override
     public void save(RecipeOutput recipeOutput, ResourceKey<Recipe<?>> resourceKey) {
-        this.ensureValid(resourceKey);
-        Advancement.Builder advancementBuilder = recipeOutput.advancement()
-            .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(resourceKey))
-            .rewards(AdvancementRewards.Builder.recipe(resourceKey))
-            .requirements(AdvancementRequirements.Strategy.OR);
-        this.criteria.forEach(advancementBuilder::addCriterion);
-
         GTOneInputModuloCraftingRecipe recipe = new GTOneInputModuloCraftingRecipe(
-            Objects.requireNonNullElse(this.group, ""),
-            RecipeBuilder.determineBookCategory(this.category),
-            Objects.requireNonNull(this.ingredient),
-            this.resultStack,
-            this.modulo,
-            this.remainder
+            RecipeBuilder.createCraftingCommonInfo(showNotification),
+            RecipeBuilder.createCraftingBookInfo(category, group),
+            ingredient,
+            modulo,
+            remainder,
+            result
         );
 
         recipeOutput.accept(
             resourceKey,
             recipe,
-            advancementBuilder.build(resourceKey.identifier().withPrefix("recipes/" + this.category.getFolderName() + "/"))
+            advancementBuilder.build(recipeOutput, resourceKey, category)
         );
-    }
-
-    /** Makes sure that this recipe is valid and obtainable. */
-    private void ensureValid(ResourceKey<Recipe<?>> recipe) {
-        if (this.criteria.isEmpty()) {
-            throw new IllegalStateException("No way of obtaining recipe " + recipe.identifier());
-        }
     }
 }

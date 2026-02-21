@@ -17,7 +17,7 @@ public class GTSimpleGameTestInstance extends GameTestInstance {
     private final String description;
     private final Consumer<GameTestHelper> testRunFunc;
 
-    public GTSimpleGameTestInstance(TestData<Holder<TestEnvironmentDefinition>> info) {
+    public GTSimpleGameTestInstance(TestData<Holder<TestEnvironmentDefinition<?>>> info) {
         super(info);
         this.description = "";
         this.testRunFunc = x -> {};
@@ -25,7 +25,7 @@ public class GTSimpleGameTestInstance extends GameTestInstance {
 
     public GTSimpleGameTestInstance(String description,
                                     Consumer<GameTestHelper> testRunFunc,
-                                    TestData<Holder<TestEnvironmentDefinition>> info) {
+                                    TestData<Holder<TestEnvironmentDefinition<?>>> info) {
         super(info);
         this.description = description;
         this.testRunFunc = testRunFunc;
@@ -47,7 +47,7 @@ public class GTSimpleGameTestInstance extends GameTestInstance {
     }
 
     @Override
-    public TestData<Holder<TestEnvironmentDefinition>> info() {
+    public TestData<Holder<TestEnvironmentDefinition<?>>> info() {
         return super.info();
     }
 }

@@ -104,9 +104,9 @@ public class LighterLikeItemClickOnThingsTests {
 
         Creeper creeper = gameTestHelper.findOneEntity(EntityType.CREEPER);
 
-        player.interactOn(creeper, InteractionHand.MAIN_HAND); // 7
-        player.interactOn(creeper, InteractionHand.MAIN_HAND); // 7 + 1
-        player.interactOn(creeper, InteractionHand.MAIN_HAND); // 7 + 2
+        player.interactOn(creeper, InteractionHand.MAIN_HAND, creeper.position()); // 7
+        player.interactOn(creeper, InteractionHand.MAIN_HAND, creeper.position()); // 7 + 1
+        player.interactOn(creeper, InteractionHand.MAIN_HAND, creeper.position()); // 7 + 2
 
         assertThingsWereLitOnFire(gameTestHelper, startPos, creeper);
 
@@ -179,11 +179,11 @@ public class LighterLikeItemClickOnThingsTests {
 
         Creeper creeper = gameTestHelper.findOneEntity(EntityType.CREEPER);
 
-        player.interactOn(creeper, InteractionHand.MAIN_HAND); // 7
+        player.interactOn(creeper, InteractionHand.MAIN_HAND, creeper.position()); // 7
         assertLighterDoesNotExistAndGiveANewLighter(gameTestHelper, deferredLighterItem, player);
-        player.interactOn(creeper, InteractionHand.MAIN_HAND); // 7 + 1
+        player.interactOn(creeper, InteractionHand.MAIN_HAND, creeper.position()); // 7 + 1
         assertLighterDoesNotExistAndGiveANewLighter(gameTestHelper, deferredLighterItem, player);
-        player.interactOn(creeper, InteractionHand.MAIN_HAND); // 7 + 2
+        player.interactOn(creeper, InteractionHand.MAIN_HAND, creeper.position()); // 7 + 2
         assertLighterDoesNotExistAndGiveANewLighter(gameTestHelper, deferredLighterItem, player);
 
         assertThingsWereLitOnFire(gameTestHelper, startPos, creeper);

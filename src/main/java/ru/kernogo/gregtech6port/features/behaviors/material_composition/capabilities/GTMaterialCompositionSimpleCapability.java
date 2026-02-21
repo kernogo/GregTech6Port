@@ -17,7 +17,7 @@ import java.util.List;
 public final class GTMaterialCompositionSimpleCapability implements IGTMaterialCompositionCapability {
     @Override
     public @Nullable GTMaterialCompositionData getMaterialComposition(ItemStack itemStack) {
-        Holder<Item> itemStackHolder = itemStack.getItemHolder();
+        Holder<Item> itemStackHolder = itemStack.typeHolder();
         List<GTMaterialAndAmount> baseMaterialComposition = itemStackHolder.getData(GTDataMapTypes.BASE_MATERIAL_COMPOSITION);
         if (baseMaterialComposition == null) {
             return null;

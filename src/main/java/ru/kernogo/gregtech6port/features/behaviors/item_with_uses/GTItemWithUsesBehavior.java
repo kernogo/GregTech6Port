@@ -25,9 +25,8 @@ public class GTItemWithUsesBehavior {
 
         if (itemStack.getCount() != 1 && !isSingleUse(itemStack)) {
             if (isClientSide) {
-                player.displayClientMessage(
-                    Component.translatable("gregtech6port.client_message.unstack_to_use", itemStack.getDisplayName().getString()),
-                    true
+                player.sendOverlayMessage(
+                    Component.translatable("gregtech6port.client_message.unstack_to_use", itemStack.getDisplayName().getString())
                 );
             }
             return true;

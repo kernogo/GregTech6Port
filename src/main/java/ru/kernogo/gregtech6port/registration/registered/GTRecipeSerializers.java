@@ -11,11 +11,11 @@ public final class GTRecipeSerializers {
 
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<GTDisableExistingRecipeRecipe>> DISABLE_EXISTING_RECIPE =
         GTRegisters.RECIPE_SERIALIZERS.register(
-            "disable_existing_recipe", GTDisableExistingRecipeRecipe.Serializer::new
+            "disable_existing_recipe", () -> GTDisableExistingRecipeRecipe.SERIALIZER
         );
     public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<GTOneInputModuloCraftingRecipe>> ONE_INPUT_MODULO_CRAFTING =
         GTRegisters.RECIPE_SERIALIZERS.register(
-            "one_input_modulo_crafting", GTOneInputModuloCraftingRecipe.Serializer::new
+            "one_input_modulo_crafting", () -> GTOneInputModuloCraftingRecipe.SERIALIZER
         );
 
     /** This gets called to classload this class (to initialize all static fields in this class) */
