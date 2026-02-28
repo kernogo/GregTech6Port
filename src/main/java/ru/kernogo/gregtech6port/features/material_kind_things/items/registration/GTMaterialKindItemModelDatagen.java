@@ -8,6 +8,7 @@ import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.renderer.block.model.Material;
 import net.minecraft.core.Holder;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
@@ -59,8 +60,8 @@ public final class GTMaterialKindItemModelDatagen extends ModelProvider {
             ModelTemplates.TWO_LAYERED_ITEM.create(
                 definition.deferredItem().get(),
                 new TextureMapping()
-                    .put(TextureSlot.LAYER0, modLocation("item/material_icons/" + textureSetName + "/" + kindName))
-                    .put(TextureSlot.LAYER1, modLocation("item/material_icons/" + textureSetName + "/" + kindName + "_overlay")),
+                    .put(TextureSlot.LAYER0, new Material(modLocation("item/material_icons/" + textureSetName + "/" + kindName)))
+                    .put(TextureSlot.LAYER1, new Material(modLocation("item/material_icons/" + textureSetName + "/" + kindName + "_overlay"))),
                 itemModels.modelOutput
             );
 

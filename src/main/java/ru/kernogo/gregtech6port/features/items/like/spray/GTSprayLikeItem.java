@@ -115,9 +115,8 @@ public class GTSprayLikeItem extends Item {
             case ISprayBehavior.ISprayUseResult.NotSupported ignored -> InteractionResult.PASS;
             case ISprayBehavior.ISprayUseResult.WasNotUsedDueToInsufficientUses result -> {
                 if (level.isClientSide()) {
-                    player.displayClientMessage(
-                        Component.translatable("gregtech6port.client_message.insufficient_uses", result.minNumberOfUsesRequired()),
-                        true
+                    player.sendOverlayMessage(
+                        Component.translatable("gregtech6port.client_message.insufficient_uses", result.minNumberOfUsesRequired())
                     );
                 }
                 yield InteractionResult.FAIL;

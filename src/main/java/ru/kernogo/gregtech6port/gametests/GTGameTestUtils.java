@@ -29,7 +29,7 @@ public final class GTGameTestUtils {
     private GTGameTestUtils() {}
 
     /** Used for {@link #registerTestFunction} only. Created and cached test environment that does nothing. */
-    private static @Nullable Holder<TestEnvironmentDefinition> nopEnv;
+    private static @Nullable Holder<TestEnvironmentDefinition<?>> nopEnv;
 
     /**
      * Registers the Game Test method ({@code testRunFunc}) with Minecraft. <br>
@@ -67,7 +67,8 @@ public final class GTGameTestUtils {
                     true,
                     1,
                     1,
-                    false
+                    false,
+                    0
                 )
             )
         );

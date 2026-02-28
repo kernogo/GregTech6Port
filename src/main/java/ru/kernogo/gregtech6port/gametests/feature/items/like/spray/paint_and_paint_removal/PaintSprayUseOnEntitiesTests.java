@@ -145,7 +145,7 @@ public class PaintSprayUseOnEntitiesTests {
 
         // Multiple uses should not do anything after the first use
         for (int i = 0; i < 5; i++) {
-            player.interactOn(entity, InteractionHand.MAIN_HAND);
+            player.interactOn(entity, InteractionHand.MAIN_HAND, entity.position());
 
             GTGameTestUtils.assertTrue(gameTestHelper,
                 predicateToTest.test(entity),
@@ -202,7 +202,7 @@ public class PaintSprayUseOnEntitiesTests {
 
         // Nothing should happen on click. Multiple uses should not do anything either.
         for (int i = 0; i < 5; i++) {
-            player.interactOn(entity, InteractionHand.MAIN_HAND);
+            player.interactOn(entity, InteractionHand.MAIN_HAND, entity.position());
 
             GTGameTestUtils.assertTrue(gameTestHelper,
                 predicateToTest.test(entity),

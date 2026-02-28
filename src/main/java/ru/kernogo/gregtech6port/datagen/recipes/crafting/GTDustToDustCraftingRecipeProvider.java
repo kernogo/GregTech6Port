@@ -9,7 +9,7 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.crafting.IntersectionIngredient;
 import ru.kernogo.gregtech6port.datagen.GTRecipeProvider;
@@ -123,16 +123,15 @@ public final class GTDustToDustCraftingRecipeProvider {
             outputMaterial, outputKind
         );
 
-        ItemStack outputItemStack = outputItem.getDefaultInstance();
-        outputItemStack.setCount(outputCount);
-
         new GTOneInputModuloCraftingRecipeBuilder(
-            RecipeCategory.MISC,
-            outputItemStack,
+            inputIngredient,
             modulo,
-            remainder
+            remainder,
+            new ItemStackTemplate(outputItem, outputCount),
+            true,
+            RecipeCategory.MISC,
+            ""
         )
-            .requires(inputIngredient)
             .unlockedBy("has_item", GTUtils.dummyUnlockedByTrigger(itemsLookup))
             .save(
                 recipeOutput,
