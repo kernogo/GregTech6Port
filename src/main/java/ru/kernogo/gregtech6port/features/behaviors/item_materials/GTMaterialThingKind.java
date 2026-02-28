@@ -1,15 +1,20 @@
 package ru.kernogo.gregtech6port.features.behaviors.item_materials;
 
+import lombok.extern.slf4j.Slf4j;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import org.jspecify.annotations.Nullable;
 import ru.kernogo.gregtech6port.GregTech6Port;
 import ru.kernogo.gregtech6port.features.behaviors.material_composition.GTMaterialAmount;
 import ru.kernogo.gregtech6port.features.behaviors.material_composition.GTMaterialAndAmount;
+import ru.kernogo.gregtech6port.registration.registered.GTCustomRegistries;
 
 import java.util.List;
 
@@ -37,6 +42,7 @@ import java.util.List;
  *                                              Nullable. If null, then no Block will be registered.
  *                                              See available parameters in {@link IBlockCreator}.
  */
+@Slf4j
 public record GTMaterialThingKind(
     String name,
     String itemTranslationKey,
@@ -64,12 +70,12 @@ public record GTMaterialThingKind(
         String translationKey = "gregtech6port.material_kind_item." + name + ".pattern";
 
         TagKey<Item> itemTag = TagKey.create(
-            Registries.ITEM,
+            Registries.ITEM, // Tag's name starting with kinds/ is used in some methods TODO test
             Identifier.fromNamespaceAndPath(GregTech6Port.MODID, "kinds/" + name)
         );
 
         TagKey<Block> blockTag = TagKey.create(
-            Registries.BLOCK,
+            Registries.BLOCK, // Tag's name starting with kinds/ is used in some methods TODO test
             Identifier.fromNamespaceAndPath(GregTech6Port.MODID, "kinds/" + name)
         );
 
@@ -84,6 +90,38 @@ public record GTMaterialThingKind(
             itemCreator,
             blockCreator
         );
+    }
+
+    /**
+     * Creates an instance of {@link GTMaterialThingKind}
+     * based on the tag on an Item that indicates that particular Kind TODO rephrase
+     */
+    public static @Nullable GTMaterialThingKind getFromStack(ItemStack itemStack) {
+        List<TagKey<Item>> tagKeys = itemStack.tags()
+            .filter(tagKey -> tagKey.location().getNamespace().equals(GregTech6Port.MODID))
+            // Use the fact that tags indicating the Kind start with "kinds/"
+            .filter(tagKey -> tagKey.location().getPath().startsWith("kinds/"))
+            .toList();
+        if (tagKeys.size() != 1) {
+            log.error("Found {} (!= 1) Tag Keys indicating Material-Kind Item's Kind in ItemStack {}",
+                tagKeys.size(), itemStack);
+            return null;
+        }
+
+        TagKey<Item> tagIndicatingTheKind = tagKeys.getFirst();
+
+        List<GTMaterialThingKind> matches = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY)
+            .lookupOrThrow(GTCustomRegistries.MATERIAL_THING_KINDS.key()).stream()
+            .filter(kind -> kind.itemTag().equals(tagIndicatingTheKind))
+            .toList();
+
+        if (matches.size() != 1) {
+            log.error("Found {} (!= 1) Kinds having the same tag={}",
+                matches.size(), tagIndicatingTheKind);
+            return null;
+        }
+
+        return matches.getFirst();
     }
 
     @FunctionalInterface

@@ -1,0 +1,76 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"particle": "gregtech6port:block/template_to_be_replaced_texture",
+		"material_texture": "gregtech6port:block/template_to_be_replaced_texture"
+	},
+	"elements": [
+		{
+			"name": "anvil_part",
+			"from": [0, 9, 4],
+			"to": [1, 11, 12],
+			"faces": {
+				"north": {"uv": [15, 5, 16, 7], "texture": "#material_texture", "tintindex": 0},
+				"east": {"uv": [4, 5, 12, 7], "texture": "#material_texture", "tintindex": 0},
+				"south": {"uv": [0, 5, 1, 7], "texture": "#material_texture", "tintindex": 0},
+				"west": {"uv": [4, 5, 12, 7], "texture": "#material_texture", "tintindex": 0},
+				"up": {"uv": [0, 4, 1, 12], "texture": "#material_texture", "tintindex": 0},
+				"down": {"uv": [0, 4, 1, 12], "texture": "#material_texture", "tintindex": 0}
+			}
+		},
+		{
+			"name": "anvil_part",
+			"from": [4, 4, 6],
+			"to": [12, 8, 10],
+			"faces": {
+				"north": {"uv": [4, 8, 12, 12], "texture": "#material_texture", "tintindex": 0},
+				"east": {"uv": [6, 8, 10, 12], "texture": "#material_texture", "tintindex": 0},
+				"south": {"uv": [4, 8, 12, 12], "texture": "#material_texture", "tintindex": 0},
+				"west": {"uv": [6, 8, 10, 12], "texture": "#material_texture", "tintindex": 0},
+				"up": {"uv": [4, 6, 12, 10], "texture": "#material_texture", "tintindex": 0},
+				"down": {"uv": [4, 6, 12, 10], "texture": "#material_texture", "tintindex": 0}
+			}
+		},
+		{
+			"name": "anvil_part",
+			"from": [1, 8, 4],
+			"to": [15, 12, 12],
+			"faces": {
+				"north": {"uv": [1, 4, 15, 8], "texture": "#material_texture", "tintindex": 0},
+				"east": {"uv": [4, 4, 12, 8], "texture": "#material_texture", "tintindex": 0},
+				"south": {"uv": [1, 4, 15, 8], "texture": "#material_texture", "tintindex": 0},
+				"west": {"uv": [4, 4, 12, 8], "texture": "#material_texture", "tintindex": 0},
+				"up": {"uv": [1, 4, 15, 12], "texture": "#material_texture", "tintindex": 0},
+				"down": {"uv": [1, 4, 15, 12], "texture": "#material_texture", "tintindex": 0}
+			}
+		},
+		{
+			"name": "anvil_part",
+			"from": [15, 8, 5],
+			"to": [16, 12, 11],
+			"faces": {
+				"north": {"uv": [0, 4, 1, 8], "texture": "#material_texture", "tintindex": 0},
+				"east": {"uv": [5, 4, 11, 8], "texture": "#material_texture", "tintindex": 0},
+				"south": {"uv": [15, 4, 16, 8], "texture": "#material_texture", "tintindex": 0},
+				"west": {"uv": [5, 4, 11, 8], "texture": "#material_texture", "tintindex": 0},
+				"up": {"uv": [15, 5, 16, 11], "texture": "#material_texture", "tintindex": 0},
+				"down": {"uv": [15, 5, 16, 11], "texture": "#material_texture", "tintindex": 0}
+			}
+		},
+		{
+			"name": "anvil_part",
+			"from": [2, 0, 4],
+			"to": [14, 4, 12],
+			"faces": {
+				"north": {"uv": [2, 12, 14, 16], "texture": "#material_texture", "tintindex": 0},
+				"east": {"uv": [4, 12, 12, 16], "texture": "#material_texture", "tintindex": 0},
+				"south": {"uv": [2, 12, 14, 16], "texture": "#material_texture", "tintindex": 0},
+				"west": {"uv": [4, 12, 12, 16], "texture": "#material_texture", "tintindex": 0},
+				"up": {"uv": [2, 4, 14, 12], "texture": "#material_texture", "tintindex": 0},
+				"down": {"uv": [2, 4, 14, 12], "texture": "#material_texture", "tintindex": 0}
+			}
+		}
+	]
+}

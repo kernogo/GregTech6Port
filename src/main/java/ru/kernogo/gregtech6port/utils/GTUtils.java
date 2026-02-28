@@ -10,17 +10,21 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.Containers;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
+import net.neoforged.neoforge.transfer.ResourceHandler;
+import net.neoforged.neoforge.transfer.item.ItemResource;
 import org.jetbrains.annotations.Contract;
 import org.jspecify.annotations.Nullable;
 import ru.kernogo.gregtech6port.GregTech6Port;
-import ru.kernogo.gregtech6port.features.blockentities.ender_garbage_bin.GTEnderGarbageBinBlockEntity;
 import ru.kernogo.gregtech6port.utils.exception.GTUnexpectedValidationFailException;
 
 import java.util.Map;
@@ -97,7 +101,7 @@ public final class GTUtils {
      * Here we hope that both {@code oldState} and {@code newState} parameters of {@link Level#sendBlockUpdated}
      * can be the same value without any problems.
      */
-    public static void updateTheBlockEntity(GTEnderGarbageBinBlockEntity blockEntity) {
+    public static void updateTheBlockEntity(BlockEntity blockEntity) {
         blockEntity.setChanged();
         Level level = blockEntity.getLevel();
         if (level != null) {
@@ -140,5 +144,24 @@ public final class GTUtils {
         return RecipeProvider.inventoryTrigger( // Access transformer allows this call
             ItemPredicate.Builder.item().of(itemsLookup, Items.AIR)
         );
+    }
+
+    /**
+     * Drops all contents from {@code handler} into the position {@code pos}. <br>
+     * Does not extract anything from the resource handler. <br>
+     * Same as {@link net.minecraft.world.Containers#dropContents},
+     * but for {@link ResourceHandler<ItemResource>}
+     */
+    public static void dropHandlerContents(Level level, BlockPos pos, ResourceHandler<ItemResource> handler) {
+        for (int i = 0; i < handler.size(); i++) {
+            ItemStack stack = handler.getResource(i).toStack(handler.getAmountAsInt(i));
+            if (stack.isEmpty()) {
+                continue;
+            }
+
+            // The below implementation drops the item stack splitting it into multiple random chunks
+            // (TODO implement without splitting?)
+            Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), stack);
+        }
     }
 }

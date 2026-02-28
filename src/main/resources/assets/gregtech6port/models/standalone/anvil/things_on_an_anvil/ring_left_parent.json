@@ -1,0 +1,23 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"particle": "gregtech6port:block/template_to_be_replaced_texture",
+		"material_texture": "gregtech6port:block/template_to_be_replaced_texture"
+	},
+	"elements": [
+		{
+			"from": [10, 12, 6],
+			"to": [14, 13, 10],
+			"faces": {
+				"north": {"uv": [2, 3, 6, 4], "texture": "#material_texture", "tintindex": 0},
+				"east": {"uv": [6, 3, 10, 4], "texture": "#material_texture", "tintindex": 0},
+				"south": {"uv": [10, 3, 14, 4], "texture": "#material_texture", "tintindex": 0},
+				"west": {"uv": [6, 3, 10, 4], "texture": "#material_texture", "tintindex": 0},
+				"up": {"uv": [10, 6, 14, 10], "texture": "#material_texture", "tintindex": 0},
+				"down": {"uv": [10, 6, 14, 10], "texture": "#material_texture", "tintindex": 0}
+			}
+		}
+	]
+}
