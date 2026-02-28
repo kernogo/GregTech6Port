@@ -59,7 +59,7 @@ public final class GTMaterialKindItemModelDatagen extends ModelProvider {
 
             ModelTemplates.TWO_LAYERED_ITEM.create(
                 definition.deferredItem().get(),
-                new TextureMapping()
+                new TextureMapping() // TODO move these locations somewhere else
                     .put(TextureSlot.LAYER0, new Material(modLocation("item/material_icons/" + textureSetName + "/" + kindName)))
                     .put(TextureSlot.LAYER1, new Material(modLocation("item/material_icons/" + textureSetName + "/" + kindName + "_overlay"))),
                 itemModels.modelOutput

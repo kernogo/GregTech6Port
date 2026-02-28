@@ -79,6 +79,19 @@ public final class GTMaterialThingKinds {
                 null
             )
         );
+    // Original GT6 name: "plate"
+    public static final GTMaterialThingKind PLATE =
+        GTRegisters.MATERIAL_THING_KINDS.register(
+            "plate",
+            () -> GTMaterialThingKind.of(
+                "plate",
+                "%s Plate",
+                GTMaterialAmount.of(1),
+                List.of(),
+                (itemProperties, block, material, kind) -> new GTSimpleMaterialKindItem(itemProperties, material, kind),
+                null
+            )
+        );
     // Original GT6 name: "stick"
     public static final GTMaterialThingKind ROD =
         GTRegisters.MATERIAL_THING_KINDS.register(
@@ -105,6 +118,110 @@ public final class GTMaterialThingKinds {
                 null
             )
         );
+    // Original GT6 name: "chunkGt"
+    public static final GTMaterialThingKind CHUNK =
+        GTRegisters.MATERIAL_THING_KINDS.register(
+            "chunk",
+            () -> GTMaterialThingKind.of(
+                "chunk",
+                "%s Chunk",
+                GTMaterialAmount.of(0, 1, 4),
+                List.of(),
+                (itemProperties, block, material, kind) -> new GTSimpleMaterialKindItem(itemProperties, material, kind),
+                null
+            )
+        );
+    // Original GT6 name: "ring"
+    public static final GTMaterialThingKind RING =
+        GTRegisters.MATERIAL_THING_KINDS.register(
+            "ring",
+            () -> GTMaterialThingKind.of(
+                "ring",
+                "%s Ring",
+                GTMaterialAmount.of(0, 1, 4),
+                List.of(),
+                (itemProperties, block, material, kind) -> new GTSimpleMaterialKindItem(itemProperties, material, kind),
+                null
+            )
+        );
+    // Original GT6 name: "gemChipped"
+    public static final GTMaterialThingKind CHIPPED_GEM =
+        GTRegisters.MATERIAL_THING_KINDS.register(
+            "chipped_gem",
+            () -> GTMaterialThingKind.of(
+                "chipped_gem",
+                "Chipped %s",
+                GTMaterialAmount.of(0, 1, 4),
+                List.of(),
+                (itemProperties, block, material, kind) -> new GTSimpleMaterialKindItem(itemProperties, material, kind),
+                null
+            )
+        );
+    // Original GT6 name: "gemFlawed"
+    public static final GTMaterialThingKind FLAWED_GEM =
+        GTRegisters.MATERIAL_THING_KINDS.register(
+            "flawed_gem",
+            () -> GTMaterialThingKind.of(
+                "flawed_gem",
+                "Flawed %s",
+                GTMaterialAmount.of(0, 1, 2),
+                List.of(),
+                (itemProperties, block, material, kind) -> new GTSimpleMaterialKindItem(itemProperties, material, kind),
+                null
+            )
+        );
+    // Original GT6 name: "gem"
+    public static final GTMaterialThingKind GEM =
+        GTRegisters.MATERIAL_THING_KINDS.register(
+            "gem",
+            () -> GTMaterialThingKind.of(
+                "gem",
+                "%s",
+                GTMaterialAmount.of(1),
+                List.of(),
+                (itemProperties, block, material, kind) -> new GTSimpleMaterialKindItem(itemProperties, material, kind),
+                null
+            )
+        );
+    // Original GT6 name: "gemFlawless"
+    public static final GTMaterialThingKind FLAWLESS_GEM =
+        GTRegisters.MATERIAL_THING_KINDS.register(
+            "flawless_gem",
+            () -> GTMaterialThingKind.of(
+                "flawless_gem",
+                "Flawless %s",
+                GTMaterialAmount.of(2),
+                List.of(),
+                (itemProperties, block, material, kind) -> new GTSimpleMaterialKindItem(itemProperties.stacksTo(32), material, kind),
+                null
+            )
+        );
+    // Original GT6 name: "gemExquisite"
+    public static final GTMaterialThingKind EXQUISITE_GEM =
+        GTRegisters.MATERIAL_THING_KINDS.register(
+            "exquisite_gem",
+            () -> GTMaterialThingKind.of(
+                "exquisite_gem",
+                "Exquisite %s",
+                GTMaterialAmount.of(4),
+                List.of(),
+                (itemProperties, block, material, kind) -> new GTSimpleMaterialKindItem(itemProperties.stacksTo(16), material, kind),
+                null
+            )
+        );
+    // Original GT6 name: "gemLegendary"
+    public static final GTMaterialThingKind LEGENDARY_GEM =
+        GTRegisters.MATERIAL_THING_KINDS.register(
+            "legendary_gem",
+            () -> GTMaterialThingKind.of(
+                "legendary_gem",
+                "Legendary %s",
+                GTMaterialAmount.of(8),
+                List.of(),
+                (itemProperties, block, material, kind) -> new GTSimpleMaterialKindItem(itemProperties.stacksTo(8), material, kind),
+                null
+            )
+        );
 
     // Items that also have Blocks go below
 
@@ -116,6 +233,45 @@ public final class GTMaterialThingKinds {
                 "dust_block",
                 "Block of %s Dust",
                 GTMaterialAmount.of(9),
+                List.of(),
+                (itemProperties, block, material, kind) -> new GTSimpleMaterialKindBlockItem(Objects.requireNonNull(block), itemProperties, material, kind),
+                (blockProperties, material, kind) -> new GTSimpleMaterialKindBlock(blockProperties, material, kind)
+            )
+        );
+    // Original GT6 name: "blockSolid"
+    public static final GTMaterialThingKind SOLID_BLOCK =
+        GTRegisters.MATERIAL_THING_KINDS.register(
+            "solid_block",
+            () -> GTMaterialThingKind.of(
+                "solid_block",
+                "Block of solid %s",
+                GTMaterialAmount.of(9),
+                List.of(),
+                (itemProperties, block, material, kind) -> new GTSimpleMaterialKindBlockItem(Objects.requireNonNull(block), itemProperties, material, kind),
+                (blockProperties, material, kind) -> new GTSimpleMaterialKindBlock(blockProperties, material, kind)
+            )
+        );
+    // Original GT6 name: "blockGem"
+    public static final GTMaterialThingKind GEM_BLOCK =
+        GTRegisters.MATERIAL_THING_KINDS.register(
+            "gem_block",
+            () -> GTMaterialThingKind.of(
+                "gem_block",
+                "Block of %s",
+                GTMaterialAmount.of(9),
+                List.of(),
+                (itemProperties, block, material, kind) -> new GTSimpleMaterialKindBlockItem(Objects.requireNonNull(block), itemProperties, material, kind),
+                (blockProperties, material, kind) -> new GTSimpleMaterialKindBlock(blockProperties, material, kind)
+            )
+        );
+    // Original GT6 name: "blockRaw"
+    public static final GTMaterialThingKind RAW_BLOCK =
+        GTRegisters.MATERIAL_THING_KINDS.register(
+            "raw_block",
+            () -> GTMaterialThingKind.of(
+                "raw_block",
+                "Block of %s Ore",
+                GTMaterialAmount.of(0), // TODO nullable?
                 List.of(),
                 (itemProperties, block, material, kind) -> new GTSimpleMaterialKindBlockItem(Objects.requireNonNull(block), itemProperties, material, kind),
                 (blockProperties, material, kind) -> new GTSimpleMaterialKindBlock(blockProperties, material, kind)

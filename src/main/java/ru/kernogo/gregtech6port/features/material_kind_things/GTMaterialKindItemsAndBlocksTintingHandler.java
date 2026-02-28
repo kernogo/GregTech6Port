@@ -10,7 +10,6 @@ import org.jspecify.annotations.Nullable;
 import ru.kernogo.gregtech6port.features.behaviors.item_materials.GTMaterial;
 import ru.kernogo.gregtech6port.features.material_kind_things.blocks.GTMaterialKindBlockDefinitionService;
 import ru.kernogo.gregtech6port.features.material_kind_things.blocks.IGTTintedMaterialKindBlock;
-import ru.kernogo.gregtech6port.utils.exception.GTUnexpectedValidationFailException;
 
 /** Model tinting for Material-Kind Items and Blocks */
 @Slf4j
@@ -39,11 +38,6 @@ public final class GTMaterialKindItemsAndBlocksTintingHandler {
             return -1;
         }
         GTMaterial.ColorData colorData = materialKindBlock.getColorDataForTinting();
-        try {
-            GTMaterial.ColorData.validateAndThrowIfInvalid(colorData);
-        } catch (GTUnexpectedValidationFailException e) {
-            log.error("Invalid ColorData={} in Material-Kind Block Tinting", colorData, e);
-        }
-        return (colorData.a() << 24) + (colorData.r() << 16) + (colorData.g() << 8) + colorData.b();
+        return colorData.toPackedArgbIntColorOrThrow();
     }
 }

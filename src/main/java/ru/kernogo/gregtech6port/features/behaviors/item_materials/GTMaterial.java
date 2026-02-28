@@ -1,14 +1,21 @@
 package ru.kernogo.gregtech6port.features.behaviors.item_materials;
 
+import lombok.extern.slf4j.Slf4j;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import org.jspecify.annotations.Nullable;
 import ru.kernogo.gregtech6port.GregTech6Port;
 import ru.kernogo.gregtech6port.features.behaviors.material_composition.GTMaterialAmount;
+import ru.kernogo.gregtech6port.registration.registered.GTCustomRegistries;
 import ru.kernogo.gregtech6port.utils.exception.GTUnexpectedValidationFailException;
+
+import java.util.List;
 
 /**
  * Material (like Cobalt or Leather)
@@ -30,6 +37,7 @@ import ru.kernogo.gregtech6port.utils.exception.GTUnexpectedValidationFailExcept
  *                           Note that not only Material-Kind Blocks can have that tag,
  *                           but also other Blocks (vanilla or modded).
  */
+@Slf4j
 public record GTMaterial(
     String name,
     String translationKey,
@@ -43,6 +51,12 @@ public record GTMaterial(
     TagKey<Block> blockTag // TODO: datagen for these block tags
 ) {
     public record ColorData(int a, int r, int g, int b) {
+        /** Converts the color data to ARGB int format (8 bits per channel). Throws if the color data is invalid */
+        public int toPackedArgbIntColorOrThrow() {
+            validateAndThrowIfInvalid(this);
+            return (a << 24) + (r << 16) + (g << 8) + b;
+        }
+
         public static void validateAndThrowIfInvalid(ColorData colorData) {
             int a = colorData.a();
             int r = colorData.r();
@@ -63,6 +77,38 @@ public record GTMaterial(
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    /**
+     * Creates an instance of {@link GTMaterial}
+     * based on the Tag on an Item that indicates that particular Material TODO rephrase
+     */
+    public static @Nullable GTMaterial getFromStack(ItemStack itemStack) {
+        List<TagKey<Item>> tagKeys = itemStack.tags()
+            .filter(tagKey -> tagKey.location().getNamespace().equals(GregTech6Port.MODID))
+            // Use the fact that tags indicating the Material start with "materials/"
+            .filter(tagKey -> tagKey.location().getPath().startsWith("materials/"))
+            .toList();
+        if (tagKeys.size() != 1) {
+            log.error("Found {} (!= 1) Tag Keys indicating Material-Kind Item's Material in ItemStack {}",
+                tagKeys.size(), itemStack);
+            return null;
+        }
+
+        TagKey<Item> tagIndicatingTheMaterial = tagKeys.getFirst();
+
+        List<GTMaterial> matches = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY)
+            .lookupOrThrow(GTCustomRegistries.MATERIALS.key()).stream()
+            .filter(kind -> kind.itemTag().equals(tagIndicatingTheMaterial))
+            .toList();
+
+        if (matches.size() != 1) {
+            log.error("Found {} (!= 1) Materials having the same tag={}",
+                matches.size(), tagIndicatingTheMaterial);
+            return null;
+        }
+
+        return matches.getFirst();
     }
 
     /**
@@ -162,12 +208,12 @@ public record GTMaterial(
             String translationKey = "gregtech6port.material." + name;
 
             TagKey<Item> itemTag = TagKey.create(
-                Registries.ITEM,
+                Registries.ITEM, // Tag's name starting with materials/ is used in some methods TODO test
                 Identifier.fromNamespaceAndPath(GregTech6Port.MODID, "materials/" + name)
             );
 
             TagKey<Block> blockTag = TagKey.create(
-                Registries.BLOCK,
+                Registries.BLOCK, // Tag's name starting with materials/ is used in some methods TODO test
                 Identifier.fromNamespaceAndPath(GregTech6Port.MODID, "materials/" + name)
             );
 

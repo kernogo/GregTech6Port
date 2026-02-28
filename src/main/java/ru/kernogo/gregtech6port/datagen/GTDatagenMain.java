@@ -7,6 +7,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import ru.kernogo.gregtech6port.features.behaviors.item_materials.GTMaterialNameEnglishDatagen;
 import ru.kernogo.gregtech6port.features.behaviors.item_with_uses.GTItemWithUsesModelDatagen;
 import ru.kernogo.gregtech6port.features.behaviors.material_composition.GTBaseMaterialCompositionDataMapDatagen;
+import ru.kernogo.gregtech6port.features.blockentities.anvil.models.GTAnvilModelsDatagen;
 import ru.kernogo.gregtech6port.features.material_kind_things.blocks.registration.GTMaterialKindBlockDatagen;
 import ru.kernogo.gregtech6port.features.material_kind_things.items.registration.GTMaterialKindItemModelDatagen;
 import ru.kernogo.gregtech6port.features.material_kind_things.items.registration.GTMaterialKindItemTagsDatagen;
@@ -35,11 +36,11 @@ public final class GTDatagenMain {
         PackOutput packOutput = generator.getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
+        event.addProvider(new GTBlockDatagen(packOutput));
         event.addProvider(new GTItemWithUsesModelDatagen(packOutput));
         event.addProvider(new GTMaterialKindItemModelDatagen(packOutput));
-
-        event.addProvider(new GTBlockDatagen(packOutput));
         event.addProvider(new GTMaterialKindBlockDatagen(packOutput));
+        event.addProvider(new GTAnvilModelsDatagen(packOutput));
 
         event.addProvider(new GTMaterialKindItemTagsDatagen(packOutput, lookupProvider));
 

@@ -9,7 +9,6 @@ import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.Nullable;
 import ru.kernogo.gregtech6port.features.behaviors.item_materials.GTMaterial;
 import ru.kernogo.gregtech6port.features.material_kind_things.items.IGTTintedMaterialKindItem;
-import ru.kernogo.gregtech6port.utils.exception.GTUnexpectedValidationFailException;
 
 /** Tint source for Material-Kind Items to tint their models based on Material's color */
 @Slf4j
@@ -24,12 +23,7 @@ public record GTMaterialKindItemTintSource() implements ItemTintSource {
             return -1;
         }
         GTMaterial.ColorData colorData = materialKindItem.getColorDataForTinting();
-        try {
-            GTMaterial.ColorData.validateAndThrowIfInvalid(colorData);
-        } catch (GTUnexpectedValidationFailException e) {
-            log.error("Invalid ColorData={} in Material-Kind Item Tinting", colorData, e);
-        }
-        return (colorData.a() << 24) + (colorData.r() << 16) + (colorData.g() << 8) + colorData.b();
+        return colorData.toPackedArgbIntColorOrThrow();
     }
 
     @Override

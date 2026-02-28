@@ -44,7 +44,12 @@ public final class GTMaterialKindBlockDatagen extends ModelProvider {
         List<GTMaterialKindBlockDefinition> definitions = materialKindBlockDefinitionService.getGTMaterialKindBlockDefinitions();
 
         for (GTMaterialKindBlockDefinition definition : definitions) {
-            if (definition.kind().equals(GTMaterialThingKinds.DUST_BLOCK)) {
+            if (List.of(
+                GTMaterialThingKinds.DUST_BLOCK,
+                GTMaterialThingKinds.SOLID_BLOCK,
+                GTMaterialThingKinds.GEM_BLOCK,
+                GTMaterialThingKinds.RAW_BLOCK
+            ).contains(definition.kind())) {
                 String textureSetName = definition.material().textureSet().name();
                 String kindName = definition.kind().name();
 
